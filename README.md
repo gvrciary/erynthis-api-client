@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/screenshot.png" alt="Erynthis API Client Logo" width="80" height="80">
+  <img src="public/screenshot.png" alt="Erynthis API Client screenshot" width="1024" height="1024">
   
   # Erynthis API Client
   
