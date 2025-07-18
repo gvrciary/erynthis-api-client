@@ -78,8 +78,8 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
       key={header.id}
       className={`group relative p-3 rounded-lg border ${
         header.enabled
-          ? "bg-card border-border hover:border-primary hover:bg-accent"
-          : "bg-muted border-border opacity-60"
+          ? "border-border hover:border-primary hover:bg-accent"
+          : "border-border opacity-60"
       }`}
     >
       <div className="flex items-center space-x-3">
@@ -157,7 +157,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
   );
 
   return (
-    <div className={`flex flex-col h-full bg-card ${className}`}>
+    <div className={`flex flex-col h-full ${className}`}>
       <div className="p-4 border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">

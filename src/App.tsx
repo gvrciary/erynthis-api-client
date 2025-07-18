@@ -42,7 +42,7 @@ const App = memo(() => {
   }, []);
 
   return (
-    <div className="h-screen bg-background flex flex-col select-none overflow-hidden">
+    <div className="h-screen bg-white/93 dark:bg-zinc-900/95 flex flex-col select-none overflow-hidden">
       {isMobile && (
         <div className="bg-card border-b border-border px-4 py-3 flex items-center justify-between flex-shrink-0">
           <button
@@ -113,7 +113,7 @@ const App = memo(() => {
             {activeRequestId ? (
               <>
                 <div
-                  className="border-r border-border bg-card min-w-0 flex flex-col"
+                  className="border-r border-border min-w-0 flex flex-col"
                   style={{ width: `${dragScale}%` }}
                 >
                   <RequestPanel />
@@ -127,7 +127,7 @@ const App = memo(() => {
                 />
 
                 <div
-                  className="bg-card min-w-0 flex flex-col"
+                  className="min-w-0 flex flex-col"
                   style={{ width: `${100 - dragScale}%` }}
                 >
                   <ResponsePanel />

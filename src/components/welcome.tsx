@@ -6,7 +6,7 @@ const WelcomeScreen = memo(() => {
   const { createRequest } = useHttpStore();
 
   return (
-    <main className="flex-1 flex items-center justify-center bg-background">
+    <main className="flex-1 flex items-center justify-center">
       <div className="text-center max-w-md mx-auto p-8">
         <div className="mb-8">
           <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center">

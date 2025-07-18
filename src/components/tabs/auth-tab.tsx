@@ -325,7 +325,7 @@ const AuthTab = memo(({ className }: AuthTabProps) => {
   if (!requestItem) return null;
 
   return (
-    <div className={`flex flex-col h-full bg-card ${className}`}>
+    <div className={`flex flex-col h-full ${className}`}>
       <div className="p-4 border-b border-border flex-shrink-0 relative z-20">
         <h3 className="text-sm font-medium text-foreground mb-4">
           Authentication

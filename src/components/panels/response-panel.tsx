@@ -34,7 +34,7 @@ const ResponseHeader = memo<{
   responseSize: number;
   onClearResponse: () => void;
 }>(({ responseData, errorData, responseSize, onClearResponse }) => (
-  <div className="p-4 border-b border-border bg-muted flex-shrink-0">
+  <div className="p-4 border-b border-border flex-shrink-0">
     <div className="flex items-center justify-between mb-3">
       <div className="flex items-center space-x-4">
         <div
@@ -148,7 +148,7 @@ const ResponseTabs = memo<{
   if (!responseData) return null;
 
   return (
-    <div className="flex border-b border-border bg-muted flex-shrink-0">
+    <div className="flex border-b border-border flex-shrink-0">
       {tabs.map((tab) => (
         <button
           type="button"
@@ -156,7 +156,7 @@ const ResponseTabs = memo<{
           onClick={() => onTabChange(tab.id)}
           className={`px-4 py-2 text-sm font-medium ${
             activeTab === tab.id
-              ? "text-foreground border-b-2 border-primary bg-card"
+              ? "text-foreground border-b-2 border-primary"
               : "text-muted-foreground hover:text-foreground hover:bg-accent"
           }`}
         >
@@ -252,7 +252,7 @@ const ResponsePanel = memo(({ className }: ResponsePanelProps) => {
   }
 
   return (
-    <div className={`flex flex-col bg-card h-full ${className}`}>
+    <div className={`flex flex-col h-full ${className}`}>
       {(responseData || errorData) && (
         <>
           <ResponseHeader

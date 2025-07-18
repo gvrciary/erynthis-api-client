@@ -218,7 +218,7 @@ const BodyTab = ({ className }: BodyTabProps) => {
   );
 
   return (
-    <div className={`flex flex-col h-full bg-card ${className}`}>
+    <div className={`flex flex-col h-full ${className}`}>
       <div className="p-4 border-b border-border flex-shrink-0 relative z-20">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-foreground ">Request Body</h3>

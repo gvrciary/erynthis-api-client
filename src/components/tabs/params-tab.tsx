@@ -80,8 +80,8 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
       key={param.id}
       className={`group relative p-3 rounded-lg border ${
         param.enabled
-          ? "bg-card border-border hover:border-primary hover:bg-accent"
-          : "bg-muted border-border opacity-60"
+          ? " border-border hover:border-primary hover:bg-accent"
+          : "border-border opacity-60"
       }`}
     >
       <div className="flex items-center space-x-3">
@@ -171,7 +171,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
   );
 
   return (
-    <div className={`flex flex-col h-full bg-card ${className}`}>
+    <div className={`flex flex-col h-full  ${className}`}>
       <div className="p-4 border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -195,7 +195,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
           <div className="p-4 space-y-2">{params.map(renderParamRow)}</div>
         </div>
 
-        <div className="p-4 border-t border-border bg-muted flex-shrink-0">
+        <div className="p-4 border-t border-border flex-shrink-0">
           <div className="flex items-center space-x-2 mb-2">
             <Link className="h-3.5 w-3.5 text-muted-foreground" />
             <h4 className="text-xs font-medium text-foreground ">

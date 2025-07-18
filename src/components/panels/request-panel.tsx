@@ -116,7 +116,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
   if (!request) return null;
 
   return (
-    <div className={`flex flex-col bg-card ${className}`}>
+    <div className={`flex flex-col ${className}`}>
       <div className="p-4 border-b border-border relative z-80">
         <div className="flex items-center space-x-3">
           <div className="w-32">
@@ -152,7 +152,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
       </div>
 
       <div className="flex-1 min-h-0 flex flex-col">
-        <div className="flex border-b border-border bg-muted flex-shrink-0">
+        <div className="flex border-b border-border flex-shrink-0">
           {TABS.map((tab) => (
             <button
               type="button"
@@ -160,7 +160,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               onClick={() => setActiveRequestTab(tab.id)}
               className={`px-4 py-3 text-sm font-medium  relative ${
                 request.request.activeRequestTab === tab.id
-                  ? "text-foreground border-b-2 border-primary bg-card"
+                  ? "text-foreground border-b-2 border-primary"
                   : "text-muted-foreground hover:text-foreground hover:bg-accent"
               }`}
             >
@@ -169,7 +169,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
           ))}
         </div>
 
-        <div className="flex-1 min-h-0 overflow-visible bg-card">
+        <div className="flex-1 min-h-0 overflow-visible">
           {renderActiveTab}
         </div>
       </div>

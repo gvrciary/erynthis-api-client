@@ -109,7 +109,7 @@ const ResponseBodyTab = memo(
 
     return (
       <div className="flex flex-col h-full">
-        <div className="flex items-center justify-between p-3 border-b border-border bg-muted flex-shrink-0">
+        <div className="flex items-center justify-between p-3 border-b border-border flex-shrink-0">
           <div className="flex items-center space-x-3">
             <div className="w-28">
               <Dropdown
