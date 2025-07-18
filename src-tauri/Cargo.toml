@@ -1,5 +1,5 @@
 [package]
-name = "api-client"
+name = "erynthis-api-client"
 version = "0.1.0"
 description = "A Tauri App"
 authors = ["you"]

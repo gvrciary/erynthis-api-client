@@ -1,8 +1,8 @@
 {
 	"$schema": "https://schema.tauri.app/config/2",
-	"productName": "api-client",
+	"productName": "erynthis-api-client",
 	"version": "0.1.0",
-	"identifier": "com.api-client.app",
+	"identifier": "com.erynthis-client.app",
 	"build": {
 		"beforeDevCommand": "npm run dev",
 		"devUrl": "http://localhost:1420",
@@ -13,7 +13,7 @@
 		"macOSPrivateApi": true,
 		"windows": [
 			{
-				"title": "api-client",
+				"title": "erynthis",
 				"width": 1024,
 				"height": 768,
 				"dragDropEnabled": false
