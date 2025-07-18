@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import RequestPanel from "./components/panels/request-panel";
 import ResponsePanel from "./components/panels/response-panel";
-import Sidebar from "./components/ui/Sidebar";
+import Sidebar from "./components/ui/sidebar";
 import WelcomeScreen from "./components/welcome";
 import { useDragResize } from "./hooks/ui/useDragResize";
 import useMediaQuery from "./hooks/ui/useMediaQuery";

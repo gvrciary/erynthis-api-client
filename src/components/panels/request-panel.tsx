@@ -5,7 +5,7 @@ import BodyTab from "@/components/tabs/body-tab";
 import HeadersTab from "@/components/tabs/headers-tab";
 import ParamsTab from "@/components/tabs/params-tab";
 import Dropdown from "@/components/ui/drop-down";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/modal";
 import { httpMethods, TABS } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
 import { useModal } from "@/hooks/ui/useModal";
