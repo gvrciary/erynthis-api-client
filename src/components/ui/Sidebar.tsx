@@ -13,15 +13,14 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import type React from "react";
 import { useEffect, useRef, useState } from "react";
-import { useEnvironments } from "../hooks/data/useEnvironments";
-import { useDarkMode } from "../hooks/ui/useDarkMode";
-import { useHttpStore } from "../store/httpStore";
-import type { DropdownOption } from "../types/data";
-import { getMethodColor } from "../utils";
+import EnvironmentModal from "@/components/environments/environment-modal";
+import { useEnvironments } from "../../hooks/data/useEnvironments";
+import { useDarkMode } from "../../hooks/ui/useDarkMode";
+import { useHttpStore } from "../../store/httpStore";
+import type { DropdownOption } from "../../types/data";
+import { getMethodColor } from "../../utils";
 import Dropdown from "./Dropdown";
-import EnvironmentModal from "./EnvironmentModal";
 
 interface SidebarProps {
   visible: boolean;
@@ -29,11 +28,11 @@ interface SidebarProps {
   className?: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+const Sidebar = ({
   visible,
   onMouseLeave,
   className,
-}) => {
+}: SidebarProps) => {
   const { toggleTheme, isDarkMode } = useDarkMode();
   const {
     environments,

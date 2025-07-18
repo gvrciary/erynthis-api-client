@@ -1,5 +1,5 @@
-import type { RequestItem } from "../types/data";
-import { generateId } from "../utils";
+import type { RequestItem } from "@/types/data";
+import { generateId } from "@/utils";
 
 export const createHttpRequest = (): {
   newRequest: RequestItem;

@@ -1,14 +1,13 @@
 import { Check, Link, X } from "lucide-react";
-import type React from "react";
 import { useEffect, useState } from "react";
-import { useHttpParams } from "../hooks/http/useHttpParams";
-import type { HttpParam } from "../types/http";
+import { useHttpParams } from "@/hooks/http/useHttpParams";
+import type { HttpParam } from "@/types/http";
 
 interface ParamsTabProps {
   className?: string;
 }
 
-const ParamsTab: React.FC<ParamsTabProps> = ({ className }) => {
+const ParamsTab = ({ className }: ParamsTabProps) => {
   const {
     getSelectedRequest,
     addParam,

@@ -1,14 +1,13 @@
 import { Check, X } from "lucide-react";
-import type React from "react";
 import { useEffect, useState } from "react";
-import { useHttpHeaders } from "../hooks/http/useHttpHeaders";
-import type { HttpHeader } from "../types/http";
+import { useHttpHeaders } from "@/hooks/http/useHttpHeaders";
+import type { HttpHeader } from "@/types/http";
 
 interface HeadersTabProps {
   className?: string;
 }
 
-const HeadersTab: React.FC<HeadersTabProps> = ({ className }) => {
+const HeadersTab = ({ className } : HeadersTabProps) => {
   const {
     getSelectedRequest,
     addHeader,

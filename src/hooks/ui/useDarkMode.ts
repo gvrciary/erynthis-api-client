@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useUIStore } from "../../store/uiStore";
+import { useUIStore } from "@/store/uiStore";
 
 export const useDarkMode = () => {
   const { settings, updateSettings } = useUIStore();

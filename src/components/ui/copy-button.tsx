@@ -1,7 +1,6 @@
 import { Check, Copy } from "lucide-react";
-import type React from "react";
-import { useCallback, useEffect, useMemo, useState, memo } from "react";
-import { copyToClipboard } from "../utils";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { copyToClipboard } from "../../utils";
 
 interface CopyButtonProps {
   content: string;
@@ -11,14 +10,14 @@ interface CopyButtonProps {
   variant?: "default" | "ghost";
 }
 
-const CopyButton: React.FC<CopyButtonProps> = memo(
+const CopyButton = memo(
   ({
     content,
     title = "Copy",
     className = "",
     size = "md",
     variant = "default",
-  }) => {
+  } : CopyButtonProps) => {
     const [isCopied, setIsCopied] = useState(false);
 
     const handleCopy = useCallback(async () => {

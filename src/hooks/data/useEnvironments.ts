@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useEnvironmentStore } from "../../store/environmentStore";
-import { resolveVariables } from "../../utils/variables";
+import { useEnvironmentStore } from "@/store/environmentStore";
+import { resolveVariables } from "@/utils/variables";
 
 export const useEnvironments = () => {
   const {

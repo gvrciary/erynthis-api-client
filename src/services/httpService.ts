@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { HttpRequest, HttpResponse } from "../types/http";
-import { resolveVariables } from "../utils/variables";
+import type { HttpRequest, HttpResponse } from "@/types/http";
+import { resolveVariables } from "@/utils/variables";
 
 export const sendHttpRequest = async (
   request: HttpRequest,

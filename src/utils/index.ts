@@ -1,4 +1,4 @@
-import { httpMethods } from "../constants";
+import { httpMethods } from "@/constants";
 
 export const copyToClipboard = async (text: string): Promise<boolean> => {
   try {

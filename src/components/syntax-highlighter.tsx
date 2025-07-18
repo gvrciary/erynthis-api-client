@@ -1,7 +1,6 @@
-import type React from "react";
 import { memo, useEffect, useMemo } from "react";
-import { useDarkMode } from "../hooks/ui/useDarkMode";
-import { useShikiStore } from "../store/shikiStore";
+import { useDarkMode } from "@/hooks/ui/useDarkMode";
+import { useShikiStore } from "@/store/shikiStore";
 
 interface SyntaxHighlighterProps {
   code: string;
@@ -9,8 +8,8 @@ interface SyntaxHighlighterProps {
   className?: string;
 }
 
-const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = memo(
-  ({ code, language = "text", className = "" }) => {
+const SyntaxHighlighter = memo(
+  ({ code, language = "text", className = "" }: SyntaxHighlighterProps) => {
     const { highlighter, isLoading, initHighlighter } = useShikiStore();
     const { isDarkMode } = useDarkMode();
 
@@ -32,8 +31,7 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = memo(
           lang: language,
           theme: theme,
         });
-      } catch (error) {
-        console.warn("Failed to highlight code:", error);
+      } catch {
         return `<pre><code>${code}</code></pre>`;
       }
     }, [code, language, highlighter, theme, isLoading]);

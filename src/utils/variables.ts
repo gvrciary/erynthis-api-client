@@ -1,5 +1,5 @@
-import { useEnvironmentStore } from "../store/environmentStore";
-import type { Variable } from "../types/data";
+import { useEnvironmentStore } from "@/store/environmentStore";
+import type { Variable } from "@/types/data";
 
 export const resolveVariables = (text: string): string => {
   if (!text) return "";

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Settings } from "../types/data";
+import type { Settings } from "@/types/data";
 
 export interface UIStore {
   dragScale: number;

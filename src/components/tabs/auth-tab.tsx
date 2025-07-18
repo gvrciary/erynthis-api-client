@@ -1,42 +1,16 @@
 import { Link as LinkIcon, Settings, Shield } from "lucide-react";
-import React, { useMemo } from "react";
-import { AUTH_TYPES } from "../constants";
-import { useHttpAuth } from "../hooks/http/useHttpAuth";
-import type { AuthCredentials } from "../types/http";
-import Dropdown from "./Dropdown";
+import { memo, useMemo } from "react";
+import Dropdown from "@/components/ui/Dropdown";
+import EmptyState from "@/components/ui/empty-state";
+import { AUTH_TYPES, LOCATION_OPTIONS, TOKEN_TYPE_OPTIONS } from "@/constants";
+import { useHttpAuth } from "@/hooks/http/useHttpAuth";
+import type { AuthCredentials } from "@/types/http";
 
 interface AuthTabProps {
   className?: string;
 }
 
-const TOKEN_TYPE_OPTIONS = [
-  { value: "Bearer", label: "Bearer" },
-  { value: "Token", label: "Token" },
-  { value: "JWT", label: "JWT" },
-];
-
-const LOCATION_OPTIONS = [
-  { value: "header", label: "Header" },
-  { value: "query", label: "Query Parameter" },
-];
-
-const EmptyState = React.memo<{
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  title: string;
-  description?: string;
-}>(({ icon: Icon, title, description }) => (
-  <div className="flex items-center justify-center min-h-[300px] text-muted-foreground">
-    <div className="text-center">
-      <Icon className="h-12 w-12 mx-auto mb-2 text-muted-foreground opacity-50" />
-      <p className="text-sm">{title}</p>
-      {description && (
-        <p className="text-xs text-muted-foreground mt-1">{description}</p>
-      )}
-    </div>
-  </div>
-));
-
-const InputField = React.memo<{
+const InputField = memo<{
   label: string;
   value: string;
   field: string;
@@ -80,7 +54,7 @@ const InputField = React.memo<{
   },
 );
 
-const BasicAuthForm = React.memo<{
+const BasicAuthForm = memo<{
   credentials: AuthCredentials;
   onCredentialChange: (field: string, value: string) => void;
 }>(({ credentials, onCredentialChange }) => (
@@ -103,7 +77,7 @@ const BasicAuthForm = React.memo<{
   </div>
 ));
 
-const BearerAuthForm = React.memo<{
+const BearerAuthForm = memo<{
   credentials: AuthCredentials;
   onCredentialChange: (field: string, value: string) => void;
 }>(({ credentials, onCredentialChange }) => {
@@ -138,7 +112,7 @@ const BearerAuthForm = React.memo<{
   );
 });
 
-const ApiKeyAuthForm = React.memo<{
+const ApiKeyAuthForm = memo<{
   credentials: AuthCredentials;
   onCredentialChange: (field: string, value: string) => void;
 }>(({ credentials, onCredentialChange }) => {
@@ -179,7 +153,7 @@ const ApiKeyAuthForm = React.memo<{
   );
 });
 
-const OAuth2AuthForm = React.memo<{
+const OAuth2AuthForm = memo<{
   credentials: AuthCredentials;
   onCredentialChange: (field: string, value: string) => void;
 }>(({ credentials, onCredentialChange }) => (
@@ -244,8 +218,8 @@ const OAuth2AuthForm = React.memo<{
   </div>
 ));
 
-const CustomAuthForm = React.memo<{
-  credentials: any;
+const CustomAuthForm = memo<{
+  credentials: AuthCredentials;
   onCredentialChange: (field: string, value: string) => void;
 }>(({ credentials, onCredentialChange }) => (
   <div className="space-y-4">
@@ -267,7 +241,7 @@ const CustomAuthForm = React.memo<{
   </div>
 ));
 
-const AuthTab: React.FC<AuthTabProps> = ({ className }) => {
+const AuthTab = memo(({ className }: AuthTabProps) => {
   const { getSelectedRequest, handleAuthTypeChange, handleCredentialChange } =
     useHttpAuth();
 
@@ -296,7 +270,7 @@ const AuthTab: React.FC<AuthTabProps> = ({ className }) => {
           <EmptyState
             icon={LinkIcon}
             title="Inherit authentication from parent collection"
-            description="This request will use the parent's auth settings"
+            subtitle="This request will use the parent's auth settings"
           />
         );
 
@@ -371,6 +345,6 @@ const AuthTab: React.FC<AuthTabProps> = ({ className }) => {
       </div>
     </div>
   );
-};
+});
 
-export default React.memo(AuthTab);
+export default AuthTab;

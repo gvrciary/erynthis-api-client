@@ -23,23 +23,7 @@ export const useShikiStore = create<ShikiStore>((set, get) => ({
     try {
       const hl = await createHighlighter({
         themes: ["github-dark", "github-light"],
-        langs: [
-          "json",
-          "javascript",
-          "typescript",
-          "html",
-          "text",
-          "shell",
-          "go",
-          "python",
-          "java",
-          "cpp",
-          "csharp",
-          "kotlin",
-          "php",
-          "r",
-          "ruby",
-        ],
+        langs: ["json", "html", "text"],
       });
 
       set({

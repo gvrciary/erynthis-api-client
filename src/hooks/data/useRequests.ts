@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useHttpStore } from "../../store/httpStore";
+import { useHttpStore } from "@/store/httpStore";
 
 export const useRequests = () => {
   const {

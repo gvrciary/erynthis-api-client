@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { sendHttpRequest } from "../services/httpService";
+import { sendHttpRequest } from "@/services/httpService";
+import type { HttpError, HttpRequest } from "@/types/http";
+import { generateId } from "@/utils";
+import { createHttpRequest } from "@/utils/http";
 import type {
   FolderItem,
   RequestItem,
   ResponseHistoryItem,
 } from "../types/data";
-import type { HttpError, HttpRequest } from "../types/http";
-import { generateId } from "../utils";
-import { createHttpRequest } from "../utils/http";
 
 export interface HttpStore {
   requests: RequestItem[];

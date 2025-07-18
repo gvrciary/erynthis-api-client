@@ -1,7 +1,6 @@
 import { Check, ChevronDown } from "lucide-react";
-import type React from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { DropdownOption } from "../types/data";
+import type { DropdownOption } from "@/types/data";
 
 interface DropdownProps {
   options: DropdownOption[];
@@ -17,7 +16,7 @@ interface DropdownProps {
   customDisplay?: React.ReactNode;
 }
 
-const Dropdown: React.FC<DropdownProps> = memo(
+const Dropdown = memo(
   ({
     options,
     value,
@@ -30,7 +29,7 @@ const Dropdown: React.FC<DropdownProps> = memo(
     showCheck = true,
     showIcon = true,
     customDisplay,
-  }) => {
+  } : DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 

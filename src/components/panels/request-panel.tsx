@@ -1,22 +1,20 @@
 import { Send } from "lucide-react";
-import type React from "react";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
-import { httpMethods, TABS } from "../constants";
-import { useHttpRequest } from "../hooks/http/useHttpRequest";
-import { useModal } from "../hooks/ui/useModal";
-import AuthTab from "./AuthTab";
-import BodyTab from "./BodyTab";
-import Dropdown from "./Dropdown";
-import GenerateCodeTab from "./GenerateCodeTab";
-import HeadersTab from "./HeadersTab";
-import Modal from "./Modal";
-import ParamsTab from "./ParamsTab";
+import AuthTab from "@/components/tabs/auth-tab";
+import BodyTab from "@/components/tabs/body-tab";
+import HeadersTab from "@/components/tabs/headers-tab";
+import ParamsTab from "@/components/tabs/params-tab";
+import Dropdown from "@/components/ui/Dropdown";
+import Modal from "@/components/ui/Modal";
+import { httpMethods, TABS } from "@/constants";
+import { useHttpRequest } from "@/hooks/http/useHttpRequest";
+import { useModal } from "@/hooks/ui/useModal";
 
 interface RequestPanelProps {
   className?: string;
 }
 
-const RequestPanel: React.FC<RequestPanelProps> = memo(({ className }) => {
+const RequestPanel = memo(({ className }: RequestPanelProps) => {
   const {
     getSelectedRequest,
     isValidRequest,
@@ -110,13 +108,11 @@ const RequestPanel: React.FC<RequestPanelProps> = memo(({ className }) => {
         return <AuthTab className="h-full" />;
       case "params":
         return <ParamsTab className="h-full" />;
-      case "generate":
-        return <GenerateCodeTab className="h-full" />;
       default:
         return <HeadersTab className="h-full" />;
     }
   }, [request?.request.activeRequestTab]);
-  
+
   if (!request) return null;
 
   return (

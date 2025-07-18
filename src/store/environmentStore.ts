@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Environment, Variable } from "../types/data";
-import { generateId } from "../utils";
+import type { Environment, Variable } from "@/types/data";
+import { generateId } from "@/utils";
 
 export interface EnvironmentStore {
   environments: Environment[];
@@ -103,7 +103,7 @@ export const useEnvironmentStore = create<EnvironmentStore>()(
           ),
         }));
       },
-      
+
       addVariableEnvironment: () => {
         const newVariable: Variable = {
           id: generateId("var"),

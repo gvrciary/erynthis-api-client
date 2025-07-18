@@ -1,18 +1,17 @@
 import { Globe, Plus, Settings, Trash2, X } from "lucide-react";
-import type React from "react";
 import { useEffect, useRef, useState } from "react";
-import { useEnvironments } from "../hooks/data/useEnvironments";
-import type { Variable } from "../types/data.ts";
+import { useEnvironments } from "@/hooks/data/useEnvironments.ts";
+import type { Variable } from "@/types/data.ts";
 
 interface EnvironmentModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const EnvironmentModal: React.FC<EnvironmentModalProps> = ({
+const EnvironmentModal = ({
   isOpen,
   onClose,
-}) => {
+} : EnvironmentModalProps) => {
   const {
     environments,
     globalVariables,

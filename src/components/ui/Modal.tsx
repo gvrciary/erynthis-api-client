@@ -1,5 +1,4 @@
 import { X } from "lucide-react";
-import type React from "react";
 import { memo, useCallback, useEffect, useRef } from "react";
 
 interface ModalProps {
@@ -15,7 +14,7 @@ interface ModalProps {
   className?: string;
 }
 
-const Modal: React.FC<ModalProps> = memo(
+const Modal = memo(
   ({
     isOpen,
     onClose,
@@ -27,7 +26,7 @@ const Modal: React.FC<ModalProps> = memo(
     closeOnEscape = true,
     showCloseButton = true,
     className = "",
-  }) => {
+  } : ModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const backdropRef = useRef<HTMLDivElement>(null);
 
@@ -92,7 +91,7 @@ const Modal: React.FC<ModalProps> = memo(
         className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         onClick={handleBackdropClick}
       >
-        <div
+        <section
           ref={modalRef}
           className={`bg-card rounded-lg border border-border shadow-lg mx-4 ${getSizeClasses()} ${className}`}
           onClick={(e) => e.stopPropagation()}
@@ -118,7 +117,7 @@ const Modal: React.FC<ModalProps> = memo(
               {footer}
             </div>
           )}
-        </div>
+        </section>
       </div>
     );
   },

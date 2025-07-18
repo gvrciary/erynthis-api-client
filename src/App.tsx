@@ -1,10 +1,10 @@
 import { Menu } from "lucide-react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import RequestPanel from "./components/RequestPanel";
-import ResponsePanel from "./components/ResponsePanel";
-import Sidebar from "./components/Sidebar";
-import WelcomeScreen from "./components/WelcomeScreen";
+import RequestPanel from "./components/panels/request-panel";
+import ResponsePanel from "./components/panels/response-panel";
+import Sidebar from "./components/ui/Sidebar";
+import WelcomeScreen from "./components/welcome";
 import { useDragResize } from "./hooks/ui/useDragResize";
 import useMediaQuery from "./hooks/ui/useMediaQuery";
 import { useSidebar } from "./hooks/ui/useSidebar";

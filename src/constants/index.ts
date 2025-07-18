@@ -14,9 +14,9 @@ import {
   Settings,
   Shield,
   Upload,
-  User
+  User,
 } from "lucide-react";
-import type { DropdownOption } from "../types/data";
+import type { DropdownOption } from "@/types/data";
 
 export const httpMethods = [
   {
@@ -101,10 +101,25 @@ export const TABS = [
   { id: "headers", label: "Headers" },
   { id: "auth", label: "Auth" },
   { id: "params", label: "Params" },
-  { id: "generate", label: "Code" },
 ];
 
 export const RESPONSE_TABS = (headerCount: number) => [
   { id: "body", label: "Body" },
   { id: "headers", label: `Headers (${headerCount})` },
+];
+
+export const VIEW_MODE_OPTIONS = [
+  { value: "pretty", label: "Pretty" },
+  { value: "raw", label: "Raw" },
+];
+
+export const TOKEN_TYPE_OPTIONS = [
+  { value: "Bearer", label: "Bearer" },
+  { value: "Token", label: "Token" },
+  { value: "JWT", label: "JWT" },
+];
+
+export const LOCATION_OPTIONS = [
+  { value: "header", label: "Header" },
+  { value: "query", label: "Query Parameter" },
 ];

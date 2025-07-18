@@ -1,15 +1,15 @@
 import { FileText, Upload } from "lucide-react";
-import type React from "react";
 import { useRef } from "react";
-import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "../constants";
-import { useHttpRequest } from "../hooks/http/useHttpRequest";
-import Dropdown from "./Dropdown";
+import Dropdown from "@/components/ui/Dropdown";
+import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "@/constants";
+import { useHttpRequest } from "@/hooks/http/useHttpRequest";
+import type { DropdownOption } from "@/types/data";
 
 interface BodyTabProps {
   className?: string;
 }
 
-const BodyTab: React.FC<BodyTabProps> = ({ className }) => {
+const BodyTab = ({ className }: BodyTabProps) => {
   const {
     getSelectedRequest,
     setBody,
@@ -209,17 +209,13 @@ const BodyTab: React.FC<BodyTabProps> = ({ className }) => {
     }
   };
 
-  const bodyTypeOptions = BODY_TYPES.map((type) => ({
-    value: type.value,
-    label: type.label,
-    icon: type.icon,
-  }));
-
-  const subtypeOptions = getSubtypeOptions().map((subtype) => ({
-    value: subtype.value,
-    label: subtype.label,
-    icon: subtype.icon,
-  }));
+  const subtypeOptions: DropdownOption[] = getSubtypeOptions().map(
+    (subtype) => ({
+      value: subtype.value,
+      label: subtype.label,
+      icon: subtype.icon,
+    }),
+  );
 
   return (
     <div className={`flex flex-col h-full bg-card ${className}`}>
@@ -231,7 +227,7 @@ const BodyTab: React.FC<BodyTabProps> = ({ className }) => {
         <div className="flex items-center space-x-3">
           <div className="w-40">
             <Dropdown
-              options={bodyTypeOptions}
+              options={BODY_TYPES}
               value={bodyType}
               onChange={handleTypeChange}
               placeholder="Select Type"
