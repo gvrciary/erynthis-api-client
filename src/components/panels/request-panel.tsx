@@ -137,14 +137,14 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               onChange={handleUrlChange}
               onKeyDown={handleKeyPress}
               placeholder="Enter request URL..."
-              className="w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground transition-colors outline-none  border-border focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-2"
+              className="w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground  outline-none  border-border focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-2"
             />
           </div>
 
           <button
             type="button"
             onClick={handleExecuteRequest}
-            className="px-4 py-2 rounded-md font-medium transition-all min-w-[40px] flex items-center justify-center space-x-2 btn-primary hover:opacity-90"
+            className="px-4 py-2 rounded-md font-medium min-w-[40px] flex items-center justify-center space-x-2 btn-primary hover:opacity-90"
           >
             <Send className="h-4 w-4" />
           </button>
@@ -158,7 +158,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               type="button"
               key={tab.id}
               onClick={() => setActiveRequestTab(tab.id)}
-              className={`px-4 py-3 text-sm font-medium  transition-colors relative ${
+              className={`px-4 py-3 text-sm font-medium  relative ${
                 request.request.activeRequestTab === tab.id
                   ? "text-foreground border-b-2 border-primary bg-card"
                   : "text-muted-foreground hover:text-foreground hover:bg-accent"
@@ -183,7 +183,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
             <button
               type="button"
               onClick={handleCustomMethodCancel}
-              className="px-4 py-2 text-sm font-medium btn-secondary rounded-md transition-colors"
+              className="px-4 py-2 text-sm font-medium btn-secondary rounded-md"
             >
               Cancelar
             </button>
@@ -191,7 +191,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               type="button"
               onClick={handleCustomMethodSave}
               disabled={!isCustomMethodValid}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-md ${
                 isCustomMethodValid
                   ? "btn-primary hover:opacity-90"
                   : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"

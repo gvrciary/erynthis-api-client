@@ -61,7 +61,7 @@ const ResponseHeader = memo<{
         <button
           type="button"
           onClick={onClearResponse}
-          className="p-1 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+          className="p-1 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground"
           title="Clear responses"
         >
           <OctagonX className="w-4 h-4" />
@@ -120,7 +120,7 @@ const ResponseHistory = memo<{
                   onDeleteResponse(requestItem.id, selectedResponse.id);
                 }
               }}
-              className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600 transition-colors"
+              className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600"
               title="Delete response"
             >
               <Trash2 className="w-4 h-4" />
@@ -154,7 +154,7 @@ const ResponseTabs = memo<{
           type="button"
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
-          className={`px-4 py-2 text-sm font-medium transition-colors ${
+          className={`px-4 py-2 text-sm font-medium ${
             activeTab === tab.id
               ? "text-foreground border-b-2 border-primary bg-card"
               : "text-muted-foreground hover:text-foreground hover:bg-accent"

@@ -102,7 +102,7 @@ const Modal = memo(
               <button
                 type="button"
                 onClick={onClose}
-                className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
                 aria-label="Close modal"
               >
                 <X className="h-5 w-5" />

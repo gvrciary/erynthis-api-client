@@ -18,7 +18,7 @@ const ResponseHeadersTab = memo(({ responseData } : ResponseHeadersTabProps) => 
       {Object.entries(responseData?.headers || {}).map(([key, value]) => (
         <div
           key={key}
-          className="flex items-center justify-between p-3 bg-muted rounded-md hover:bg-accent group transition-colors border border-border"
+          className="flex items-center justify-between p-3 bg-muted rounded-md hover:bg-accent group border border-border"
         >
           <div className="flex items-center space-x-3 min-w-0 flex-1">
             <span className="text-sm font-medium text-foreground flex-shrink-0">
@@ -29,7 +29,7 @@ const ResponseHeadersTab = memo(({ responseData } : ResponseHeadersTabProps) => 
               {value}
             </span>
           </div>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="opacity-0 group-hover:opacity-100">
             <CopyButton
               content={`${key}: ${value}`}
               title="Copy header"

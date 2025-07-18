@@ -24,7 +24,7 @@ const WelcomeScreen = memo(() => {
           <button
             type="button"
             onClick={createRequest}
-            className="w-full flex items-center justify-center space-x-3 p-4 rounded-lg bg-card border border-border hover:bg-accent transition-all duration-200"
+            className="w-full flex items-center justify-center space-x-3 p-4 rounded-lg bg-card border border-border hover:bg-accent"
           >
             <Folder className="h-5 w-5 text-primary" />
             <span className="text-foreground font-medium">

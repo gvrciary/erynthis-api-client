@@ -365,7 +365,7 @@ const Sidebar = ({
       onClick={() => setActiveRequest(request.id)}
       onMouseEnter={() => setHoveredRequest(request.id)}
       onMouseLeave={() => setHoveredRequest(null)}
-      className={`group relative p-3 rounded-lg cursor-pointer transition-all duration-200  ${
+      className={`group relative p-3 rounded-lg cursor-pointer  ${
         activeRequestId === request.id
           ? "bg-accent text-accent-foreground border border-border"
           : "hover:bg-muted"
@@ -388,7 +388,7 @@ const Sidebar = ({
               e.stopPropagation();
               handleDeleteRequest(request.id);
             }}
-            className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-all"
+            className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
           >
             <Trash2 className="h-3 w-3" />
           </button>
@@ -413,7 +413,7 @@ const Sidebar = ({
               <button
                 type="button"
                 onClick={() => setShowEnvironmentModal(true)}
-                className="p-1.5 rounded-md bg-muted text-muted-foreground hover:bg-accent transition-colors flex-shrink-0"
+                className="p-1.5 rounded-md bg-muted text-muted-foreground hover:bg-accent flex-shrink-0"
                 title="Manage environments"
               >
                 <Settings className="h-3.5 w-3.5" />
@@ -427,7 +427,7 @@ const Sidebar = ({
                   activeEnvironment ? activeEnvironment.name : "No environment"
                 }
                 className="flex-1 min-w-0 max-w-[140px]"
-                buttonClassName="px-2 py-1 text-xs rounded-md border border-border hover:bg-muted transition-colors w-full min-w-0 truncate"
+                buttonClassName="px-2 py-1 text-xs rounded-md border border-border hover:bg-muted w-full min-w-0 truncate"
                 optionsClassName="left-0 w-52"
                 showIcon={false}
               />
@@ -437,19 +437,19 @@ const Sidebar = ({
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="p-1.5 rounded-md bg-muted text-muted-foreground hover:bg-accent hover:text-foreground transition-all duration-300"
+                className="p-1.5 rounded-md bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
                 title={`Switch to ${isDarkMode ? "light" : "dark"} mode`}
               >
                 <div className="relative w-3.5 h-3.5">
                   <Sun
-                    className={`absolute inset-0 w-3.5 h-3.5 transition-all duration-500 ${
+                    className={`absolute inset-0 w-3.5 h-3.5 ${
                       isDarkMode
                         ? "opacity-0 rotate-90 scale-75"
                         : "opacity-100 rotate-0 scale-100"
                     }`}
                   />
                   <Moon
-                    className={`absolute inset-0 w-3.5 h-3.5 transition-all duration-500 ${
+                    className={`absolute inset-0 w-3.5 h-3.5 ${
                       isDarkMode
                         ? "opacity-100 rotate-0 scale-100"
                         : "opacity-0 -rotate-90 scale-75"
@@ -463,7 +463,7 @@ const Sidebar = ({
                 onChange={handleAddItemSelect}
                 customDisplay={<Plus className="h-3.5 w-3.5" />}
                 className="relative"
-                buttonClassName="p-1.5 rounded-md btn-primary transition-colors w-7 h-7 flex items-center justify-center"
+                buttonClassName="p-1.5 rounded-md btn-primary w-7 h-7 flex items-center justify-center"
                 optionsClassName="right-0 w-44"
                 showIcon={true}
                 showCheck={false}
@@ -487,7 +487,7 @@ const Sidebar = ({
               {folders.map((folder) => (
                 <div key={folder.id} className="mb-2">
                   <div
-                    className={`group flex items-center space-x-2 p-2 rounded-lg hover:bg-muted cursor-pointer transition-colors  ${
+                    className={`group flex items-center space-x-2 p-2 rounded-lg hover:bg-muted cursor-pointer  ${
                       dragOverItem === folder.id
                         ? "bg-accent border-2 border-primary border-dashed"
                         : ""
@@ -535,7 +535,7 @@ const Sidebar = ({
                             e.stopPropagation();
                             handleSaveEditFolder();
                           }}
-                          className="p-1 rounded-md hover:bg-green-100 dark:hover:bg-green-900/30 text-muted-foreground hover:text-green-600 dark:hover:text-green-400 transition-all"
+                          className="p-1 rounded-md hover:bg-green-100 dark:hover:bg-green-900/30 text-muted-foreground hover:text-green-600 dark:hover:text-green-400"
                         >
                           <Check className="h-3 w-3" />
                         </button>
@@ -545,7 +545,7 @@ const Sidebar = ({
                             e.stopPropagation();
                             handleCancelEditFolder();
                           }}
-                          className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-all"
+                          className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
                         >
                           <X className="h-3 w-3" />
                         </button>
@@ -564,7 +564,7 @@ const Sidebar = ({
                             e.stopPropagation();
                             handleEditFolder(folder.id, folder.name);
                           }}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-all"
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400"
                         >
                           <Edit2 className="h-3 w-3" />
                         </button>
@@ -574,7 +574,7 @@ const Sidebar = ({
                             e.stopPropagation();
                             handleDeleteFolder(folder.id);
                           }}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-all"
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
@@ -647,7 +647,7 @@ const Sidebar = ({
               <button
                 type="button"
                 onClick={handleCloseFolderModal}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -683,7 +683,7 @@ const Sidebar = ({
               <button
                 type="button"
                 onClick={handleCloseFolderModal}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground btn-secondary rounded-md transition-colors "
+                className="px-4 py-2 text-sm font-medium text-muted-foreground btn-secondary rounded-md"
               >
                 Cancel
               </button>

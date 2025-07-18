@@ -184,13 +184,13 @@ const EnvironmentModal = ({
   ) => (
     <div
       key={variable.id}
-      className="grid grid-cols-12 gap-4 items-center py-3 border-b border-border hover:bg-accent transition-colors"
+      className="grid grid-cols-12 gap-4 items-center py-3 border-b border-border hover:bg-accent"
     >
       <div className="col-span-1">
         <button
           type="button"
           onClick={() => onToggleEnabled(variable.id, !variable.enabled)}
-          className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${
+          className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
             variable.enabled
               ? "bg-primary border-primary text-primary-foreground"
               : "border-border hover:border-primary"
@@ -228,7 +228,7 @@ const EnvironmentModal = ({
           <button
             type="button"
             onClick={() => onDelete(variable.id)}
-            className="p-1 rounded hover:bg-red-100 text-muted-foreground hover:text-red-600 transition-colors"
+            className="p-1 rounded hover:bg-red-100 text-muted-foreground hover:text-red-600"
           >
             <Trash2 className="h-3 w-3" />
           </button>
@@ -267,7 +267,7 @@ const EnvironmentModal = ({
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-all z-10"
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground z-10"
         >
           <X className="h-4 w-4" />
         </button>
@@ -279,7 +279,7 @@ const EnvironmentModal = ({
               <button
                 type="button"
                 onClick={() => setShowNewEnvModal(true)}
-                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-all"
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground"
               >
                 <Plus className="h-4 w-4" />
               </button>
@@ -288,7 +288,7 @@ const EnvironmentModal = ({
 
           <div className="flex-1 overflow-y-auto min-h-0">
             <div
-              className={`p-3 border-b border-border cursor-pointer transition-colors ${
+              className={`p-3 border-b border-border cursor-pointer ${
                 activeTab === "globals"
                   ? "bg-accent text-accent-foreground"
                   : "text-muted-foreground hover:bg-accent"
@@ -304,7 +304,7 @@ const EnvironmentModal = ({
             {environments.map((env) => (
               <div
                 key={env.id}
-                className={`group p-3 border-b border-border cursor-pointer transition-colors ${
+                className={`group p-3 border-b border-border cursor-pointer ${
                   activeTab === "environments" && selectedEnvId === env.id
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground hover:bg-accent"
@@ -331,7 +331,7 @@ const EnvironmentModal = ({
                       e.stopPropagation();
                       handleDeleteEnvironment(env.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-100 text-muted-foreground hover:text-red-600 transition-all"
+                    className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-100 text-muted-foreground hover:text-red-600"
                   >
                     <Trash2 className="h-3 w-3" />
                   </button>
@@ -417,7 +417,7 @@ const EnvironmentModal = ({
                   setNewEnvName("");
                   setEnvNameError("");
                 }}
-                className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-accent text-muted-foreground hover:text-foreground transition-all"
+                className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-accent text-muted-foreground hover:text-foreground"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -462,7 +462,7 @@ const EnvironmentModal = ({
                 <button
                   type="button"
                   onClick={handleCreateEnvironment}
-                  className="flex-1 px-4 py-2 btn-primary rounded-lg transition-colors text-sm font-medium "
+                  className="flex-1 px-4 py-2 btn-primary rounded-lg text-sm font-medium "
                 >
                   Create Environment
                 </button>
@@ -473,7 +473,7 @@ const EnvironmentModal = ({
                     setNewEnvName("");
                     setEnvNameError("");
                   }}
-                  className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-accent transition-colors text-sm font-medium "
+                  className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-accent text-sm font-medium "
                 >
                   Cancel
                 </button>

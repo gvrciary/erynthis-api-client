@@ -76,7 +76,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
   const renderHeaderRow = (header: HttpHeader, index: number) => (
     <div
       key={header.id}
-      className={`group relative p-3 rounded-lg border transition-all duration-200 ${
+      className={`group relative p-3 rounded-lg border ${
         header.enabled
           ? "bg-card border-border hover:border-primary hover:bg-accent"
           : "bg-muted border-border opacity-60"
@@ -86,7 +86,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
         <button
           type="button"
           onClick={() => toggleHeader(header.id)}
-          className={`flex-shrink-0 w-4 h-4 rounded border-2 transition-all duration-200 flex items-center justify-center ${
+          className={`flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center ${
             header.enabled
               ? "bg-primary border-primary"
               : "bg-transparent border-border hover:border-primary"
@@ -109,7 +109,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
             onFocus={() => setFocusedHeader(header.id)}
             onBlur={() => setFocusedHeader(null)}
             placeholder="Header name"
-            className={`w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground transition-all duration-200 outline-none text-sm  ${
+            className={`w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground  outline-none text-sm  ${
               focusedHeader === header.id
                 ? "border-primary focus-ring"
                 : "border-border hover:border-primary"
@@ -130,7 +130,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
             onFocus={() => setFocusedHeader(header.id)}
             onBlur={() => setFocusedHeader(null)}
             placeholder="Header value"
-            className={`w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground transition-all duration-200 outline-none text-sm  ${
+            className={`w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm  ${
               focusedHeader === header.id
                 ? "border-primary focus-ring"
                 : "hover:border-primary"
@@ -142,7 +142,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
           <button
             type="button"
             onClick={() => removeHeader(header.id)}
-            className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-red-100 text-muted-foreground hover:text-red-600 transition-all duration-200"
+            className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-red-100 text-muted-foreground hover:text-red-600"
             title="Remove header"
           >
             <X className="h-4 w-4" />
@@ -150,7 +150,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
         )}
       </div>
 
-      <div className="absolute top-2 right-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200 ">
+      <div className="absolute top-2 right-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100">
         {index + 1}
       </div>
     </div>

@@ -134,7 +134,7 @@ const ResponseBodyTab = memo(
             <button
               type="button"
               onClick={onDeleteResponse}
-              className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600 transition-colors"
+              className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600"
               title="Delete response"
             >
               <Trash2 className="w-4 h-4" />

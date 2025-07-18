@@ -89,7 +89,7 @@ const Dropdown = memo(
           onClick={toggleDropdown}
           disabled={disabled}
           className={`
-          px-3 py-2 rounded-md border text-sm font-medium  transition-all duration-200
+          px-3 py-2 rounded-md border text-sm font-medium 
           cursor-pointer focus-ring hover:bg-accent hover:text-accent-foreground hover:border-primary/50 flex items-center w-full
           ${customDisplay && typeof customDisplay !== "string" ? "justify-center" : "justify-between"}
           ${disabled ? "opacity-50 cursor-not-allowed" : ""}
@@ -109,7 +109,7 @@ const Dropdown = memo(
           </div>
           {!(customDisplay && typeof customDisplay !== "string") && (
             <ChevronDown
-              className={`h-4 w-4 text-muted-foreground transition-transform duration-200 flex-shrink-0 ml-2 ${
+              className={`h-4 w-4 text-muted-foreground flex-shrink-0 ml-2 ${
                 isOpen ? "rotate-180" : ""
               }`}
             />
@@ -131,7 +131,7 @@ const Dropdown = memo(
                 onClick={() => handleOptionClick(option.value)}
                 className={`
                 w-full px-3 py-2 text-left text-sm font-medium  hover:bg-muted hover:text-foreground hover:shadow-sm hover:bg-zinc-300/50 dark:hover:bg-zinc-600/50
-                transition-all duration-150 flex items-center justify-between
+                 flex items-center justify-between
                 ${value === option.value ? "bg-accent text-accent-foreground" : "text-foreground"}
               `}
               >

@@ -53,7 +53,7 @@ const CopyButton = memo(
 
     const getButtonClasses = useMemo(() => {
       const baseClasses =
-        "p-1 rounded-md transition-all duration-200 flex items-center justify-center";
+        "p-1 rounded-md  flex items-center justify-center";
       const sizeClasses = size === "sm" ? "p-0.5" : "p-1";
 
       if (variant === "ghost") {
@@ -78,12 +78,12 @@ const CopyButton = memo(
       >
         <div className="relative">
           <Copy
-            className={`${getSizeClasses} transition-all duration-200 ${
+            className={`${getSizeClasses} ${
               isCopied ? "scale-0 opacity-0" : "scale-100 opacity-100"
             }`}
           />
           <Check
-            className={`${getSizeClasses} absolute inset-0 transition-all duration-200 text-green-500 ${
+            className={`${getSizeClasses} absolute inset-0  text-green-500 ${
               isCopied ? "scale-100 opacity-100" : "scale-0 opacity-0"
             }`}
           />

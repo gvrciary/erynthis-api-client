@@ -78,7 +78,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
   const renderParamRow = (param: HttpParam, index: number) => (
     <div
       key={param.id}
-      className={`group relative p-3 rounded-lg border transition-all duration-200 ${
+      className={`group relative p-3 rounded-lg border ${
         param.enabled
           ? "bg-card border-border hover:border-primary hover:bg-accent"
           : "bg-muted border-border opacity-60"
@@ -88,7 +88,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
         <button
           type="button"
           onClick={() => toggleParam(param.id)}
-          className={`flex-shrink-0 w-4 h-4 rounded border-2 transition-all duration-200 flex items-center justify-center ${
+          className={`flex-shrink-0 w-4 h-4 rounded border-2  flex items-center justify-center ${
             param.enabled
               ? "bg-primary border-primary"
               : "bg-transparent border-border hover:border-primary"
@@ -111,7 +111,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
             onFocus={() => setFocusedParam(param.id)}
             onBlur={() => setFocusedParam(null)}
             placeholder="Parameter name"
-            className={`w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground transition-all duration-200 outline-none text-sm  ${
+            className={`w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground  outline-none text-sm  ${
               focusedParam === param.id
                 ? "border-primary focus-ring"
                 : isValidParamName(param.key) || !param.key
@@ -134,7 +134,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
             onFocus={() => setFocusedParam(param.id)}
             onBlur={() => setFocusedParam(null)}
             placeholder="Parameter value"
-            className={`w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground transition-all duration-200 outline-none text-sm  ${
+            className={`w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm  ${
               focusedParam === param.id
                 ? "border-primary focus-ring"
                 : "hover:border-primary"
@@ -146,7 +146,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
           <button
             type="button"
             onClick={() => removeParam(param.id)}
-            className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-red-100 text-muted-foreground hover:text-red-600 transition-all duration-200"
+            className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-red-100 text-muted-foreground hover:text-red-600"
             title="Remove parameter"
           >
             <X className="h-4 w-4" />
@@ -164,7 +164,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
         </div>
       )}
 
-      <div className="absolute top-2 right-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-200 ">
+      <div className="absolute top-2 right-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100">
         {index + 1}
       </div>
     </div>

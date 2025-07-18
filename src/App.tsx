@@ -48,7 +48,7 @@ const App = memo(() => {
           <button
             type="button"
             onClick={toggleSidebar}
-            className="p-2 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
+            className="p-2 rounded-lg hover:bg-muted text-muted-foreground"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -58,7 +58,7 @@ const App = memo(() => {
 
       {!isMobile && (
         <div
-          className="absolute left-0 top-0 w-1 h-full z-50 bg-transparent hover:bg-primary hover:opacity-20 transition-all duration-200"
+          className="absolute left-0 top-0 w-1 h-full z-50 bg-transparent hover:bg-primary hover:opacity-20"
           onMouseEnter={() => activeSidebar()}
         />
       )}
@@ -120,7 +120,7 @@ const App = memo(() => {
                 </div>
 
                 <div
-                  className={`w-1 bg-border hover:bg-primary/50 cursor-col-resize transition-colors ${
+                  className={`w-1 bg-border hover:bg-primary/50 cursor-col-resize ${
                     isDragging ? "bg-primary/50" : ""
                   }`}
                   onMouseDown={handleMouseDown}
@@ -146,7 +146,7 @@ const App = memo(() => {
                     <button
                       type="button"
                       onClick={() => handleTabChange("request")}
-                      className={`flex-1 px-4 py-3 text-sm font-medium transition-colors  ${
+                      className={`flex-1 px-4 py-3 text-sm font-medium ${
                         activeTab === "request"
                           ? "text-foreground border-b-2 border-primary"
                           : "text-muted-foreground hover:text-foreground"
@@ -157,7 +157,7 @@ const App = memo(() => {
                     <button
                       type="button"
                       onClick={() => handleTabChange("response")}
-                      className={`flex-1 px-4 py-3 text-sm font-medium transition-colors  ${
+                      className={`flex-1 px-4 py-3 text-sm font-medium ${
                         activeTab === "response"
                           ? "text-foreground border-b-2 border-primary"
                           : "text-muted-foreground hover:text-foreground"
