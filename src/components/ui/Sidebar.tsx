@@ -20,7 +20,7 @@ import { useDarkMode } from "../../hooks/ui/useDarkMode";
 import { useHttpStore } from "../../store/httpStore";
 import type { DropdownOption } from "../../types/data";
 import { getMethodColor } from "../../utils";
-import Dropdown from "./Dropdown";
+import Dropdown from "./drop-down";
 
 interface SidebarProps {
   visible: boolean;

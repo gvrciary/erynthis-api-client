@@ -1,6 +1,6 @@
 import { FileText, Upload } from "lucide-react";
 import { useRef } from "react";
-import Dropdown from "@/components/ui/Dropdown";
+import Dropdown from "@/components/ui/drop-down";
 import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
 import type { DropdownOption } from "@/types/data";

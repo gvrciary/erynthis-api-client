@@ -12,7 +12,7 @@ import {
 } from "../../utils";
 import ResponseBodyTab from "../tabs/response-body-tab";
 import ResponseHeadersTab from "../tabs/response-headers-tab";
-import Dropdown from "../ui/Dropdown";
+import Dropdown from "../ui/drop-down";
 import EmptyState from "../ui/empty-state";
 
 interface ResponsePanelProps {

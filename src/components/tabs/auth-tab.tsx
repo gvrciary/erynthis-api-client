@@ -1,6 +1,6 @@
 import { Link as LinkIcon, Settings, Shield } from "lucide-react";
 import { memo, useMemo } from "react";
-import Dropdown from "@/components/ui/Dropdown";
+import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
 import { AUTH_TYPES, LOCATION_OPTIONS, TOKEN_TYPE_OPTIONS } from "@/constants";
 import { useHttpAuth } from "@/hooks/http/useHttpAuth";
@@ -8,6 +8,11 @@ import type { AuthCredentials } from "@/types/http";
 
 interface AuthTabProps {
   className?: string;
+}
+
+interface FormProps {
+  credentials: AuthCredentials;
+  onCredentialChange: (field: string, value: string) => void;
 }
 
 const InputField = memo<{
@@ -77,169 +82,165 @@ const BasicAuthForm = memo<{
   </div>
 ));
 
-const BearerAuthForm = memo<{
-  credentials: AuthCredentials;
-  onCredentialChange: (field: string, value: string) => void;
-}>(({ credentials, onCredentialChange }) => {
-  const tokenTypeId = "tokenType-dropdown";
+const BearerAuthForm = memo(
+  ({ credentials, onCredentialChange }: FormProps) => {
+    const tokenTypeId = "tokenType-dropdown";
 
-  return (
+    return (
+      <div className="space-y-4">
+        <div>
+          <label
+            htmlFor={tokenTypeId}
+            className="block text-sm font-medium text-foreground mb-1"
+          >
+            Token Type
+          </label>
+          <Dropdown
+            options={TOKEN_TYPE_OPTIONS}
+            value={credentials.tokenType}
+            onChange={(value) => onCredentialChange("tokenType", value)}
+            className="w-full"
+            showCheck={false}
+          />
+        </div>
+        <InputField
+          label="Token"
+          value={credentials.token}
+          field="token"
+          placeholder="Enter your token"
+          rows={3}
+          onChange={onCredentialChange}
+        />
+      </div>
+    );
+  },
+);
+
+const ApiKeyAuthForm = memo(
+  ({ credentials, onCredentialChange }: FormProps) => {
+    const locationId = "apiKeyLocation-dropdown";
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <label
+            htmlFor={locationId}
+            className="block text-sm font-medium text-foreground mb-1"
+          >
+            Key Location
+          </label>
+          <Dropdown
+            options={LOCATION_OPTIONS}
+            value={credentials.apiKeyLocation}
+            onChange={(value) => onCredentialChange("apiKeyLocation", value)}
+            className="w-full"
+            showCheck={false}
+          />
+        </div>
+        <InputField
+          label="Key Name"
+          value={credentials.apiKeyName}
+          field="apiKeyName"
+          placeholder="X-API-Key"
+          onChange={onCredentialChange}
+        />
+        <InputField
+          label="Key Value"
+          value={credentials.apiKey}
+          field="apiKey"
+          placeholder="Enter your API key"
+          onChange={onCredentialChange}
+        />
+      </div>
+    );
+  },
+);
+
+const OAuth2AuthForm = memo(
+  ({ credentials, onCredentialChange }: FormProps) => (
     <div className="space-y-4">
-      <div>
-        <label
-          htmlFor={tokenTypeId}
-          className="block text-sm font-medium text-foreground mb-1"
-        >
-          Token Type
-        </label>
-        <Dropdown
-          options={TOKEN_TYPE_OPTIONS}
+      <InputField
+        label="Access Token"
+        value={credentials.accessToken}
+        field="accessToken"
+        placeholder="Enter access token"
+        rows={2}
+        onChange={onCredentialChange}
+      />
+      <div className="grid grid-cols-2 gap-4">
+        <InputField
+          label="Token Type"
           value={credentials.tokenType}
-          onChange={(value) => onCredentialChange("tokenType", value)}
-          className="w-full"
-          showCheck={false}
+          field="tokenType"
+          placeholder="Bearer"
+          onChange={onCredentialChange}
+        />
+        <InputField
+          label="Scope"
+          value={credentials.scope}
+          field="scope"
+          placeholder="read write"
+          onChange={onCredentialChange}
         />
       </div>
       <InputField
-        label="Token"
-        value={credentials.token}
-        field="token"
-        placeholder="Enter your token"
+        label="Authorization URL"
+        value={credentials.authUrl}
+        field="authUrl"
+        placeholder="https://example.com/oauth/authorize"
+        type="url"
+        onChange={onCredentialChange}
+      />
+      <InputField
+        label="Token URL"
+        value={credentials.tokenUrl}
+        field="tokenUrl"
+        placeholder="https://example.com/oauth/token"
+        type="url"
+        onChange={onCredentialChange}
+      />
+      <div className="grid grid-cols-2 gap-4">
+        <InputField
+          label="Client ID"
+          value={credentials.clientId}
+          field="clientId"
+          placeholder="Client ID"
+          onChange={onCredentialChange}
+        />
+        <InputField
+          label="Client Secret"
+          value={credentials.clientSecret}
+          field="clientSecret"
+          placeholder="Client Secret"
+          type="password"
+          onChange={onCredentialChange}
+        />
+      </div>
+    </div>
+  ),
+);
+
+const CustomAuthForm = memo(
+  ({ credentials, onCredentialChange }: FormProps) => (
+    <div className="space-y-4">
+      <InputField
+        label="Header Name"
+        value={credentials.customKey}
+        field="customKey"
+        placeholder="Custom header name"
+        onChange={onCredentialChange}
+      />
+      <InputField
+        label="Header Value"
+        value={credentials.customValue}
+        field="customValue"
+        placeholder="Custom header value"
         rows={3}
         onChange={onCredentialChange}
       />
     </div>
-  );
-});
-
-const ApiKeyAuthForm = memo<{
-  credentials: AuthCredentials;
-  onCredentialChange: (field: string, value: string) => void;
-}>(({ credentials, onCredentialChange }) => {
-  const locationId = "apiKeyLocation-dropdown";
-
-  return (
-    <div className="space-y-4">
-      <div>
-        <label
-          htmlFor={locationId}
-          className="block text-sm font-medium text-foreground mb-1"
-        >
-          Key Location
-        </label>
-        <Dropdown
-          options={LOCATION_OPTIONS}
-          value={credentials.apiKeyLocation}
-          onChange={(value) => onCredentialChange("apiKeyLocation", value)}
-          className="w-full"
-          showCheck={false}
-        />
-      </div>
-      <InputField
-        label="Key Name"
-        value={credentials.apiKeyName}
-        field="apiKeyName"
-        placeholder="X-API-Key"
-        onChange={onCredentialChange}
-      />
-      <InputField
-        label="Key Value"
-        value={credentials.apiKey}
-        field="apiKey"
-        placeholder="Enter your API key"
-        onChange={onCredentialChange}
-      />
-    </div>
-  );
-});
-
-const OAuth2AuthForm = memo<{
-  credentials: AuthCredentials;
-  onCredentialChange: (field: string, value: string) => void;
-}>(({ credentials, onCredentialChange }) => (
-  <div className="space-y-4">
-    <InputField
-      label="Access Token"
-      value={credentials.accessToken}
-      field="accessToken"
-      placeholder="Enter access token"
-      rows={2}
-      onChange={onCredentialChange}
-    />
-    <div className="grid grid-cols-2 gap-4">
-      <InputField
-        label="Token Type"
-        value={credentials.tokenType}
-        field="tokenType"
-        placeholder="Bearer"
-        onChange={onCredentialChange}
-      />
-      <InputField
-        label="Scope"
-        value={credentials.scope}
-        field="scope"
-        placeholder="read write"
-        onChange={onCredentialChange}
-      />
-    </div>
-    <InputField
-      label="Authorization URL"
-      value={credentials.authUrl}
-      field="authUrl"
-      placeholder="https://example.com/oauth/authorize"
-      type="url"
-      onChange={onCredentialChange}
-    />
-    <InputField
-      label="Token URL"
-      value={credentials.tokenUrl}
-      field="tokenUrl"
-      placeholder="https://example.com/oauth/token"
-      type="url"
-      onChange={onCredentialChange}
-    />
-    <div className="grid grid-cols-2 gap-4">
-      <InputField
-        label="Client ID"
-        value={credentials.clientId}
-        field="clientId"
-        placeholder="Client ID"
-        onChange={onCredentialChange}
-      />
-      <InputField
-        label="Client Secret"
-        value={credentials.clientSecret}
-        field="clientSecret"
-        placeholder="Client Secret"
-        type="password"
-        onChange={onCredentialChange}
-      />
-    </div>
-  </div>
-));
-
-const CustomAuthForm = memo<{
-  credentials: AuthCredentials;
-  onCredentialChange: (field: string, value: string) => void;
-}>(({ credentials, onCredentialChange }) => (
-  <div className="space-y-4">
-    <InputField
-      label="Header Name"
-      value={credentials.customKey}
-      field="customKey"
-      placeholder="Custom header name"
-      onChange={onCredentialChange}
-    />
-    <InputField
-      label="Header Value"
-      value={credentials.customValue}
-      field="customValue"
-      placeholder="Custom header value"
-      rows={3}
-      onChange={onCredentialChange}
-    />
-  </div>
-));
+  ),
+);
 
 const AuthTab = memo(({ className }: AuthTabProps) => {
   const { getSelectedRequest, handleAuthTypeChange, handleCredentialChange } =

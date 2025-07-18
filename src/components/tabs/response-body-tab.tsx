@@ -2,7 +2,7 @@ import { FileWarning, Trash2 } from "lucide-react";
 import { memo } from "react";
 import SyntaxHighlighter from "@/components/syntax-highlighter";
 import CopyButton from "@/components/ui/copy-button";
-import Dropdown from "@/components/ui/Dropdown";
+import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
 import { VIEW_MODE_OPTIONS } from "@/constants/index";
 import type { HttpResponse } from "@/types/http";
