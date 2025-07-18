@@ -16,7 +16,8 @@
 				"title": "erynthis",
 				"width": 1024,
 				"height": 768,
-				"dragDropEnabled": false
+				"dragDropEnabled": false,
+				"transparent": true
 			}
 		],
 		"security": {
