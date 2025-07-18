@@ -10,7 +10,7 @@ const WelcomeScreen = memo(() => {
       <div className="text-center max-w-md mx-auto p-8">
         <div className="mb-8">
           <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center">
-            <Zap className="h-10 w-10 text-primary-foreground" />
+            <Zap className="h-10 w-10 text-black dark:text-white" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">
             Erynthis API Client
