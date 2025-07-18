@@ -1,14 +1,9 @@
 <div align="center">
-  <img src="public/logo.webp" alt="Erynthis API Client Logo" width="80" height="80">
+  <img src="public/screenshot.png" alt="Erynthis API Client Logo" width="80" height="80">
   
   # Erynthis API Client
   
   A modern, cross-platform API testing client built with Tauri, React, and TypeScript.
-  
-  [![Tauri](https://img.shields.io/badge/Tauri-2.0-blue.svg)](https://tauri.app/)
-  [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
-  [![Rust](https://img.shields.io/badge/Rust-1.70+-orange.svg)](https://www.rust-lang.org/)
 </div>
 
 ## ✨ Features
@@ -72,49 +67,66 @@
    ```bash
    npm run tauri build
    ```
+   
+   
+## 📂 Project Structure
 
-## 🎯 Usage
-
-1. **Select HTTP Method** - Choose from GET, POST, PUT, DELETE, etc.
-2. **Enter URL** - Input your API endpoint
-3. **Set Headers** - Add custom headers as needed
-4. **Configure Body** - Choose body type and format your data
-5. **Send Request** - Click send and view the response
-
-### Supported Body Types
-
-- **None** - For GET requests or endpoints that don't require a body
-- **Text** - Raw text, JSON, XML, YAML with syntax highlighting
-- **Form Data** - URL-encoded or Multipart form data
-- **Binary** - File uploads with automatic content-type detection
-- **GraphQL** - GraphQL queries and mutations
-
-## 🔧 Development
-
-### Frontend Development
-```bash
-npm run dev          # Start Vite dev server
-npm run build        # Build frontend (TypeScript compilation + Vite build)
-npm run preview      # Preview production build
 ```
-
-### Backend Development
-```bash
-npm run tauri dev    # Start Tauri in development mode
-npm run tauri build  # Build production app for all platforms
+erynthis-api-client/
+├── public/                     # Static assets
+│   ├── logo.webp              # Application logo
+│   └── screenshot.png          # Demo screenshot
+├── src/                        # Frontend source code (React/TypeScript)
+│   ├── components/             # React components
+│   │   ├── environments/       # Environment management components
+│   │   ├── panels/             # UI panel components
+│   │   ├── tabs/               # Tab navigation components
+│   │   ├── ui/                 # Reusable UI components
+│   │   ├── syntax-highlighter.tsx  # Code syntax highlighting
+│   │   └── welcome.tsx         # Welcome screen component
+│   ├── constants/              # Application constants
+│   ├── hooks/                  # Custom React hooks
+│   ├── services/               # API and external service integrations
+│   ├── store/                  # State management (Zustand stores)
+│   │   ├── environmentStore.ts # Environment variables store
+│   │   ├── httpStore.ts        # HTTP request state store
+│   │   ├── shikiStore.ts       # Syntax highlighting store
+│   │   └── uiStore.ts          # UI state store
+│   ├── styles/                 # Global styles and Tailwind config
+│   ├── types/                  # TypeScript type definitions
+│   │   ├── data.ts             # General data types
+│   │   └── http.ts             # HTTP-related types
+│   ├── utils/                  # Utility functions
+│   ├── App.tsx                 # Main application component
+│   ├── main.tsx                # Application entry point
+│   └── vite-env.d.ts           # Vite environment types
+├── src-tauri/                  # Backend source code (Rust/Tauri)
+│   ├── capabilities/           # Tauri capability definitions
+│   ├── gen/                    # Generated files
+│   ├── icons/                  # Application icons
+│   ├── src/                    # Rust source code
+│   │   ├── commands.rs         # Tauri command definitions
+│   │   ├── http.rs             # HTTP client implementation
+│   │   ├── lib.rs              # Library entry point
+│   │   ├── main.rs             # Application entry point
+│   │   └── state.rs            # Application state management
+│   ├── target/                 # Rust build artifacts
+│   ├── Cargo.toml              # Rust dependencies
+│   ├── Cargo.lock              # Dependency lock file
+│   ├── build.rs                # Build script
+│   └── tauri.conf.json         # Tauri configuration
+├── node_modules/               # Node.js dependencies
+├── .gitignore                  # Git ignore rules
+├── LICENSE                     # MIT license
+├── README.md                   # Project documentation
+├── biome.json                  # Biome linter configuration
+├── index.html                  # HTML entry point
+├── package.json                # Node.js dependencies and scripts
+├── package-lock.json           # Node.js dependency lock file
+├── tsconfig.json               # TypeScript configuration
+├── tsconfig.node.json          # TypeScript Node.js configuration
+└── vite.config.ts              # Vite build configuration
 ```
-
-### Code Quality
-```bash
-npm run check        # Run Biome linter and formatter with auto-fix
-```
-
-### Available Scripts
-- `npm run dev` - Start Vite development server
-- `npm run build` - TypeScript compilation + Vite build
-- `npm run preview` - Preview production build
-- `npm run tauri` - Access Tauri CLI commands
-- `npm run check` - Code formatting and linting with Biome
 
 ## 📝 License
 
