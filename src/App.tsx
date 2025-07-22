@@ -1,6 +1,6 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu } from "lucide-react";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { CSSTransition } from "react-transition-group";
+import { memo, useCallback, useEffect, useState } from "react";
 import RequestPanel from "./components/panels/request-panel";
 import ResponsePanel from "./components/panels/response-panel";
 import Sidebar from "./components/ui/sidebar";
@@ -10,13 +10,13 @@ import useMediaQuery from "./hooks/ui/useMediaQuery";
 import { useSidebar } from "./hooks/ui/useSidebar";
 import { useHttpStore } from "./store/httpStore";
 import { useUIStore } from "./store/uiStore";
+import { overlayAnimations, sidebarAnimations } from "./utils/animations";
 
 const App = memo(() => {
   const { dragScale, setDragScale, settings } = useUIStore();
   const [activeTab, setActiveTab] = useState<"request" | "response">("request");
   const [isDragging, setIsDragging] = useState(false);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { toggleSidebar, disableSidebar, activeSidebar, sidebarVisible } =
     useSidebar(isMobile);
@@ -63,46 +63,36 @@ const App = memo(() => {
         />
       )}
 
-      {isMobile && (
-        <CSSTransition
-          nodeRef={overlayRef}
-          in={sidebarVisible}
-          timeout={{ enter: 150, exit: 150 }}
-          classNames="overlay"
-          unmountOnExit
-          appear
-        >
-          <div
-            ref={overlayRef}
+      <AnimatePresence>
+        {isMobile && sidebarVisible && (
+          <motion.div
+            {...overlayAnimations}
             className="fixed inset-0 z-30"
             onClick={() => disableSidebar()}
           />
-        </CSSTransition>
-      )}
+        )}
+      </AnimatePresence>
 
-      <CSSTransition
-        nodeRef={sidebarRef}
-        in={sidebarVisible}
-        timeout={{ enter: isMobile ? 250 : 300, exit: isMobile ? 200 : 250 }}
-        classNames={isMobile ? "sidebar-mobile" : "sidebar"}
-        unmountOnExit
-        appear
-      >
-        <div
-          ref={sidebarRef}
-          className={`${
-            isMobile
-              ? "fixed left-0 top-0 z-40 h-full w-80 min-w-[280px] max-w-[85vw]"
-              : "absolute left-0 top-0 z-40 h-full"
-          }`}
-        >
-          <Sidebar
-            visible={sidebarVisible}
-            onMouseLeave={() => !isMobile && disableSidebar()}
-            className="h-full"
-          />
-        </div>
-      </CSSTransition>
+      <AnimatePresence>
+        {sidebarVisible && (
+          <motion.div
+            {...(isMobile
+              ? sidebarAnimations.mobile
+              : sidebarAnimations.desktop)}
+            className={`${
+              isMobile
+                ? "fixed left-0 top-0 z-40 h-full w-80 min-w-[280px] max-w-[85vw]"
+                : "absolute left-0 top-0 z-40 h-full"
+            }`}
+          >
+            <Sidebar
+              visible={sidebarVisible}
+              onMouseLeave={() => !isMobile && disableSidebar()}
+              className="h-full"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="flex-1 flex flex-col overflow-hidden min-h-0 relative z-10">
         {!isMobile ? (
