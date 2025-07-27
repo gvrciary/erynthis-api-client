@@ -1,4 +1,10 @@
 import { httpMethods } from "@/constants";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}
 
 export const copyToClipboard = async (text: string): Promise<boolean> => {
   try {

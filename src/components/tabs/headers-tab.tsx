@@ -2,12 +2,13 @@ import { Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useHttpHeaders } from "@/hooks/http/useHttpHeaders";
 import type { HttpHeader } from "@/types/http";
+import { cn } from "@/utils";
 
 interface HeadersTabProps {
   className?: string;
 }
 
-const HeadersTab = ({ className } : HeadersTabProps) => {
+const HeadersTab = ({ className }: HeadersTabProps) => {
   const {
     getSelectedRequest,
     addHeader,
@@ -76,21 +77,23 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
   const renderHeaderRow = (header: HttpHeader, index: number) => (
     <div
       key={header.id}
-      className={`group relative p-3 rounded-lg border ${
+      className={cn(
+        "group relative p-3 rounded-lg border",
         header.enabled
           ? "border-border hover:border-primary hover:bg-accent"
-          : "border-border opacity-60"
-      }`}
+          : "border-border opacity-60",
+      )}
     >
       <div className="flex items-center space-x-3">
         <button
           type="button"
           onClick={() => toggleHeader(header.id)}
-          className={`flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center ${
+          className={cn(
+            "flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center",
             header.enabled
               ? "bg-primary border-primary"
-              : "bg-transparent border-border hover:border-primary"
-          }`}
+              : "bg-transparent border-border hover:border-primary",
+          )}
         >
           {header.enabled && (
             <Check
@@ -109,11 +112,12 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
             onFocus={() => setFocusedHeader(header.id)}
             onBlur={() => setFocusedHeader(null)}
             placeholder="Header name"
-            className={`w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground  outline-none text-sm  ${
+            className={cn(
+              "w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
               focusedHeader === header.id
                 ? "border-primary focus-ring"
-                : "border-border hover:border-primary"
-            }`}
+                : "border-border hover:border-primary",
+            )}
           />
         </div>
 
@@ -130,11 +134,12 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
             onFocus={() => setFocusedHeader(header.id)}
             onBlur={() => setFocusedHeader(null)}
             placeholder="Header value"
-            className={`w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm  ${
+            className={cn(
+              "w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
               focusedHeader === header.id
                 ? "border-primary focus-ring"
-                : "hover:border-primary"
-            }`}
+                : "hover:border-primary",
+            )}
           />
         </div>
 
@@ -149,15 +154,11 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
           </button>
         )}
       </div>
-
-      <div className="absolute top-2 right-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100">
-        {index + 1}
-      </div>
     </div>
   );
 
   return (
-    <div className={`flex flex-col h-full ${className}`}>
+    <div className={cn("flex flex-col h-full", className)}>
       <div className="p-4 border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">

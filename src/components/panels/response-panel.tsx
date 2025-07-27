@@ -3,6 +3,7 @@ import { memo, useMemo, useState } from "react";
 import { RESPONSE_TABS } from "../../constants";
 import { useHttpRequest } from "../../hooks/http/useHttpRequest";
 import { useHttpStore } from "../../store/httpStore";
+import { cn } from "../../utils";
 import type { RequestItem, ResponseHistoryItem } from "../../types/data";
 import type { HttpError, HttpResponse } from "../../types/http";
 import {
@@ -38,9 +39,10 @@ const ResponseHeader = memo<{
     <div className="flex items-center justify-between mb-3">
       <div className="flex items-center space-x-4">
         <div
-          className={`flex items-center space-x-2 px-2 py-1 rounded-md ${getStatusColor(
-            responseData?.status || errorData?.status || 0,
-          )}`}
+          className={cn(
+            "flex items-center space-x-2 px-2 py-1 rounded-md",
+            getStatusColor(responseData?.status || errorData?.status || 0),
+          )}
         >
           <span className="font-medium">
             {responseData?.status || errorData?.status}
@@ -154,11 +156,12 @@ const ResponseTabs = memo<{
           type="button"
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
-          className={`px-4 py-2 text-sm font-medium ${
+          className={cn(
+            "px-4 py-2 text-sm font-medium",
             activeTab === tab.id
               ? "text-foreground border-b-2 border-primary"
-              : "text-muted-foreground hover:text-foreground hover:bg-accent"
-          }`}
+              : "text-muted-foreground hover:text-foreground hover:bg-accent",
+          )}
         >
           {tab.label}
         </button>
@@ -252,7 +255,7 @@ const ResponsePanel = memo(({ className }: ResponsePanelProps) => {
   }
 
   return (
-    <div className={`flex flex-col h-full ${className}`}>
+    <div className={cn("flex flex-col h-full", className)}>
       {(responseData || errorData) && (
         <>
           <ResponseHeader

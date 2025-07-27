@@ -19,7 +19,7 @@ import { useEnvironments } from "../../hooks/data/useEnvironments";
 import { useTheme } from "../theme-provider";
 import { useHttpStore } from "../../store/httpStore";
 import type { DropdownOption } from "../../types/data";
-import { getMethodColor } from "../../utils";
+import { getMethodColor, cn } from "../../utils";
 import Dropdown from "./drop-down";
 
 interface SidebarProps {
@@ -361,16 +361,21 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
       onClick={() => setActiveRequest(request.id)}
       onMouseEnter={() => setHoveredRequest(request.id)}
       onMouseLeave={() => setHoveredRequest(null)}
-      className={`group relative p-3 rounded-lg cursor-pointer  ${
+      className={cn(
+        "group relative p-3 rounded-lg cursor-pointer",
         activeRequestId === request.id
           ? "bg-accent text-accent-foreground border border-border"
-          : "hover:bg-muted"
-      } ${draggedItem?.id === request.id ? "opacity-50" : ""}`}
+          : "hover:bg-muted text-muted-foreground",
+        draggedItem?.id === request.id && "opacity-50",
+      )}
     >
       <div className="flex items-center space-x-2">
         <GripVertical className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing" />
         <span
-          className={`text-xs px-2 py-1 rounded font-medium border ${getMethodColor(request.request.method)}`}
+          className={cn(
+            "text-xs px-2 py-1 rounded font-medium border",
+            getMethodColor(request.request.method),
+          )}
         >
           {request.request.method}
         </span>
@@ -398,7 +403,10 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
   return (
     <>
       <div
-        className={`w-80 h-full bg-card border-r border-border shadow-sm flex flex-col ${className}`}
+        className={cn(
+          "w-80 h-full bg-card border-r border-border shadow-sm flex flex-col",
+          className,
+        )}
         onMouseLeave={handleMouseLeave}
         onContextMenu={handleContextMenu}
         style={{ transition: "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)" }}
@@ -438,18 +446,20 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
               >
                 <div className="relative w-3.5 h-3.5">
                   <Sun
-                    className={`absolute inset-0 w-3.5 h-3.5 ${
+                    className={cn(
+                      "absolute inset-0 w-3.5 h-3.5",
                       isDarkMode
                         ? "opacity-0 rotate-90 scale-75"
-                        : "opacity-100 rotate-0 scale-100"
-                    }`}
+                        : "opacity-100 rotate-0 scale-100",
+                    )}
                   />
                   <Moon
-                    className={`absolute inset-0 w-3.5 h-3.5 ${
+                    className={cn(
+                      "absolute inset-0 w-3.5 h-3.5",
                       isDarkMode
                         ? "opacity-100 rotate-0 scale-100"
-                        : "opacity-0 -rotate-90 scale-75"
-                    }`}
+                        : "opacity-0 -rotate-90 scale-75",
+                    )}
                   />
                 </div>
               </button>
@@ -483,11 +493,11 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
               {folders.map((folder) => (
                 <div key={folder.id} className="mb-2">
                   <div
-                    className={`group flex items-center space-x-2 p-2 rounded-lg hover:bg-muted cursor-pointer  ${
-                      dragOverItem === folder.id
-                        ? "bg-accent border-2 border-primary border-dashed"
-                        : ""
-                    }`}
+                    className={cn(
+                      "group flex items-center space-x-2 p-2 rounded-lg hover:bg-muted cursor-pointer",
+                      dragOverItem === folder.id &&
+                        "bg-accent border-2 border-primary border-dashed",
+                    )}
                     onClick={() =>
                       editingFolder !== folder.id && toggleFolder(folder.id)
                     }
@@ -666,9 +676,10 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
                 }}
                 onKeyDown={handleKeyPress}
                 placeholder="Enter folder name"
-                className={`w-full px-3 py-2 border rounded-md focus-ring  ${
-                  folderNameError ? "border-red-500" : "border-border"
-                } input`}
+                className={cn(
+                  "w-full px-3 py-2 border rounded-md focus-ring input",
+                  folderNameError ? "border-red-500" : "border-border",
+                )}
               />
               {folderNameError && (
                 <p className="mt-1 text-sm text-red-600 ">{folderNameError}</p>

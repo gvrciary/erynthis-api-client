@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { memo, useCallback, useEffect, useRef } from "react";
+import { cn } from "@/utils";
 
 interface ModalProps {
   isOpen: boolean;
@@ -26,7 +27,7 @@ const Modal = memo(
     closeOnEscape = true,
     showCloseButton = true,
     className = "",
-  } : ModalProps) => {
+  }: ModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const backdropRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +94,11 @@ const Modal = memo(
       >
         <section
           ref={modalRef}
-          className={`bg-card rounded-lg border border-border shadow-lg mx-4 ${getSizeClasses()} ${className}`}
+          className={cn(
+            "bg-card rounded-lg border border-border shadow-lg mx-4",
+            getSizeClasses(),
+            className,
+          )}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between p-6 border-b border-border">

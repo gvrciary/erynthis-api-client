@@ -12,6 +12,7 @@ import { useSidebar } from "./hooks/ui/useSidebar";
 import { useHttpStore } from "./store/httpStore";
 import { useUIStore } from "./store/uiStore";
 import { overlayAnimations, sidebarAnimations } from "./utils/animations";
+import { cn } from "./utils";
 
 const App = memo(() => {
   const { dragScale, setDragScale } = useUIStore();
@@ -73,11 +74,11 @@ const App = memo(() => {
               {...(isMobile
                 ? sidebarAnimations.mobile
                 : sidebarAnimations.desktop)}
-              className={`${
+              className={cn(
                 isMobile
                   ? "fixed left-0 top-0 z-40 h-full w-80 min-w-[280px] max-w-[85vw]"
-                  : "absolute left-0 top-0 z-40 h-full"
-              }`}
+                  : "absolute left-0 top-0 z-40 h-full",
+              )}
             >
               <Sidebar
                 visible={sidebarVisible}
@@ -104,9 +105,10 @@ const App = memo(() => {
                   </div>
 
                   <div
-                    className={`w-1 bg-border hover:bg-primary/50 cursor-col-resize ${
-                      isDragging ? "bg-primary/50" : ""
-                    }`}
+                    className={cn(
+                      "w-1 bg-border hover:bg-primary/50 cursor-col-resize",
+                      isDragging && "bg-primary/50",
+                    )}
                     onMouseDown={handleMouseDown}
                   />
 
@@ -130,22 +132,24 @@ const App = memo(() => {
                       <button
                         type="button"
                         onClick={() => handleTabChange("request")}
-                        className={`flex-1 px-4 py-3 text-sm font-medium ${
+                        className={cn(
+                          "flex-1 px-4 py-3 text-sm font-medium",
                           activeTab === "request"
                             ? "text-foreground border-b-2 border-primary"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
                       >
                         Request
                       </button>
                       <button
                         type="button"
                         onClick={() => handleTabChange("response")}
-                        className={`flex-1 px-4 py-3 text-sm font-medium ${
+                        className={cn(
+                          "flex-1 px-4 py-3 text-sm font-medium",
                           activeTab === "response"
                             ? "text-foreground border-b-2 border-primary"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
                       >
                         Response
                       </button>

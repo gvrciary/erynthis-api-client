@@ -8,7 +8,7 @@ interface ResponseHeadersTabProps {
   responseData: HttpResponse | null;
 }
 
-const ResponseHeadersTab = memo(({ responseData } : ResponseHeadersTabProps) => {
+const ResponseHeadersTab = memo(({ responseData }: ResponseHeadersTabProps) => {
   if (!responseData?.headers) {
     return <EmptyState icon={FileWarning} title="No response headers" />;
   }

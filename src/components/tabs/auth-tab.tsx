@@ -5,6 +5,7 @@ import EmptyState from "@/components/ui/empty-state";
 import { AUTH_TYPES, LOCATION_OPTIONS, TOKEN_TYPE_OPTIONS } from "@/constants";
 import { useHttpAuth } from "@/hooks/http/useHttpAuth";
 import type { AuthCredentials } from "@/types/http";
+import { cn } from "@/utils";
 
 interface AuthTabProps {
   className?: string;
@@ -325,7 +326,7 @@ const AuthTab = memo(({ className }: AuthTabProps) => {
   if (!requestItem) return null;
 
   return (
-    <div className={`flex flex-col h-full ${className}`}>
+    <div className={cn("flex flex-col h-full", className)}>
       <div className="p-4 border-b border-border flex-shrink-0 relative z-20">
         <h3 className="text-sm font-medium text-foreground mb-4">
           Authentication

@@ -9,6 +9,7 @@ import Modal from "@/components/ui/modal";
 import { httpMethods, TABS } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
 import { useModal } from "@/hooks/ui/useModal";
+import { cn } from "@/utils";
 
 interface RequestPanelProps {
   className?: string;
@@ -116,7 +117,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
   if (!request) return null;
 
   return (
-    <div className={`flex flex-col ${className}`}>
+    <div className={cn("flex flex-col", className)}>
       <div className="p-4 border-b border-border relative z-80">
         <div className="flex items-center space-x-3">
           <div className="w-32">
@@ -158,20 +159,19 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               type="button"
               key={tab.id}
               onClick={() => setActiveRequestTab(tab.id)}
-              className={`px-4 py-3 text-sm font-medium  relative ${
+              className={cn(
+                "px-4 py-3 text-sm font-medium relative",
                 request.request.activeRequestTab === tab.id
                   ? "text-foreground border-b-2 border-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
-              }`}
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent",
+              )}
             >
               {tab.label}
             </button>
           ))}
         </div>
 
-        <div className="flex-1 min-h-0 overflow-visible">
-          {renderActiveTab}
-        </div>
+        <div className="flex-1 min-h-0 overflow-visible">{renderActiveTab}</div>
       </div>
 
       <Modal
@@ -191,11 +191,12 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               type="button"
               onClick={handleCustomMethodSave}
               disabled={!isCustomMethodValid}
-              className={`px-4 py-2 text-sm font-medium rounded-md ${
+              className={cn(
+                "px-4 py-2 text-sm font-medium rounded-md",
                 isCustomMethodValid
                   ? "btn-primary hover:opacity-90"
-                  : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
-              }`}
+                  : "bg-muted text-muted-foreground cursor-not-allowed opacity-50",
+              )}
             >
               Guardar
             </button>

@@ -2,6 +2,7 @@ import { Check, Link, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useHttpParams } from "@/hooks/http/useHttpParams";
 import type { HttpParam } from "@/types/http";
+import { cn } from "@/utils";
 
 interface ParamsTabProps {
   className?: string;
@@ -78,21 +79,23 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
   const renderParamRow = (param: HttpParam, index: number) => (
     <div
       key={param.id}
-      className={`group relative p-3 rounded-lg border ${
+      className={cn(
+        "group relative p-3 rounded-lg border",
         param.enabled
-          ? " border-border hover:border-primary hover:bg-accent"
-          : "border-border opacity-60"
-      }`}
+          ? "border-border hover:border-primary hover:bg-accent"
+          : "border-border opacity-60",
+      )}
     >
       <div className="flex items-center space-x-3">
         <button
           type="button"
           onClick={() => toggleParam(param.id)}
-          className={`flex-shrink-0 w-4 h-4 rounded border-2  flex items-center justify-center ${
+          className={cn(
+            "flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center",
             param.enabled
               ? "bg-primary border-primary"
-              : "bg-transparent border-border hover:border-primary"
-          }`}
+              : "bg-transparent border-border hover:border-primary",
+          )}
         >
           {param.enabled && (
             <Check
@@ -111,13 +114,14 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
             onFocus={() => setFocusedParam(param.id)}
             onBlur={() => setFocusedParam(null)}
             placeholder="Parameter name"
-            className={`w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground  outline-none text-sm  ${
+            className={cn(
+              "w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
               focusedParam === param.id
                 ? "border-primary focus-ring"
                 : isValidParamName(param.key) || !param.key
                   ? "border-border hover:border-primary"
-                  : "border-red-500 ring-1 ring-red-500"
-            }`}
+                  : "border-red-500 ring-1 ring-red-500",
+            )}
           />
         </div>
 
@@ -134,11 +138,12 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
             onFocus={() => setFocusedParam(param.id)}
             onBlur={() => setFocusedParam(null)}
             placeholder="Parameter value"
-            className={`w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm  ${
+            className={cn(
+              "w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
               focusedParam === param.id
                 ? "border-primary focus-ring"
-                : "hover:border-primary"
-            }`}
+                : "hover:border-primary",
+            )}
           />
         </div>
 
@@ -163,15 +168,11 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
           </span>
         </div>
       )}
-
-      <div className="absolute top-2 right-2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100">
-        {index + 1}
-      </div>
     </div>
   );
 
   return (
-    <div className={`flex flex-col h-full  ${className}`}>
+    <div className={cn("flex flex-col h-full", className)}>
       <div className="p-4 border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">

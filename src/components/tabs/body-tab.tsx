@@ -4,6 +4,7 @@ import Dropdown from "@/components/ui/drop-down";
 import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
 import type { DropdownOption } from "@/types/data";
+import { cn } from "@/utils";
 
 interface BodyTabProps {
   className?: string;
@@ -218,7 +219,7 @@ const BodyTab = ({ className }: BodyTabProps) => {
   );
 
   return (
-    <div className={`flex flex-col h-full ${className}`}>
+    <div className={cn("flex flex-col h-full", className)}>
       <div className="p-4 border-b border-border flex-shrink-0 relative z-20">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-foreground ">Request Body</h3>

@@ -1,6 +1,7 @@
 import { memo, useEffect, useMemo } from "react";
 import { useTheme } from "./theme-provider";
 import { useShikiStore } from "@/store/shikiStore";
+import { cn } from "@/utils";
 
 interface SyntaxHighlighterProps {
   code: string;
@@ -39,7 +40,7 @@ const SyntaxHighlighter = memo(
     const fallbackContent = useMemo(
       () => (
         <pre
-          className={`text-sm text-foreground whitespace-pre-wrap break-all p-4 ${className}`}
+          className={cn("text-sm text-foreground whitespace-pre-wrap break-all p-4", className)}
         >
           <code>{code}</code>
         </pre>
@@ -49,7 +50,7 @@ const SyntaxHighlighter = memo(
 
     if (isLoading) {
       return (
-        <div className={`flex items-center justify-center p-4 ${className}`}>
+        <div className={cn("flex items-center justify-center p-4", className)}>
           <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       );
@@ -61,7 +62,7 @@ const SyntaxHighlighter = memo(
 
     return (
       <div
-        className={`syntax-highlighter overflow-auto min-h-full ${className}`}
+        className={cn("syntax-highlighter overflow-auto min-h-full", className)}
         dangerouslySetInnerHTML={{ __html: highlightedCode }}
       />
     );

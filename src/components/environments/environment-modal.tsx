@@ -2,16 +2,14 @@ import { Globe, Plus, Settings, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useEnvironments } from "@/hooks/data/useEnvironments.ts";
 import type { Variable } from "@/types/data.ts";
+import { cn } from "@/utils";
 
 interface EnvironmentModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const EnvironmentModal = ({
-  isOpen,
-  onClose,
-} : EnvironmentModalProps) => {
+const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
   const {
     environments,
     globalVariables,
@@ -190,11 +188,12 @@ const EnvironmentModal = ({
         <button
           type="button"
           onClick={() => onToggleEnabled(variable.id, !variable.enabled)}
-          className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
+          className={cn(
+            "w-4 h-4 rounded border-2 flex items-center justify-center",
             variable.enabled
               ? "bg-primary border-primary text-primary-foreground"
-              : "border-border hover:border-primary"
-          }`}
+              : "border-border hover:border-primary",
+          )}
         >
           {variable.enabled && <span className="text-xs ">✓</span>}
         </button>
@@ -288,11 +287,12 @@ const EnvironmentModal = ({
 
           <div className="flex-1 overflow-y-auto min-h-0">
             <div
-              className={`p-3 border-b border-border cursor-pointer ${
+              className={cn(
+                "p-3 border-b border-border cursor-pointer",
                 activeTab === "globals"
                   ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:bg-accent"
-              }`}
+                  : "text-muted-foreground hover:bg-accent",
+              )}
               onClick={() => setActiveTab("globals")}
             >
               <div className="flex items-center space-x-2">
@@ -304,11 +304,12 @@ const EnvironmentModal = ({
             {environments.map((env) => (
               <div
                 key={env.id}
-                className={`group p-3 border-b border-border cursor-pointer ${
+                className={cn(
+                  "group p-3 border-b border-border cursor-pointer",
                   activeTab === "environments" && selectedEnvId === env.id
                     ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:bg-accent"
-                }`}
+                    : "text-muted-foreground hover:bg-accent",
+                )}
                 onClick={() => {
                   setActiveTab("environments");
                   setSelectedEnvId(env.id);
@@ -449,9 +450,10 @@ const EnvironmentModal = ({
                     }
                   }}
                   placeholder="Enter environment name"
-                  className={`w-full px-3 py-2 text-sm border rounded-lg text-foreground placeholder-muted-foreground bg-background focus-ring  ${
-                    envNameError ? "border-red-500 bg-red-50" : "border-border"
-                  }`}
+                  className={cn(
+                    "w-full px-3 py-2 text-sm border rounded-lg text-foreground placeholder-muted-foreground bg-background focus-ring",
+                    envNameError ? "border-red-500 bg-red-50" : "border-border",
+                  )}
                 />
                 {envNameError && (
                   <p className="mt-1 text-xs text-red-600 ">{envNameError}</p>
