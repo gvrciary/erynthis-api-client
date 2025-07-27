@@ -4,6 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+    color-scheme: light;
     --background: oklch(0.94 0.01 275);
     --foreground: oklch(0.35 0.01 275);
 
@@ -24,13 +25,14 @@
 }
 
 .dark {
+    color-scheme: dark;
     --background: oklch(0.1344 0 0);
     --foreground: oklch(0.72 0.01 275);
 
     --card: oklch(0.1448 0 0);
     --card-foreground: oklch(0.72 0.01 275);
 
-    --muted: oklch(0.1448 0 0)
+    --muted: oklch(0.1448 0 0);
     --muted-foreground: oklch(0.72 0.01 275);
 
     --border: oklch(0.18 0.005 275);
@@ -44,10 +46,13 @@
 }
 
 @layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
-        font-family: "Fira Mono", sans-serif !important;
+        font-family: "Fira Mono", system-ui, sans-serif !important;
         color: hsl(var(--foreground));
-        letter-spacing: 0.02em;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -145,7 +150,7 @@
     }
 
     .input {
-        border-color: var(--input));
+        border-color: var(--input);
         background-color: var(--background);
     }
 
