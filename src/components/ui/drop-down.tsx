@@ -122,7 +122,7 @@ const Dropdown = memo(
         {isOpen && !disabled && (
           <div
             className={cn(
-              "absolute top-full mt-1 bg-card border border-border rounded-md shadow-lg z-50 max-h-80 overflow-y-auto min-w-[160px]",
+              "absolute top-full mt-1 bg-card border border-border rounded-md shadow-lg z-50 max-h-80 overflow-y-auto w-full",
               optionsClassName,
             )}
           >
