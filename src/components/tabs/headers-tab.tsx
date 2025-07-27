@@ -142,7 +142,7 @@ const HeadersTab = ({ className } : HeadersTabProps) => {
           <button
             type="button"
             onClick={() => removeHeader(header.id)}
-            className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-red-100 text-muted-foreground hover:text-red-600"
+            className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-600"
             title="Remove header"
           >
             <X className="h-4 w-4" />
