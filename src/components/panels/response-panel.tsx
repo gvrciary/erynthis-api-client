@@ -98,7 +98,7 @@ const ResponseHistory = memo<{
     if (!requestItem || requestItem.responses.length <= 1) return null;
 
     return (
-      <div className="p-4 border-b border-border bg-muted flex-shrink-0">
+      <div className="p-4 border-b border-border bg-background flex-shrink-0">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-muted-foreground">History:</span>
           <div className="w-48">

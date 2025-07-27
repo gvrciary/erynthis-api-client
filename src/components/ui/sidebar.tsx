@@ -16,7 +16,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import EnvironmentModal from "@/components/environments/environment-modal";
 import { useEnvironments } from "../../hooks/data/useEnvironments";
-import { useDarkMode } from "../../hooks/ui/useDarkMode";
+import { useTheme } from "../theme-provider";
 import { useHttpStore } from "../../store/httpStore";
 import type { DropdownOption } from "../../types/data";
 import { getMethodColor } from "../../utils";
@@ -28,12 +28,8 @@ interface SidebarProps {
   className?: string;
 }
 
-const Sidebar = ({
-  visible,
-  onMouseLeave,
-  className,
-}: SidebarProps) => {
-  const { toggleTheme, isDarkMode } = useDarkMode();
+const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
+  const { toggleTheme, isDarkMode } = useTheme();
   const {
     environments,
     activeEnvironmentId,

@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo } from "react";
-import { useDarkMode } from "@/hooks/ui/useDarkMode";
+import { useTheme } from "./theme-provider";
 import { useShikiStore } from "@/store/shikiStore";
 
 interface SyntaxHighlighterProps {
@@ -11,7 +11,7 @@ interface SyntaxHighlighterProps {
 const SyntaxHighlighter = memo(
   ({ code, language = "text", className = "" }: SyntaxHighlighterProps) => {
     const { highlighter, isLoading, initHighlighter } = useShikiStore();
-    const { isDarkMode } = useDarkMode();
+    const { isDarkMode } = useTheme();
 
     useEffect(() => {
       initHighlighter();

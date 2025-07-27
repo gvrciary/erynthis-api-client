@@ -4,45 +4,43 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-    --background: 0 0% 93%;
-    --foreground: 0 0% 26%;
+    --background: oklch(0.94 0.01 275);
+    --foreground: oklch(0.35 0.01 275);
 
-    --card: 0 0% 96%;
-    --card-foreground: 0 0% 26%;
+    --card: oklch(0.97 0.005 275);
+    --card-foreground: oklch(0.35 0.01 275);
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 26%;
+    --muted: oklch(0.97 0.005 275);
+    --muted-foreground: oklch(0.35 0.01 275);
 
-    --border: 0 0% 92%;
-    --input: 0 0% 92%;
+    --border: oklch(0.91 0.005 275);
+    --input: oklch(0.91 0.005 275);
 
-    --accent: 0 0% 98%;
-    --accent-foreground: 0 0% 26%;
+    --accent: oklch(0.98 0.003 275);
+    --accent-foreground: oklch(0.35 0.01 275);
 
-    --primary: 0 0% 20%;
-    --primary-foreground: 0 0% 98%;
-
-    --radius: 1.5rem;
+    --primary: oklch(0.28 0.02 275);
+    --primary-foreground: oklch(0.98 0.005 275);
 }
 
 .dark {
-    --background: 0 0% 11%;
-    --foreground: 0 0% 71%;
+    --background: oklch(0.1344 0 0);
+    --foreground: oklch(0.72 0.01 275);
 
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 71%;
+    --card: oklch(0.1448 0 0);
+    --card-foreground: oklch(0.72 0.01 275);
 
-    --muted: 0 0% 13%;
-    --muted-foreground: 0 0% 71%;
+    --muted: oklch(0.1448 0 0)
+    --muted-foreground: oklch(0.72 0.01 275);
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
+    --border: oklch(0.18 0.005 275);
+    --input: oklch(0.18 0.005 275);
 
-    --accent: 0 0% 8%;
-    --accent-foreground: 0 0% 71%;
+    --accent: oklch(0.1 0.003 275);
+    --accent-foreground: oklch(0.72 0.01 275);
 
-    --primary: 0 0% 80%;
-    --primary-foreground: 0 0% 8%;
+    --primary: oklch(0.8 0.02 275);
+    --primary-foreground: oklch(0.1 0.005 275);
 }
 
 @layer base {
@@ -89,75 +87,75 @@
     }
 
     .bg-background {
-        background-color: hsl(var(--background));
+        background-color: var(--background);
     }
 
     .bg-card {
-        background-color: hsl(var(--card));
+        background-color: var(--card);
     }
 
     .bg-muted {
-        background-color: hsl(var(--muted));
+        background-color: var(--muted);
     }
 
     .bg-accent {
-        background-color: hsl(var(--accent));
+        background-color: var(--accent);
     }
 
     .bg-primary {
-        background-color: hsl(var(--primary));
+        background-color: var(--primary);
     }
 
     .text-foreground {
-        color: hsl(var(--foreground));
+        color: var(--foreground);
     }
 
     .text-muted-foreground {
-        color: hsl(var(--muted-foreground));
+        color: var(--muted-foreground);
     }
 
     .text-accent-foreground {
-        color: hsl(var(--accent-foreground));
+        color: var(--accent-foreground);
     }
 
     .text-primary-foreground {
-        color: hsl(var(--primary-foreground));
+        color: var(--primary-foreground);
     }
 
     .text-card-foreground {
-        color: hsl(var(--card-foreground));
+        color: var(--card-foreground);
     }
 
     .border-border {
-        border-color: hsl(var(--border));
+        border-color: var(--border);
     }
 
     .border-input {
-        border-color: hsl(var(--input));
+        border-color: var(--input);
     }
 
     .btn-primary {
-        background-color: hsl(var(--primary));
-        color: hsl(var(--primary-foreground));
+        background-color: var(--primary);
+        color: var(--primary-foreground);
     }
 
     .btn-secondary {
-        background-color: hsl(var(--accent));
-        color: hsl(var(--accent-foreground));
+        background-color: var(--accent);
+        color: var(--accent-foreground);
     }
 
     .input {
-        border-color: hsl(var(--input));
-        background-color: hsl(var(--background));
+        border-color: var(--input));
+        background-color: var(--background);
     }
 
     .muted {
-        background-color: hsl(var(--muted));
-        color: hsl(var(--muted-foreground));
+        background-color: var(--muted);
+        color: var(--muted-foreground);
     }
 
     .focus-ring {
         outline: none;
-        border-color: hsl(var(--primary));
+        border-color: var(--primary);
     }
 }

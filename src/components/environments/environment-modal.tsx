@@ -228,7 +228,7 @@ const EnvironmentModal = ({
           <button
             type="button"
             onClick={() => onDelete(variable.id)}
-            className="p-1 rounded hover:bg-red-100 text-muted-foreground hover:text-red-600"
+            className="p-1 rounded text-muted-foreground hover:text-red-600"
           >
             <Trash2 className="h-3 w-3" />
           </button>
