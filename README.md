@@ -31,7 +31,7 @@ A modern, cross-platform API testing client built with Tauri, React, and TypeScr
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/erynthis-api-client.git
+   git clone https://github.com/gvrciary/erynthis-api-client.git
    cd erynthis-api-client
    ```
 
