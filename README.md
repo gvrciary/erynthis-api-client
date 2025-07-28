@@ -3,8 +3,8 @@
 <div align="center">
 <img src="public/screenshot.png" width="650px">
 
-![Svelte](https://img.shields.io/badge/Svelte-111111?style=for-the-badge&logo=svelte&logoColor=FF3E00)
-![Tauri](https://img.shields.io/badge/Tauri-111111?style=for-the-badge&logo=tauri&logoColor=white)
+![React](https://img.shields.io/badge/React-111111?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tauri](https://img.shields.io/badge/Tauri-111111?style=for-the-badge&logo=tauri&logoColor=FFC131)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-111111?style=for-the-badge&logo=tailwindcss&logoColor=38BDF8)
 ![TypeScript](https://img.shields.io/badge/TypeScript-111111?style=for-the-badge&logo=typescript&logoColor=3178C6)
 ![Rust](https://img.shields.io/badge/Rust-111111?style=for-the-badge&logo=rust&logoColor=white)
