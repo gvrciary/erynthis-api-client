@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo } from "react";
 import { useShikiStore } from "@/store/shikiStore";
 import { cn } from "@/utils";
-import { useTheme } from "./theme-provider";
+import { useTheme } from "@/providers/theme-provider";
 
 interface SyntaxHighlighterProps {
   code: string;

@@ -15,11 +15,11 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import EnvironmentModal from "@/components/environments/environment-modal";
-import { useEnvironments } from "../../hooks/data/useEnvironments";
-import { useHttpStore } from "../../store/httpStore";
-import type { DropdownOption } from "../../types/data";
-import { cn, getMethodColor } from "../../utils";
-import { useTheme } from "../theme-provider";
+import { useEnvironments } from "@/hooks/data/useEnvironments";
+import { useHttpStore } from "@/store/httpStore";
+import type { DropdownOption } from "@/types/data";
+import { cn, getMethodColor } from "@/utils";
+import { useTheme } from "@/providers/theme-provider";
 import Dropdown from "./drop-down";
 
 interface SidebarProps {

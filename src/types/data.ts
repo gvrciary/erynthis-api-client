@@ -54,3 +54,12 @@ export interface FolderItem {
 export interface Settings {
   theme: "light" | "dark";
 }
+
+export type AuthType =
+  | "none"
+  | "inherit"
+  | "basic"
+  | "bearer"
+  | "apikey"
+  | "oauth2"
+  | "custom";

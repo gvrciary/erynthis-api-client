@@ -1,15 +1,7 @@
 import { useCallback } from "react";
 import { useHttpStore } from "@/store/httpStore";
 import { useHttpHeaders } from "./useHttpHeaders";
-
-type AuthType =
-  | "none"
-  | "inherit"
-  | "basic"
-  | "bearer"
-  | "apikey"
-  | "oauth2"
-  | "custom";
+import type { AuthType } from "@/types/data";
 
 export const useHttpAuth = () => {
   const {

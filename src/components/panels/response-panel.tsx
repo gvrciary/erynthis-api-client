@@ -1,20 +1,20 @@
 import { CloudUpload, OctagonX, Trash2 } from "lucide-react";
 import { memo, useMemo, useState } from "react";
-import { RESPONSE_TABS } from "../../constants";
-import { useHttpRequest } from "../../hooks/http/useHttpRequest";
-import { useHttpStore } from "../../store/httpStore";
-import type { RequestItem, ResponseHistoryItem } from "../../types/data";
-import type { HttpError, HttpResponse } from "../../types/http";
+import { RESPONSE_TABS } from "@/constants";
+import { useHttpRequest } from "@/hooks/http/useHttpRequest";
+import { useHttpStore } from "@/store/httpStore";
+import type { RequestItem, ResponseHistoryItem } from "@/types/data";
+import type { HttpError, HttpResponse } from "@/types/http";
 import {
   cn,
   formatFileSize,
   formatResponseTime,
   getStatusColor,
-} from "../../utils";
-import ResponseBodyTab from "../tabs/response-body-tab";
-import ResponseHeadersTab from "../tabs/response-headers-tab";
-import Dropdown from "../ui/drop-down";
-import EmptyState from "../ui/empty-state";
+} from "@/utils";
+import ResponseBodyTab from "@/components/tabs/response-body-tab";
+import ResponseHeadersTab from "@/components/tabs/response-headers-tab";
+import Dropdown from "@/components/ui/drop-down";
+import EmptyState from "@/components/ui/empty-state";
 
 interface ResponsePanelProps {
   className?: string;
