@@ -1,18 +1,18 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu } from "lucide-react";
 import { memo, useCallback, useState } from "react";
-import RequestPanel from "./components/panels/request-panel";
-import ResponsePanel from "./components/panels/response-panel";
-import { ThemeProvider } from "./components/theme-provider";
-import Sidebar from "./components/ui/sidebar";
-import WelcomeScreen from "./components/welcome";
-import { useDragResize } from "./hooks/ui/useDragResize";
-import useMediaQuery from "./hooks/ui/useMediaQuery";
-import { useSidebar } from "./hooks/ui/useSidebar";
-import { useHttpStore } from "./store/httpStore";
-import { useUIStore } from "./store/uiStore";
-import { overlayAnimations, sidebarAnimations } from "./utils/animations";
-import { cn } from "./utils";
+import RequestPanel from "@/components/panels/request-panel";
+import ResponsePanel from "@/components/panels/response-panel";
+import { ThemeProvider } from "@/providers/theme-provider";
+import Sidebar from "@/components/ui/sidebar";
+import WelcomeScreen from "@/components/welcome";
+import { useDragResize } from "@/hooks/ui/useDragResize";
+import useMediaQuery from "@/hooks/ui/useMediaQuery";
+import { useSidebar } from "@/hooks/ui/useSidebar";
+import { useHttpStore } from "@/store/httpStore";
+import { useUIStore } from "@/store/uiStore";
+import { overlayAnimations, sidebarAnimations } from "@/utils/animations";
+import { cn } from "@/utils";
 
 const App = memo(() => {
   const { dragScale, setDragScale } = useUIStore();
