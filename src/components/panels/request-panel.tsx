@@ -28,6 +28,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
   const [isCustomMethodActive, setIsCustomMethodActive] = useState(false);
   const urlInputRef = useRef<HTMLInputElement>(null);
   const request = getSelectedRequest();
+  
   const handleCustomMethodSaveCallback = useCallback(
     (value: string) => {
       setCustomMethod(value);
@@ -208,7 +209,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
             htmlFor="customMethod"
             className="block text-sm font-medium text-foreground mb-2"
           >
-            Nombre del método
+            Method name
           </label>
           <input
             id="customMethod"
@@ -223,7 +224,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
             onKeyDown={handleCustomMethodKeyDown}
           />
           <p className="mt-1 text-xs text-muted-foreground">
-            Máximo 15 caracteres. Se convertirá a mayúsculas.
+            Maximum 15 characters. It will be converted to uppercase.
           </p>
         </div>
       </Modal>
