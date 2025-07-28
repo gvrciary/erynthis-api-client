@@ -16,10 +16,10 @@ import {
 import { useEffect, useRef, useState } from "react";
 import EnvironmentModal from "@/components/environments/environment-modal";
 import { useEnvironments } from "../../hooks/data/useEnvironments";
-import { useTheme } from "../theme-provider";
 import { useHttpStore } from "../../store/httpStore";
 import type { DropdownOption } from "../../types/data";
-import { getMethodColor, cn } from "../../utils";
+import { cn, getMethodColor } from "../../utils";
+import { useTheme } from "../theme-provider";
 import Dropdown from "./drop-down";
 
 interface SidebarProps {

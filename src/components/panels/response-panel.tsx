@@ -3,10 +3,10 @@ import { memo, useMemo, useState } from "react";
 import { RESPONSE_TABS } from "../../constants";
 import { useHttpRequest } from "../../hooks/http/useHttpRequest";
 import { useHttpStore } from "../../store/httpStore";
-import { cn } from "../../utils";
 import type { RequestItem, ResponseHistoryItem } from "../../types/data";
 import type { HttpError, HttpResponse } from "../../types/http";
 import {
+  cn,
   formatFileSize,
   formatResponseTime,
   getStatusColor,

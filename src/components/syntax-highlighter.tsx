@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo } from "react";
-import { useTheme } from "./theme-provider";
 import { useShikiStore } from "@/store/shikiStore";
 import { cn } from "@/utils";
+import { useTheme } from "./theme-provider";
 
 interface SyntaxHighlighterProps {
   code: string;
@@ -40,7 +40,10 @@ const SyntaxHighlighter = memo(
     const fallbackContent = useMemo(
       () => (
         <pre
-          className={cn("text-sm text-foreground whitespace-pre-wrap break-all p-4", className)}
+          className={cn(
+            "text-sm text-foreground whitespace-pre-wrap break-all p-4",
+            className,
+          )}
         >
           <code>{code}</code>
         </pre>
