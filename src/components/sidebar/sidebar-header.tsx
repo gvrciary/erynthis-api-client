@@ -6,7 +6,8 @@ import Dropdown from "@/components/ui/drop-down";
 import { useEnvironments } from "@/hooks/data/useEnvironments";
 import { useContextMenu } from "@/hooks/ui/use-context-menu";
 import type { DropdownOption } from "@/types/data";
-import ToggleMode from "../ui/toggle-mode";
+import ToggleMode from "@/components/ui/toggle-mode";
+import Tooltip from "@/components/ui/tooltip";
 
 interface SidebarHeaderProps {
   onOpenEnvironmentModal: () => void;
@@ -73,14 +74,16 @@ const SidebarHeader = ({
       <div className="px-2 pt-3 pb-1 border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-1 flex-1 min-w-0">
-            <button
-              type="button"
-              onClick={onOpenEnvironmentModal}
-              className="p-1.5 rounded-md bg-muted text-muted-foreground hover:bg-accent flex-shrink-0"
-              title="Manage environments"
-            >
-              <Settings className="h-3.5 w-3.5" />
-            </button>
+            <Tooltip content="Settings" side="bottom">
+              <button
+                type="button"
+                onClick={onOpenEnvironmentModal}
+                className="p-1.5 rounded-md bg-muted text-muted-foreground hover:bg-accent flex-shrink-0"
+                title="Manage environments"
+              >
+                <Settings className="h-3.5 w-3.5" />
+              </button>
+            </Tooltip>
 
             <Dropdown
               options={environmentOptions}
@@ -99,14 +102,16 @@ const SidebarHeader = ({
           <div className="flex items-center space-x-1 flex-shrink-0">
             <ToggleMode />
 
-            <button
-              type="button"
-              onClick={handleContextMenu}
-              className="p-1.5 rounded-md btn-primary w-7 h-7 flex items-center justify-center hover:opacity-90"
-              title="Add new item"
-            >
-              <Plus className="h-3.5 w-3.5" />
-            </button>
+            <Tooltip content="Add" side="bottom">
+              <button
+                type="button"
+                onClick={handleContextMenu}
+                className="p-1.5 rounded-md btn-primary w-7 h-7 flex items-center justify-center hover:opacity-90"
+                title="Add new item"
+              >
+                <Plus className="h-3.5 w-3.5" />
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>

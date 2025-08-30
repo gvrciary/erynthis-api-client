@@ -2,6 +2,7 @@ import { GripVertical, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
 import type { ItemsType, RequestItem as RequestItemType } from "@/types/data";
 import { cn, getMethodColor } from "@/utils";
+import Tooltip from "@/components/ui/tooltip";
 
 interface RequestItemProps {
   request: RequestItemType;
@@ -94,15 +95,17 @@ const RequestItem = ({
         </span>
 
         {isHovered && (
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-colors duration-150 opacity-0 group-hover:opacity-100"
-            title="Delete request"
-            aria-label={`Delete request: ${displayText}`}
-          >
-            <Trash2 className="h-3 w-3" />
-          </button>
+          <Tooltip content="Delete">
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-colors duration-150 opacity-0 group-hover:opacity-100"
+              title="Delete request"
+              aria-label={`Delete request: ${displayText}`}
+            >
+              <Trash2 className="h-3 w-3" />
+            </button>
+          </Tooltip>
         )}
       </div>
     </button>

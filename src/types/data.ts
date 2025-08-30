@@ -67,5 +67,6 @@ export type AuthType =
 export type BodyType = "none" | "text" | "form" | "binary" | "graphql";
 export type TextSubtype = "raw" | "json" | "xml" | "yaml";
 export type FormSubtype = "urlencoded" | "multipart";
-export type ItemsType = "request" | "folder"
+export type ItemsType = "request" | "folder";
 export type EnvironmentScope = "environments" | "globals";
+export type BodyViewType = "pretty" | "raw";

@@ -7,7 +7,7 @@ import EmptyState from "@/components/ui/empty-state";
 import { RESPONSE_TABS } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
 import { useHttpStore } from "@/store/http-store";
-import type { RequestItem, ResponseHistoryItem } from "@/types/data";
+import type { BodyViewType, RequestItem, ResponseHistoryItem } from "@/types/data";
 import type { HttpError, HttpResponse } from "@/types/http";
 import {
   cn,
@@ -15,6 +15,7 @@ import {
   formatResponseTime,
   getStatusColor,
 } from "@/utils";
+import Tooltip from "@/components/ui/tooltip";
 
 interface ResponsePanelProps {
   className?: string;
@@ -60,14 +61,16 @@ const ResponseHeader = memo<{
         )}
       </div>
       <div className="flex items-center space-x-2">
-        <button
-          type="button"
-          onClick={onClearResponse}
-          className="p-1 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground"
-          title="Clear responses"
-        >
-          <OctagonX className="w-4 h-4" />
-        </button>
+        <Tooltip content="Delete all responses" side="left">
+          <button
+            type="button"
+            onClick={onClearResponse}
+            className="p-1 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground"
+            title="Clear responses"
+          >
+            <OctagonX className="w-4 h-4" />
+          </button>
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -115,18 +118,20 @@ const ResponseHistory = memo<{
             />
           </div>
           <div className="flex items-center space-x-2">
-            <button
-              type="button"
-              onClick={() => {
-                if (requestItem && selectedResponse) {
-                  onDeleteResponse(requestItem.id, selectedResponse.id);
-                }
-              }}
-              className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600"
-              title="Delete response"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <Tooltip content="Delete response">
+              <button
+                type="button"
+                onClick={() => {
+                  if (requestItem && selectedResponse) {
+                    onDeleteResponse(requestItem.id, selectedResponse.id);
+                  }
+                }}
+                className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600"
+                title="Delete response"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -179,7 +184,7 @@ const ResponsePanel = memo(({ className }: ResponsePanelProps) => {
     setActiveResponseTab,
   } = useHttpRequest();
   const { selectResponse } = useHttpStore();
-  const [bodyViewMode, setBodyViewMode] = useState<"pretty" | "raw">("pretty");
+  const [bodyViewMode, setBodyViewMode] = useState<BodyViewType>("pretty");
 
   const requestItem = getSelectedRequest();
   const selectedResponseId = requestItem?.selectedResponseId;

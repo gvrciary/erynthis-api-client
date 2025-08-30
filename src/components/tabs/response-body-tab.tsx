@@ -5,12 +5,14 @@ import CopyButton from "@/components/ui/copy-button";
 import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
 import { VIEW_MODE_OPTIONS } from "@/constants/index";
+import type { BodyViewType } from "@/types/data";
 import type { HttpResponse } from "@/types/http";
+import Tooltip from "@/components/ui/tooltip";
 
 interface ResponseBodyTabProps {
   responseData: HttpResponse | null;
-  bodyViewMode: "pretty" | "raw";
-  onViewModeChange: (mode: "pretty" | "raw") => void;
+  bodyViewMode: BodyViewType;
+  onViewModeChange: (mode: BodyViewType) => void;
   onDeleteResponse: () => void;
   requestUrl: string;
 }
@@ -81,7 +83,7 @@ const ResponseBodyTab = memo(
                   options={VIEW_MODE_OPTIONS}
                   value={bodyViewMode}
                   onChange={(value: string) =>
-                    onViewModeChange(value as "pretty" | "raw")
+                    onViewModeChange(value as BodyViewType)
                   }
                   className="w-full"
                   buttonClassName="py-1 px-2 text-xs min-w-[60px]"
@@ -119,7 +121,7 @@ const ResponseBodyTab = memo(
                 options={VIEW_MODE_OPTIONS}
                 value={bodyViewMode}
                 onChange={(value: string) =>
-                  onViewModeChange(value as "pretty" | "raw")
+                  onViewModeChange(value as BodyViewType)
                 }
                 className="w-full"
                 buttonClassName="py-1 px-2 text-xs min-w-[60px]"
@@ -134,14 +136,16 @@ const ResponseBodyTab = memo(
               title="Copy response body"
               className="px-2 py-1"
             />
-            <button
-              type="button"
-              onClick={onDeleteResponse}
-              className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600"
-              title="Delete response"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <Tooltip content="Delete response" side="left">
+              <button
+                type="button"
+                onClick={onDeleteResponse}
+                className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-red-600"
+                title="Delete response"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </Tooltip>
           </div>
         </div>
         <div className="flex-1 min-h-0 overflow-hidden">

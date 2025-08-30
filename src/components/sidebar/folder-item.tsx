@@ -15,6 +15,7 @@ import type {
   RequestItem as RequestItemType,
 } from "@/types/data";
 import { cn } from "@/utils";
+import Tooltip from "@/components/ui/tooltip";
 import RequestItem from "./request-item";
 
 interface FolderItemProps {
@@ -172,30 +173,34 @@ const FolderItem = ({
               size="sm"
               aria-label="Edit folder name"
             />
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSaveEdit();
-              }}
-              className="p-1 rounded-md hover:bg-green-100 dark:hover:bg-green-900/30 text-muted-foreground hover:text-green-600 dark:hover:text-green-400 transition-colors duration-150"
-              title="Save changes"
-              aria-label="Save folder name"
-            >
-              <Check className="h-3 w-3" />
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleCancelEdit();
-              }}
-              className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-colors duration-150"
-              title="Cancel editing"
-              aria-label="Cancel editing"
-            >
-              <X className="h-3 w-3" />
-            </button>
+            <Tooltip content="Save">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSaveEdit();
+                }}
+                className="p-1 rounded-md hover:bg-green-100 dark:hover:bg-green-900/30 text-muted-foreground hover:text-green-600 dark:hover:text-green-400 transition-colors duration-150"
+                title="Save changes"
+                aria-label="Save folder name"
+              >
+                <Check className="h-3 w-3" />
+              </button>
+            </Tooltip>
+            <Tooltip content="Cancel">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCancelEdit();
+                }}
+                className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-colors duration-150"
+                title="Cancel editing"
+                aria-label="Cancel editing"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </Tooltip>
           </div>
         ) : (
           <>
@@ -216,24 +221,28 @@ const FolderItem = ({
               </span>
             </button>
 
-            <button
-              type="button"
-              onClick={handleStartEdit}
-              className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-150"
-              title="Edit folder name"
-              aria-label="Edit folder name"
-            >
-              <Edit2 className="h-3 w-3" />
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-all duration-150"
-              title="Delete folder"
-              aria-label="Delete folder"
-            >
-              <Trash2 className="h-3 w-3" />
-            </button>
+            <Tooltip content="Edit">
+              <button
+                type="button"
+                onClick={handleStartEdit}
+                className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-150"
+                title="Edit folder name"
+                aria-label="Edit folder name"
+              >
+                <Edit2 className="h-3 w-3" />
+              </button>
+            </Tooltip>
+            <Tooltip content="Delete">
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-all duration-150"
+                title="Delete folder"
+                aria-label="Delete folder"
+              >
+                <Trash2 className="h-3 w-3" />
+              </button>
+            </Tooltip>
           </>
         )}
       </div>

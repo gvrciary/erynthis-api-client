@@ -1,6 +1,7 @@
 import { Check, Copy } from "lucide-react";
 import { memo, useCallback, useEffect, useState } from "react";
 import { cn, copyToClipboard } from "@/utils";
+import Tooltip from "./tooltip";
 
 interface CopyButtonProps {
   content: string;
@@ -62,32 +63,34 @@ const CopyButton = memo(
       return `${baseClasses} ${sizeClasses} hover:bg-muted text-muted-foreground hover:text-foreground`;
     };
 
-    const buttonTitle = isCopied ? "Copied!" : title;
+    const buttonTitle = isCopied ? "Copied" : title;
 
     return (
-      <button
-        type="button"
-        onClick={handleCopy}
-        className={cn(getButtonClasses(), className)}
-        title={buttonTitle}
-        disabled={isCopied}
-      >
-        <div className="relative">
-          <Copy
-            className={cn(
-              getSizeClasses(),
-              isCopied ? "scale-0 opacity-0" : "scale-100 opacity-100",
-            )}
-          />
-          <Check
-            className={cn(
-              getSizeClasses(),
-              "absolute inset-0 text-green-500",
-              isCopied ? "scale-100 opacity-100" : "scale-0 opacity-0",
-            )}
-          />
-        </div>
-      </button>
+      <Tooltip content={buttonTitle}>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className={cn(getButtonClasses(), className)}
+          title={buttonTitle}
+          disabled={isCopied}
+        >
+          <div className="relative">
+            <Copy
+              className={cn(
+                getSizeClasses(),
+                isCopied ? "scale-0 opacity-0" : "scale-100 opacity-100",
+              )}
+            />
+            <Check
+              className={cn(
+                getSizeClasses(),
+                "absolute inset-0 text-green-500",
+                isCopied ? "scale-100 opacity-100" : "scale-0 opacity-0",
+              )}
+            />
+          </div>
+        </button>
+      </Tooltip>
     );
   },
 );

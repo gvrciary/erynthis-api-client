@@ -11,6 +11,7 @@ import { httpMethods, TABS } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
 import { useModal } from "@/hooks/ui/use-modal";
 import { cn } from "@/utils";
+import Tooltip from "@/components/ui/tooltip";
 
 interface RequestPanelProps {
   className?: string;
@@ -139,13 +140,15 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
             />
           </div>
 
-          <button
-            type="button"
-            onClick={handleExecuteRequest}
-            className="px-4 py-2 rounded-md font-medium min-w-[40px] flex items-center justify-center space-x-2 btn-primary hover:opacity-90"
-          >
-            <Send className="h-4 w-4" />
-          </button>
+          <Tooltip content="Send Request" side="bottom"> 
+            <button
+              type="button"
+              onClick={handleExecuteRequest}
+              className="px-4 py-2 rounded-md font-medium min-w-[40px] flex items-center justify-center space-x-2 btn-primary hover:opacity-90"
+            >
+              <Send className="h-4 w-4" />
+            </button>
+          </Tooltip>
         </div>
       </div>
 
