@@ -10,6 +10,7 @@ import type {
   TextSubtype,
 } from "@/types/data";
 import { cn } from "@/utils";
+import Input from "@/components/ui/input";
 
 interface BodyTabProps {
   className?: string;
@@ -221,7 +222,7 @@ const BodyTab = ({ className }: BodyTabProps) => {
             >
               {binaryFile ? "Change File" : "Select File"}
             </button>
-            <input
+            <Input
               ref={fileInputRef}
               type="file"
               onChange={handleFileSelect}

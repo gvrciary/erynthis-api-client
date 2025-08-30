@@ -1,10 +1,11 @@
 import { Send } from "lucide-react";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import AuthTab from "@/components/tabs/auth-tab";
 import BodyTab from "@/components/tabs/body-tab";
 import HeadersTab from "@/components/tabs/headers-tab";
 import ParamsTab from "@/components/tabs/params-tab";
 import Dropdown from "@/components/ui/drop-down";
+import Input from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
 import { httpMethods, TABS } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
@@ -26,7 +27,6 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
   } = useHttpRequest();
   const [customMethod, setCustomMethod] = useState("");
   const [isCustomMethodActive, setIsCustomMethodActive] = useState(false);
-  const urlInputRef = useRef<HTMLInputElement>(null);
   const request = getSelectedRequest();
 
   const handleCustomMethodSaveCallback = useCallback(
@@ -129,14 +129,13 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
           </div>
 
           <div className="flex-1 relative">
-            <input
-              ref={urlInputRef}
+            <Input
               type="text"
               value={request.request.url}
               onChange={handleUrlChange}
               onKeyDown={handleKeyPress}
               placeholder="Enter request URL..."
-              className="w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground  outline-none  border-border focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-2"
+              variant="default"
             />
           </div>
 
@@ -208,7 +207,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
           >
             Method name
           </label>
-          <input
+          <Input
             id="customMethod"
             type="text"
             value={tempCustomMethod}
@@ -216,7 +215,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               handleCustomMethodChange(e.target.value.toUpperCase())
             }
             placeholder="Ej: TRACE, CONNECT, etc."
-            className="w-full px-3 py-2 border border-border rounded-md focus-ring text-sm input"
+            variant="default"
             maxLength={15}
             onKeyDown={handleCustomMethodKeyDown}
           />

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import EnvironmentModal from "@/components/environments/environment-modal";
 import type { ContextMenuItem } from "@/components/ui/context-menu";
 import ContextMenu from "@/components/ui/context-menu";
+import Input from "@/components/ui/input";
 import { useContextMenu } from "@/hooks/ui/use-context-menu";
 import { useHttpStore } from "@/store/http-store";
 import type { ItemsType } from "@/types/data";
@@ -329,7 +330,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
           >
             {draggedItem.type === "request" && (
               <div className="flex items-center space-x-2">
-                <span className="text-sm">Moving request...</span>
+                <span className="text-sm">Request</span>
               </div>
             )}
           </div>
@@ -367,7 +368,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
               >
                 Folder name
               </label>
-              <input
+              <Input
                 id="folder-name"
                 ref={modalInputRef}
                 type="text"
@@ -378,10 +379,9 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
                 }}
                 onKeyDown={handleKeyPress}
                 placeholder="Enter folder name"
-                className={cn(
-                  "w-full px-3 py-2 border rounded-md focus-ring input",
-                  folderNameError ? "border-red-500" : "border-border",
-                )}
+                size="md"
+                variant="default"
+                error={!!folderNameError}
               />
               {folderNameError && (
                 <p className="mt-1 text-sm text-red-600">{folderNameError}</p>

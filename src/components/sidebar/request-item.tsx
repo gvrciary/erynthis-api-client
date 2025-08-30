@@ -74,12 +74,6 @@ const RequestItem = ({
           type="button"
           className="h-3 w-3 opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing transition-opacity duration-150 p-1 rounded hover:bg-accent"
           onMouseDown={handleDragStart}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              handleDragStart(e as any);
-            }
-          }}
           onClick={(e) => e.stopPropagation()}
           aria-label={`Drag to reorder request: ${displayText}`}
         >

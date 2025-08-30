@@ -35,7 +35,7 @@ const ResponseHeader = memo<{
   responseSize: number;
   onClearResponse: () => void;
 }>(({ responseData, errorData, responseSize, onClearResponse }) => (
-  <div className="p-4 border-b border-border flex-shrink-0">
+  <div className="px-3 pt-4 pb-2 border-b border-border flex-shrink-0">
     <div className="flex items-center justify-between mb-3">
       <div className="flex items-center space-x-4">
         <div

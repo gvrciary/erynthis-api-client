@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useEffect } from "react";
+import Input from "@/components/ui/input";
 import { useHttpHeaders } from "@/hooks/http/useHttpHeaders";
 import type { HttpHeader } from "@/types/http";
 import { cn } from "@/utils";
@@ -85,15 +86,12 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
         </td>
 
         <td className="py-3 pr-4 w-5/12">
-          <input
+          <Input
             type="text"
             value={header.key}
             onChange={(e) => handleHeaderKeyChange(header.id, e.target.value)}
             placeholder="Header name"
-            className={cn(
-              "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
-              "focus:ring-2 focus:ring-primary focus:ring-offset-1",
-            )}
+            variant="transparent"
             aria-label="Header name"
             autoComplete="off"
             spellCheck={false}
@@ -105,15 +103,12 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
         </td>
 
         <td className="py-3 pr-4 w-4/12">
-          <input
+          <Input
             type="text"
             value={header.value}
             onChange={(e) => handleHeaderValueChange(header.id, e.target.value)}
             placeholder="Header value"
-            className={cn(
-              "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
-              "focus:ring-2 focus:ring-primary focus:ring-offset-1",
-            )}
+            variant="transparent"
             aria-label="Header value"
             autoComplete="off"
           />

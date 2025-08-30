@@ -8,6 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import Input from "@/components/ui/input";
 import type {
   FolderItem as FolderItemType,
   ItemsType,
@@ -158,7 +159,7 @@ const FolderItem = ({
 
         {isEditing ? (
           <div className="flex items-center space-x-2 flex-1">
-            <input
+            <Input
               ref={editInputRef}
               type="text"
               value={editingName}
@@ -167,6 +168,8 @@ const FolderItem = ({
               onBlur={handleEditBlur}
               onClick={handleEditInputClick}
               className="flex-1 text-sm font-medium bg-transparent border-b border-border focus:border-primary outline-none transition-colors duration-150"
+              variant="transparent"
+              size="sm"
               aria-label="Edit folder name"
             />
             <button

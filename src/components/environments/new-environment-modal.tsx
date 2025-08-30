@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
+import Input from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
 import type { Environment } from "@/types/data";
 import { cn } from "@/utils";
@@ -119,18 +120,17 @@ const NewEnvironmentModal = ({
           >
             Environment Name
           </label>
-          <input
+          <Input
             id="env-name"
-            ref={inputRef}
             type="text"
+            ref={inputRef}
             value={environmentName}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Enter environment name"
-            className={cn(
-              "w-full px-3 py-2 text-sm border rounded-lg text-foreground placeholder-muted-foreground bg-background focus-ring transition-colors duration-150",
-              error ? "border-red-500 bg-red-50 dark:bg-red-950" : "border-border",
-            )}
+            size="md"
+            variant="default"
+            error={!!error}
             maxLength={50}
             autoComplete="off"
             spellCheck={false}

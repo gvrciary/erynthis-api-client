@@ -1,5 +1,6 @@
 import { Link, X } from "lucide-react";
 import { useCallback, useEffect } from "react";
+import Input from "@/components/ui/input";
 import { useHttpParams } from "@/hooks/http/useHttpParams";
 import type { HttpParam } from "@/types/http";
 import { cn } from "@/utils";
@@ -91,16 +92,13 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
           </td>
 
           <td className="py-3 pr-4 w-5/12">
-            <input
+            <Input
               type="text"
               value={param.key}
               onChange={(e) => handleParamKeyChange(param.id, e.target.value)}
               placeholder="Parameter name"
-              className={cn(
-                "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
-                "focus:ring-2 focus:ring-primary focus:ring-offset-1",
-                param.key && !isValidParamName(param.key) && "text-red-600",
-              )}
+              variant="transparent"
+              error={param.key ? !isValidParamName(param.key) : false}
               aria-label="Parameter name"
               autoComplete="off"
               spellCheck={false}
@@ -112,15 +110,12 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
           </td>
 
           <td className="py-3 pr-4 w-4/12">
-            <input
+            <Input
               type="text"
               value={param.value}
               onChange={(e) => handleParamValueChange(param.id, e.target.value)}
               placeholder="Parameter value"
-              className={cn(
-                "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
-                "focus:ring-1 focus:ring-primary focus:ring-offset-1",
-              )}
+              variant="transparent"
               aria-label="Parameter value"
               autoComplete="off"
             />

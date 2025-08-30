@@ -1,5 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { useCallback } from "react";
+import Input from "@/components/ui/input";
 import type { Variable } from "@/types/data";
 import { cn } from "@/utils";
 
@@ -75,16 +76,14 @@ const VariableRow = ({
       </td>
 
       <td className="py-3 pr-4 w-5/12">
-        <input
+        <Input
           type="text"
           value={variable.key}
           onChange={handleKeyChange}
           onKeyDown={handleKeyDown}
           placeholder="VAR_NAME"
-          className={cn(
-            "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
-            "focus:ring-2 focus:ring-primary focus:ring-offset-1",
-          )}
+          variant="transparent"
+          size="sm"
           aria-label="Variable name"
           autoComplete="off"
           spellCheck={false}
@@ -92,16 +91,14 @@ const VariableRow = ({
       </td>
 
       <td className="py-3 pr-4 w-5/12">
-        <input
+        <Input
           type="text"
           value={variable.value}
           onChange={handleValueChange}
           onKeyDown={handleKeyDown}
           placeholder="value"
-          className={cn(
-            "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
-            "focus:ring-2 focus:ring-primary focus:ring-offset-1",
-          )}
+          variant="transparent"
+          size="sm"
           aria-label="Variable value"
           autoComplete="off"
         />

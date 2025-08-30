@@ -2,6 +2,7 @@ import { Link as LinkIcon, Settings, Shield } from "lucide-react";
 import { memo, useMemo } from "react";
 import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
+import Input from "@/components/ui/input";
 import { AUTH_TYPES, LOCATION_OPTIONS, TOKEN_TYPE_OPTIONS } from "@/constants";
 import { useHttpAuth } from "@/hooks/http/useHttpAuth";
 import type { AuthCredentials } from "@/types/http";
@@ -46,13 +47,14 @@ const InputField = memo<{
             className="w-full px-3 py-2 border border-border rounded-md text-sm text-foreground placeholder-muted-foreground bg-background focus-ring resize-none"
           />
         ) : (
-          <input
+          <Input
             id={inputId}
             type={type}
             value={value}
             onChange={(e) => onChange(field, e.target.value)}
             placeholder={placeholder}
-            className="w-full px-3 py-2 border border-border rounded-md text-sm text-foreground placeholder-muted-foreground bg-background focus-ring"
+            size="md"
+            variant="default"
           />
         )}
       </div>
