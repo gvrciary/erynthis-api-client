@@ -9,11 +9,7 @@ interface RequestItemProps {
   isDragged: boolean;
   onSelect: (requestId: string) => void;
   onDelete: (requestId: string) => void;
-  onDragStart: (
-    e: React.DragEvent,
-    type: ItemsType,
-    id: string,
-  ) => void;
+  onDragStart: (e: React.DragEvent, type: ItemsType, id: string) => void;
   onDragEnd: (e: React.DragEvent) => void;
 }
 

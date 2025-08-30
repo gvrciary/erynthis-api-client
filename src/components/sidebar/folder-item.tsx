@@ -27,11 +27,7 @@ interface FolderItemProps {
   onDelete: (folderId: string) => void;
   onSelectRequest: (requestId: string) => void;
   onDeleteRequest: (requestId: string) => void;
-  onDragStart: (
-    e: React.DragEvent,
-    type: ItemsType,
-    id: string,
-  ) => void;
+  onDragStart: (e: React.DragEvent, type: ItemsType, id: string) => void;
   onDragEnd: (e: React.DragEvent) => void;
   onDragOver: (e: React.DragEvent, targetId: string) => void;
   onDragLeave: (e: React.DragEvent) => void;
