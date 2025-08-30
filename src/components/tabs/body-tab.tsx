@@ -1,9 +1,9 @@
 import { FileText, Upload } from "lucide-react";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import Dropdown from "@/components/ui/drop-down";
 import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
-import type { DropdownOption } from "@/types/data";
+import type { BodyType, DropdownOption, FormSubtype, TextSubtype } from "@/types/data";
 import { cn } from "@/utils";
 
 interface BodyTabProps {
@@ -22,49 +22,77 @@ const BodyTab = ({ className }: BodyTabProps) => {
   const request = getSelectedRequest();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  if (!request) return null;
-
+  
   const { bodyType, textSubtype, formSubtype, binaryFile } = request.request;
 
-  const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setBody(e.target.value);
-  };
+  const handleBodyChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setBody(e.target.value);
+    },
+    [setBody],
+  );
 
-  const handleTypeChange = (type: string) => {
-    setBodyType(type as "none" | "text" | "form" | "binary" | "graphql");
+  const handleTypeChange = useCallback(
+    (type: string) => {
+      setBodyType(type as BodyType);
 
-    if (type === "none") {
-      setBody("");
-      setBinaryFile(null);
-    }
+      if (type === "none") {
+        setBody("");
+        setBinaryFile(null);
+      }
 
-    if (type !== "binary" && binaryFile) {
-      setBinaryFile(null);
-    }
-  };
+      if (type !== "binary" && binaryFile) {
+        setBinaryFile(null);
+      }
+    },
+    [setBodyType, setBody, setBinaryFile, binaryFile],
+  );
 
-  const handleSubtypeChange = (subtype: string) => {
-    if (bodyType === "text") {
-      setTextSubtype(subtype as "raw" | "json" | "xml" | "yaml");
-    } else if (bodyType === "form") {
-      setFormSubtype(subtype as "urlencoded" | "multipart");
-    }
-  };
+  const handleSubtypeChange = useCallback(
+    (subtype: string) => {
+      if (bodyType === "text") {
+        setTextSubtype(subtype as TextSubtype);
+      } else if (bodyType === "form") {
+        setFormSubtype(subtype as FormSubtype);
+      }
+    },
+    [bodyType, setTextSubtype, setFormSubtype],
+  );
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setBinaryFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        const base64Content = result.split(",")[1] || result;
-        setBody(base64Content);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const handleFileSelect = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        setBinaryFile(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          const base64Content = result.split(",")[1] || result;
+          setBody(base64Content);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    [setBinaryFile, setBody],
+  );
+  
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const textarea = e.currentTarget;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const value = textarea.value;
+
+        setBody(`${value.substring(0, start)}  ${value.substring(end)}`);
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + 2;
+        }, 0);
+      }
+    },
+    [setBody],
+  );
 
   const getCurrentSubtype = () =>
     bodyType === "text" ? textSubtype : bodyType === "form" ? formSubtype : "";
@@ -76,21 +104,6 @@ const BodyTab = ({ className }: BodyTabProps) => {
         : [];
   const shouldShowSubtypeDropdown = () =>
     bodyType === "text" || bodyType === "form";
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      const textarea = e.currentTarget;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const value = textarea.value;
-
-      setBody(`${value.substring(0, start)}  ${value.substring(end)}`);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = start + 2;
-      }, 0);
-    }
-  };
 
   const renderTextArea = (placeholder: string) => (
     <textarea

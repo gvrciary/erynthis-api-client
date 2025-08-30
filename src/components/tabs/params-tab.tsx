@@ -1,5 +1,5 @@
 import { Check, Link, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useHttpParams } from "@/hooks/http/useHttpParams";
 import type { HttpParam } from "@/types/http";
 import { cn } from "@/utils";
@@ -31,44 +31,51 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
     }
   }, [request, addParam]);
 
-  if (!request) return null;
-
-  const handleParamKeyChange = (id: string, key: string) => {
-    const params = request.request.params || [];
-    updateParamKey(id, key);
-    const param = params.find((p) => p.id === id);
-    if (param && !param.enabled && key.trim()) {
-      toggleParam(id);
-    }
-  };
-
-  const handleParamValueChange = (id: string, value: string) => {
-    const params = request.request.params || [];
-    updateParamValue(id, value);
-    const param = params.find((p) => p.id === id);
-    if (param && !param.enabled && value.trim()) {
-      toggleParam(id);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent, paramId: string) => {
-    const params = request?.request.params || [];
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const currentIndex = params.findIndex((p) => p.id === paramId);
-      const nextParam = params[currentIndex + 1];
-      if (nextParam) {
-        setFocusedParam(nextParam.id);
+  const handleParamKeyChange = useCallback(
+    (id: string, key: string) => {
+      const params = request?.request.params || [];
+      updateParamKey(id, key);
+      const param = params.find((p) => p.id === id);
+      if (param && !param.enabled && key.trim()) {
+        toggleParam(id);
       }
-    } else if (e.key === "Escape") {
-      setFocusedParam(null);
-    }
-  };
+    },
+    [request, updateParamKey, toggleParam],
+  );
 
-  const isValidParamName = (name: string): boolean => {
+  const handleParamValueChange = useCallback(
+    (id: string, value: string) => {
+      const params = request?.request.params || [];
+      updateParamValue(id, value);
+      const param = params.find((p) => p.id === id);
+      if (param && !param.enabled && value.trim()) {
+        toggleParam(id);
+      }
+    },
+    [request, updateParamValue, toggleParam],
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, paramId: string) => {
+      const params = request?.request.params || [];
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const currentIndex = params.findIndex((p) => p.id === paramId);
+        const nextParam = params[currentIndex + 1];
+        if (nextParam) {
+          setFocusedParam(nextParam.id);
+        }
+      } else if (e.key === "Escape") {
+        setFocusedParam(null);
+      }
+    },
+    [request],
+  );
+  
+  const isValidParamName = useCallback((name: string): boolean => {
     const paramNameRegex = /^[a-zA-Z0-9_-]+$/;
     return paramNameRegex.test(name);
-  };
+  }, []); 
 
   const params = request?.request.params || [];
   const enabledCount = params.filter((p) => p.enabled).length;
@@ -76,100 +83,114 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
     (p) => p.key.trim() || p.value.trim(),
   ).length;
 
-  const renderParamRow = (param: HttpParam, index: number) => (
-    <div
-      key={param.id}
-      className={cn(
-        "group relative p-3 rounded-lg border",
-        param.enabled
-          ? "border-border hover:border-primary hover:bg-accent"
-          : "border-border opacity-60",
-      )}
-    >
-      <div className="flex items-center space-x-3">
-        <button
-          type="button"
-          onClick={() => toggleParam(param.id)}
-          className={cn(
-            "flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center",
-            param.enabled
-              ? "bg-primary border-primary"
-              : "bg-transparent border-border hover:border-primary",
-          )}
-        >
-          {param.enabled && (
-            <Check
-              className="h-2.5 w-2.5 text-primary-foreground"
-              strokeWidth={3}
-            />
-          )}
-        </button>
-
-        <div className="flex-1 min-w-0">
-          <input
-            type="text"
-            value={param.key}
-            onChange={(e) => handleParamKeyChange(param.id, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, param.id)}
-            onFocus={() => setFocusedParam(param.id)}
-            onBlur={() => setFocusedParam(null)}
-            placeholder="Parameter name"
-            className={cn(
-              "w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
-              focusedParam === param.id
-                ? "border-primary focus-ring"
-                : isValidParamName(param.key) || !param.key
-                  ? "border-border hover:border-primary"
-                  : "border-red-500 ring-1 ring-red-500",
-            )}
-          />
-        </div>
-
-        <div className="flex-shrink-0 text-muted-foreground font-medium ">
-          =
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <input
-            type="text"
-            value={param.value}
-            onChange={(e) => handleParamValueChange(param.id, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, param.id)}
-            onFocus={() => setFocusedParam(param.id)}
-            onBlur={() => setFocusedParam(null)}
-            placeholder="Parameter value"
-            className={cn(
-              "w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
-              focusedParam === param.id
-                ? "border-primary focus-ring"
-                : "hover:border-primary",
-            )}
-          />
-        </div>
-
-        {index < params.length - 1 && (
+  const renderParamRow = useCallback(
+    (param: HttpParam, index: number) => (
+      <div
+        key={param.id}
+        className={cn(
+          "group relative p-3 rounded-lg border",
+          param.enabled
+            ? "border-border hover:border-primary hover:bg-accent"
+            : "border-border opacity-60",
+        )}
+      >
+        <div className="flex items-center space-x-3">
           <button
             type="button"
-            onClick={() => removeParam(param.id)}
-            className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-600"
-            title="Remove parameter"
+            onClick={() => toggleParam(param.id)}
+            className={cn(
+              "flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center",
+              param.enabled
+                ? "bg-primary border-primary"
+                : "bg-transparent border-border hover:border-primary",
+            )}
           >
-            <X className="h-4 w-4" />
+            {param.enabled && (
+              <Check
+                className="h-2.5 w-2.5 text-primary-foreground"
+                strokeWidth={3}
+              />
+            )}
           </button>
+
+          <div className="flex-1 min-w-0">
+            <input
+              type="text"
+              value={param.key}
+              onChange={(e) => handleParamKeyChange(param.id, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, param.id)}
+              onFocus={() => setFocusedParam(param.id)}
+              onBlur={() => setFocusedParam(null)}
+              placeholder="Parameter name"
+              className={cn(
+                "w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
+                focusedParam === param.id
+                  ? "border-primary focus-ring"
+                  : isValidParamName(param.key) || !param.key
+                    ? "border-border hover:border-primary"
+                    : "border-red-500 ring-1 ring-red-500",
+              )}
+            />
+          </div>
+
+          <div className="flex-shrink-0 text-muted-foreground font-medium ">
+            =
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <input
+              type="text"
+              value={param.value}
+              onChange={(e) => handleParamValueChange(param.id, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, param.id)}
+              onFocus={() => setFocusedParam(param.id)}
+              onBlur={() => setFocusedParam(null)}
+              placeholder="Parameter value"
+              className={cn(
+                "w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
+                focusedParam === param.id
+                  ? "border-primary focus-ring"
+                  : "hover:border-primary",
+              )}
+            />
+          </div>
+
+          {index < params.length - 1 && (
+            <button
+              type="button"
+              onClick={() => removeParam(param.id)}
+              className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-600"
+              title="Remove parameter"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        {param.key && !isValidParamName(param.key) && (
+          <div className="mt-2 text-xs text-red-600 flex items-center space-x-2 ">
+            <div className="w-1 h-1 bg-red-600 rounded-full"></div>
+            <span>
+              Invalid parameter name. Use only alphanumeric characters, hyphens,
+              and underscores.
+            </span>
+          </div>
         )}
       </div>
-
-      {param.key && !isValidParamName(param.key) && (
-        <div className="mt-2 text-xs text-red-600 flex items-center space-x-2 ">
-          <div className="w-1 h-1 bg-red-600 rounded-full"></div>
-          <span>
-            Invalid parameter name. Use only alphanumeric characters, hyphens,
-            and underscores.
-          </span>
-        </div>
-      )}
-    </div>
+    ),
+    [
+      focusedParam,
+      handleParamKeyChange,
+      handleParamValueChange,
+      handleKeyDown,
+      isValidParamName,
+      toggleParam,
+      removeParam,
+      params.length,
+    ],
   );
+
+  if (!request) return null;
 
   return (
     <div className={cn("flex flex-col h-full", className)}>

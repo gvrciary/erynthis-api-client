@@ -1,5 +1,5 @@
 import { FileWarning, Trash2 } from "lucide-react";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import SyntaxHighlighter from "@/components/syntax-highlighter";
 import CopyButton from "@/components/ui/copy-button";
 import Dropdown from "@/components/ui/drop-down";
@@ -23,33 +23,36 @@ const ResponseBodyTab = memo(
     onDeleteResponse,
     requestUrl,
   }: ResponseBodyTabProps) => {
-    const processHtmlContent = (htmlContent: string): string => {
-      if (!requestUrl) return htmlContent;
+    const processHtmlContent = useCallback(
+      (htmlContent: string): string => {
+        if (!requestUrl) return htmlContent;
 
-      if (htmlContent.includes("<head>")) {
-        return htmlContent.replace(
-          /<head>/gi,
-          `<head><base href="${requestUrl}"/>`,
-        );
-      }
+        if (htmlContent.includes("<head>")) {
+          return htmlContent.replace(
+            /<head>/gi,
+            `<head><base href="${requestUrl}"/>`,
+          );
+        }
 
-      if (htmlContent.includes("<html>")) {
-        return htmlContent.replace(
-          /<html>/gi,
-          `<html><head><base href="${requestUrl}"/></head>`,
-        );
-      }
+        if (htmlContent.includes("<html>")) {
+          return htmlContent.replace(
+            /<html>/gi,
+            `<html><head><base href="${requestUrl}"/></head>`,
+          );
+        }
 
-      return htmlContent;
-    };
+        return htmlContent;
+      },
+      [requestUrl],
+    );
 
-    const getContentType = (): string => {
+    const getContentType = useCallback((): string => {
       if (!responseData?.headers["content-type"]) return "text/plain";
       const contentType: string = responseData.headers["content-type"];
       return contentType || "text/plain";
-    };
+    }, [responseData?.headers]);
 
-    const isHtmlContent = (): boolean => {
+    const isHtmlContent = useCallback((): boolean => {
       if (!responseData) return false;
       const contentType = getContentType();
       const body = responseData.body;
@@ -60,7 +63,7 @@ const ResponseBodyTab = memo(
             body.trim().toLowerCase().startsWith("<html")
           : false)
       );
-    };
+    }, [responseData, getContentType]);
 
     if (!responseData?.body) {
       return <EmptyState icon={FileWarning} title="No response body" />;

@@ -63,3 +63,7 @@ export type AuthType =
   | "apikey"
   | "oauth2"
   | "custom";
+
+export type BodyType = "none" | "text" | "form" | "binary" | "graphql";
+export type TextSubtype = "raw" | "json" | "xml" | "yaml";
+export type FormSubtype = "urlencoded" | "multipart";

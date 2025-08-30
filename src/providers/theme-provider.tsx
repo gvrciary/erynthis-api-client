@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext, useEffect } from "react";
-import { useUIStore } from "@/store/uiStore";
+import { useUIStore } from "@/store/ui-store";
 
 type Theme = "light" | "dark";
 

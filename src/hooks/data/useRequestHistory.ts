@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useHttpStore } from "@/store/httpStore";
+import { useHttpStore } from "@/store/http-store";
 
 export const useRequestHistory = () => {
   const { requests, setActiveRequest } = useHttpStore();

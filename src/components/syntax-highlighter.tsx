@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo } from "react";
-import { useShikiStore } from "@/store/shikiStore";
-import { cn } from "@/utils";
 import { useTheme } from "@/providers/theme-provider";
+import { useShikiStore } from "@/store/shiki-store";
+import { cn } from "@/utils";
 
 interface SyntaxHighlighterProps {
   code: string;
@@ -18,9 +18,7 @@ const SyntaxHighlighter = memo(
       initHighlighter();
     }, [initHighlighter]);
 
-    const theme = useMemo(() => {
-      return isDarkMode ? "github-dark" : "github-light";
-    }, [isDarkMode]);
+    const theme = isDarkMode ? "github-dark" : "github-light";
 
     const highlightedCode = useMemo(() => {
       if (isLoading || !highlighter || !code.trim()) {
@@ -37,18 +35,15 @@ const SyntaxHighlighter = memo(
       }
     }, [code, language, highlighter, theme, isLoading]);
 
-    const fallbackContent = useMemo(
-      () => (
-        <pre
-          className={cn(
-            "text-sm text-foreground whitespace-pre-wrap break-all p-4",
-            className,
-          )}
-        >
-          <code>{code}</code>
-        </pre>
-      ),
-      [code, className],
+    const fallbackContent = (
+      <pre
+        className={cn(
+          "text-sm text-foreground whitespace-pre-wrap break-all p-4",
+          className,
+        )}
+      >
+        <code>{code}</code>
+      </pre>
     );
 
     if (isLoading) {

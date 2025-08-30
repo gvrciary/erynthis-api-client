@@ -1,8 +1,12 @@
 import { CloudUpload, OctagonX, Trash2 } from "lucide-react";
 import { memo, useMemo, useState } from "react";
+import ResponseBodyTab from "@/components/tabs/response-body-tab";
+import ResponseHeadersTab from "@/components/tabs/response-headers-tab";
+import Dropdown from "@/components/ui/drop-down";
+import EmptyState from "@/components/ui/empty-state";
 import { RESPONSE_TABS } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
-import { useHttpStore } from "@/store/httpStore";
+import { useHttpStore } from "@/store/http-store";
 import type { RequestItem, ResponseHistoryItem } from "@/types/data";
 import type { HttpError, HttpResponse } from "@/types/http";
 import {
@@ -11,23 +15,19 @@ import {
   formatResponseTime,
   getStatusColor,
 } from "@/utils";
-import ResponseBodyTab from "@/components/tabs/response-body-tab";
-import ResponseHeadersTab from "@/components/tabs/response-headers-tab";
-import Dropdown from "@/components/ui/drop-down";
-import EmptyState from "@/components/ui/empty-state";
 
 interface ResponsePanelProps {
   className?: string;
 }
 
-const LoadingState = memo(() => (
+const LoadingState = () => (
   <div className="p-4 border-b border-border bg-accent">
     <div className="flex items-center space-x-3">
       <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       <span className="text-sm text-foreground">Sending request...</span>
     </div>
   </div>
-));
+);
 
 const ResponseHeader = memo<{
   responseData: HttpResponse | null;

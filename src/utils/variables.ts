@@ -1,4 +1,4 @@
-import { useEnvironmentStore } from "@/store/environmentStore";
+import { useEnvironmentStore } from "@/store/environment-store";
 import type { Variable } from "@/types/data";
 
 export const resolveVariables = (text: string): string => {

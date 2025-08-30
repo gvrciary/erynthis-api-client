@@ -1,5 +1,5 @@
 import { FileWarning } from "lucide-react";
-import { memo } from "react";
+
 import CopyButton from "@/components/ui/copy-button";
 import EmptyState from "@/components/ui/empty-state";
 import type { HttpResponse } from "@/types/http";
@@ -8,7 +8,7 @@ interface ResponseHeadersTabProps {
   responseData: HttpResponse | null;
 }
 
-const ResponseHeadersTab = memo(({ responseData }: ResponseHeadersTabProps) => {
+const ResponseHeadersTab = ({ responseData }: ResponseHeadersTabProps) => {
   if (!responseData?.headers) {
     return <EmptyState icon={FileWarning} title="No response headers" />;
   }
@@ -41,7 +41,7 @@ const ResponseHeadersTab = memo(({ responseData }: ResponseHeadersTabProps) => {
       ))}
     </div>
   );
-});
+};
 
 ResponseHeadersTab.displayName = "ResponseHeadersTab";
 export default ResponseHeadersTab;

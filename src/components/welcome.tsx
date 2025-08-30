@@ -1,8 +1,8 @@
 import { Plus, Zap } from "lucide-react";
-import { memo } from "react";
-import { useHttpStore } from "@/store/httpStore";
 
-const WelcomeScreen = memo(() => {
+import { useHttpStore } from "@/store/http-store";
+
+const WelcomeScreen = () => {
   const { createRequest } = useHttpStore();
 
   return (
@@ -35,8 +35,6 @@ const WelcomeScreen = memo(() => {
       </div>
     </main>
   );
-});
-
-WelcomeScreen.displayName = "WelcomeScreen";
+};
 
 export default WelcomeScreen;

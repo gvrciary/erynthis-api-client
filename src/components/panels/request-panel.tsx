@@ -28,7 +28,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
   const [isCustomMethodActive, setIsCustomMethodActive] = useState(false);
   const urlInputRef = useRef<HTMLInputElement>(null);
   const request = getSelectedRequest();
-  
+
   const handleCustomMethodSaveCallback = useCallback(
     (value: string) => {
       setCustomMethod(value);
@@ -38,9 +38,9 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
     [setMethod],
   );
 
-  const customMethodValidator = useCallback((value: string) => {
+  const customMethodValidator = (value: string) => {
     return value.trim().length > 0 && value.trim().length <= 15;
-  }, []);
+  };
 
   const {
     isOpen: isCustomModalOpen,
@@ -70,19 +70,16 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
     [openCustomModal, setMethod],
   );
 
-  const getCurrentDisplayMethod = useMemo(() => {
+  const getCurrentDisplayMethod = () => {
     if (isCustomMethodActive && customMethod) {
       return customMethod;
     }
     return request?.request.method;
-  }, [isCustomMethodActive, customMethod, request?.request.method]);
+  };
 
-  const handleUrlChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setUrl(e.target.value);
-    },
-    [setUrl],
-  );
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+  };
 
   const handleKeyPress = useCallback(
     (e: React.KeyboardEvent) => {
@@ -96,9 +93,9 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
     [isValidRequest, executeRequest],
   );
 
-  const handleExecuteRequest = useCallback(() => {
+  const handleExecuteRequest = () => {
     executeRequest();
-  }, [executeRequest]);
+  };
 
   const renderActiveTab = useMemo(() => {
     switch (request?.request.activeRequestTab) {
@@ -126,7 +123,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
               options={httpMethods}
               value={request.request.method}
               onChange={handleMethodChange}
-              customDisplay={getCurrentDisplayMethod}
+              customDisplay={getCurrentDisplayMethod()}
               className="w-full"
             />
           </div>

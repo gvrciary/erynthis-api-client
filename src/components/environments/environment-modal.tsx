@@ -1,5 +1,5 @@
 import { Globe, Plus, Settings, Trash2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Modal from "@/components/ui/modal";
 import { useEnvironments } from "@/hooks/data/useEnvironments.ts";
 import type { Variable } from "@/types/data.ts";
@@ -60,7 +60,7 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     }
   }, [selectedEnv, addVariableEnvironment]);
 
-  const handleCreateEnvironment = () => {
+  const handleCreateEnvironment = useCallback(() => {
     const trimmedName = newEnvName.trim();
 
     if (!trimmedName) {
@@ -81,83 +81,98 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     setNewEnvName("");
     setShowNewEnvModal(false);
     setEnvNameError("");
-  };
+  }, [newEnvName, environments, createEnvironment]);
 
-  const handleDeleteEnvironment = (envId: string) => {
-    deleteEnvironment(envId);
-    if (selectedEnvId === envId) {
-      setSelectedEnvId(
-        environments.length > 1
-          ? environments.find((e) => e.id !== envId)?.id || null
-          : null,
+  const handleDeleteEnvironment = useCallback(
+    (envId: string) => {
+      deleteEnvironment(envId);
+      if (selectedEnvId === envId) {
+        setSelectedEnvId(
+          environments.length > 1
+            ? environments.find((e) => e.id !== envId)?.id || null
+            : null,
+        );
+      }
+    },
+    [deleteEnvironment, selectedEnvId, environments],
+  );
+
+  const handleUpdateVariable = useCallback(
+    (variableId: string, updates: Partial<Variable>) => {
+      if (!selectedEnv) return;
+
+      const updatedVariables = selectedEnv.variables.map((variable) =>
+        variable.id === variableId ? { ...variable, ...updates } : variable,
       );
-    }
-  };
 
-  const handleUpdateVariable = (
-    variableId: string,
-    updates: Partial<Variable>,
-  ) => {
-    if (!selectedEnv) return;
+      updateEnvironment(selectedEnv.id, { variables: updatedVariables });
+    },
+    [selectedEnv, updateEnvironment],
+  );
 
-    const updatedVariables = selectedEnv.variables.map((variable) =>
-      variable.id === variableId ? { ...variable, ...updates } : variable,
-    );
+  const handleDeleteVariable = useCallback(
+    (variableId: string) => {
+      if (!selectedEnv) return;
 
-    updateEnvironment(selectedEnv.id, { variables: updatedVariables });
-  };
+      const updatedVariables = selectedEnv.variables.filter(
+        (variable) => variable.id !== variableId,
+      );
+      updateEnvironment(selectedEnv.id, { variables: updatedVariables });
+    },
+    [selectedEnv, updateEnvironment],
+  );
 
-  const handleDeleteVariable = (variableId: string) => {
-    if (!selectedEnv) return;
+  const handleVariableKeyChange = useCallback(
+    (variableId: string, key: string) => {
+      if (selectedEnv) {
+        const variable = selectedEnv.variables.find((v) => v.id === variableId);
+        const shouldEnable = !variable?.enabled && key.trim();
+        handleUpdateVariable(variableId, {
+          key,
+          enabled: shouldEnable ? true : variable?.enabled || false,
+        });
+      }
+    },
+    [selectedEnv, handleUpdateVariable],
+  );
 
-    const updatedVariables = selectedEnv.variables.filter(
-      (variable) => variable.id !== variableId,
-    );
-    updateEnvironment(selectedEnv.id, { variables: updatedVariables });
-  };
+  const handleVariableValueChange = useCallback(
+    (variableId: string, value: string) => {
+      if (selectedEnv) {
+        const variable = selectedEnv.variables.find((v) => v.id === variableId);
+        const shouldEnable = !variable?.enabled && value.trim();
+        handleUpdateVariable(variableId, {
+          value,
+          enabled: shouldEnable ? true : variable?.enabled || false,
+        });
+      }
+    },
+    [selectedEnv, handleUpdateVariable],
+  );
 
-  const handleVariableKeyChange = (variableId: string, key: string) => {
-    if (selectedEnv) {
-      const variable = selectedEnv.variables.find((v) => v.id === variableId);
+  const handleGlobalVariableKeyChange = useCallback(
+    (variableId: string, key: string) => {
+      const variable = globalVariables.find((v) => v.id === variableId);
       const shouldEnable = !variable?.enabled && key.trim();
-      handleUpdateVariable(variableId, {
+      updateGlobalVariable(variableId, {
         key,
         enabled: shouldEnable ? true : variable?.enabled || false,
       });
-    }
-  };
+    },
+    [globalVariables, updateGlobalVariable],
+  );
 
-  const handleVariableValueChange = (variableId: string, value: string) => {
-    if (selectedEnv) {
-      const variable = selectedEnv.variables.find((v) => v.id === variableId);
+  const handleGlobalVariableValueChange = useCallback(
+    (variableId: string, value: string) => {
+      const variable = globalVariables.find((v) => v.id === variableId);
       const shouldEnable = !variable?.enabled && value.trim();
-      handleUpdateVariable(variableId, {
+      updateGlobalVariable(variableId, {
         value,
         enabled: shouldEnable ? true : variable?.enabled || false,
       });
-    }
-  };
-
-  const handleGlobalVariableKeyChange = (variableId: string, key: string) => {
-    const variable = globalVariables.find((v) => v.id === variableId);
-    const shouldEnable = !variable?.enabled && key.trim();
-    updateGlobalVariable(variableId, {
-      key,
-      enabled: shouldEnable ? true : variable?.enabled || false,
-    });
-  };
-
-  const handleGlobalVariableValueChange = (
-    variableId: string,
-    value: string,
-  ) => {
-    const variable = globalVariables.find((v) => v.id === variableId);
-    const shouldEnable = !variable?.enabled && value.trim();
-    updateGlobalVariable(variableId, {
-      value,
-      enabled: shouldEnable ? true : variable?.enabled || false,
-    });
-  };
+    },
+    [globalVariables, updateGlobalVariable],
+  );
 
   const renderVariableRow = (
     variable: Variable,
@@ -242,11 +257,11 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     </div>
   );
 
-  const handleNewEnvModalClose = () => {
+  const handleNewEnvModalClose = useCallback(() => {
     setShowNewEnvModal(false);
     setNewEnvName("");
     setEnvNameError("");
-  };
+  }, []);
 
   const newEnvModalFooter = (
     <div className="flex space-x-3">

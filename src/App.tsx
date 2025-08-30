@@ -9,8 +9,8 @@ import WelcomeScreen from "@/components/welcome";
 import { useDragResize } from "@/hooks/ui/useDragResize";
 import useMediaQuery from "@/hooks/ui/useMediaQuery";
 import { useSidebar } from "@/hooks/ui/useSidebar";
-import { useHttpStore } from "@/store/httpStore";
-import { useUIStore } from "@/store/uiStore";
+import { useHttpStore } from "@/store/http-store";
+import { useUIStore } from "@/store/ui-store";
 import { overlayAnimations, sidebarAnimations } from "@/utils/animations";
 import { cn } from "@/utils";
 

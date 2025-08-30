@@ -54,13 +54,10 @@ const Dropdown = memo(
       [options, value],
     );
 
-    const displayText = useMemo(
-      () =>
-        customDisplay !== undefined
-          ? customDisplay
-          : selectedOption?.label || placeholder,
-      [customDisplay, selectedOption?.label, placeholder],
-    );
+    const displayText =
+      customDisplay !== undefined
+        ? customDisplay
+        : selectedOption?.label || placeholder;
 
     const handleOptionClick = useCallback(
       (optionValue: string) => {
@@ -70,18 +67,15 @@ const Dropdown = memo(
       [onChange],
     );
 
-    const toggleDropdown = useCallback(() => {
+    const toggleDropdown = () => {
       if (!disabled) {
         setIsOpen(!isOpen);
       }
-    }, [disabled, isOpen]);
+    };
 
-    const buttonColorClass = useMemo(() => {
-      if (selectedOption?.color) {
-        return selectedOption.color;
-      }
-      return "text-foreground bg-card border-border hover:bg-muted";
-    }, [selectedOption?.color]);
+    const buttonColorClass =
+      selectedOption?.color ||
+      "text-foreground bg-card border-border hover:bg-muted";
 
     return (
       <div className={cn("relative", className)} ref={dropdownRef}>

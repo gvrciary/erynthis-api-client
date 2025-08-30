@@ -1,5 +1,5 @@
 import { Check, Copy } from "lucide-react";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { cn, copyToClipboard } from "@/utils";
 
 interface CopyButtonProps {
@@ -38,7 +38,7 @@ const CopyButton = memo(
       }
     }, [isCopied]);
 
-    const getSizeClasses = useMemo(() => {
+    const getSizeClasses = () => {
       switch (size) {
         case "sm":
           return "w-3 h-3";
@@ -49,9 +49,9 @@ const CopyButton = memo(
         default:
           return "w-4 h-4";
       }
-    }, [size]);
+    };
 
-    const getButtonClasses = useMemo(() => {
+    const getButtonClasses = () => {
       const baseClasses = "p-1 rounded-md  flex items-center justify-center";
       const sizeClasses = size === "sm" ? "p-0.5" : "p-1";
 
@@ -60,31 +60,28 @@ const CopyButton = memo(
       }
 
       return `${baseClasses} ${sizeClasses} hover:bg-muted text-muted-foreground hover:text-foreground`;
-    }, [size, variant]);
+    };
 
-    const buttonTitle = useMemo(
-      () => (isCopied ? "Copied!" : title),
-      [isCopied, title],
-    );
+    const buttonTitle = isCopied ? "Copied!" : title;
 
     return (
       <button
         type="button"
         onClick={handleCopy}
-        className={cn(getButtonClasses, className)}
+        className={cn(getButtonClasses(), className)}
         title={buttonTitle}
         disabled={isCopied}
       >
         <div className="relative">
           <Copy
             className={cn(
-              getSizeClasses,
+              getSizeClasses(),
               isCopied ? "scale-0 opacity-0" : "scale-100 opacity-100",
             )}
           />
           <Check
             className={cn(
-              getSizeClasses,
+              getSizeClasses(),
               "absolute inset-0 text-green-500",
               isCopied ? "scale-100 opacity-100" : "scale-0 opacity-0",
             )}
