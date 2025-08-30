@@ -4,6 +4,7 @@ import Input from "@/components/ui/input";
 import { useHttpHeaders } from "@/hooks/http/useHttpHeaders";
 import type { HttpHeader } from "@/types/http";
 import { cn } from "@/utils";
+import Tooltip from "../ui/tooltip";
 
 interface HeadersTabProps {
   className?: string;
@@ -65,24 +66,29 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
         className="border-b border-border hover:bg-accent transition-colors duration-150"
       >
         <td className="py-3 pr-4 w-1/12">
-          <button
-            type="button"
-            onClick={() => toggleHeader(header.id)}
-            className={cn(
-              "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-2",
-              header.enabled
-                ? "bg-primary border-primary text-primary-foreground"
-                : "border-border hover:border-primary",
-            )}
-            title={`${header.enabled ? "Disable" : "Enable"} header`}
-            aria-label={`${header.enabled ? "Disable" : "Enable"} header ${header.key || "unnamed"}`}
+          <Tooltip
+            content={`${header.enabled ? "Disable" : "Enable"} header`}
+            side="right"
           >
-            {header.enabled && (
-              <span className="text-xs font-bold" aria-hidden="true">
-                ✓
-              </span>
-            )}
-          </button>
+            <button
+              type="button"
+              onClick={() => toggleHeader(header.id)}
+              className={cn(
+                "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                header.enabled
+                  ? "bg-primary border-primary text-primary-foreground"
+                  : "border-border hover:border-primary",
+              )}
+              title={`${header.enabled ? "Disable" : "Enable"} header`}
+              aria-label={`${header.enabled ? "Disable" : "Enable"} header ${header.key || "unnamed"}`}
+            >
+              {header.enabled && (
+                <span className="text-xs font-bold" aria-hidden="true">
+                  ✓
+                </span>
+              )}
+            </button>
+          </Tooltip>
         </td>
 
         <td className="py-3 pr-4 w-5/12">
@@ -116,15 +122,17 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
 
         <td className="py-3 w-1/12">
           {index < headers.length - 1 && (
-            <button
-              type="button"
-              onClick={() => removeHeader(header.id)}
-              className="p-1 rounded text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-150 focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
-              title="Delete header"
-              aria-label={`Delete header ${header.key || "unnamed"}`}
-            >
-              <X className="h-3 w-3" />
-            </button>
+            <Tooltip content="Delete">
+              <button
+                type="button"
+                onClick={() => removeHeader(header.id)}
+                className="p-1 rounded text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-150 focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+                title="Delete header"
+                aria-label={`Delete header ${header.key || "unnamed"}`}
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </Tooltip>
           )}
         </td>
       </tr>

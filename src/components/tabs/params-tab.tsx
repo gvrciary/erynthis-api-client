@@ -4,6 +4,7 @@ import Input from "@/components/ui/input";
 import { useHttpParams } from "@/hooks/http/useHttpParams";
 import type { HttpParam } from "@/types/http";
 import { cn } from "@/utils";
+import Tooltip from "../ui/tooltip";
 
 interface ParamsTabProps {
   className?: string;
@@ -71,24 +72,29 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
           className="border-b border-border hover:bg-accent transition-colors duration-150"
         >
           <td className="py-3 pr-4 w-1/12">
-            <button
-              type="button"
-              onClick={() => toggleParam(param.id)}
-              className={cn(
-                "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-2",
-                param.enabled
-                  ? "bg-primary border-primary text-primary-foreground"
-                  : "border-border hover:border-primary",
-              )}
-              title={`${param.enabled ? "Disable" : "Enable"} parameter`}
-              aria-label={`${param.enabled ? "Disable" : "Enable"} parameter ${param.key || "unnamed"}`}
+            <Tooltip
+              content={`${param.enabled ? "Disable" : "Enable"} parameter`}
+              side="right"
             >
-              {param.enabled && (
-                <span className="text-xs font-bold" aria-hidden="true">
-                  ✓
-                </span>
-              )}
-            </button>
+              <button
+                type="button"
+                onClick={() => toggleParam(param.id)}
+                className={cn(
+                  "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                  param.enabled
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-border hover:border-primary",
+                )}
+                title={`${param.enabled ? "Disable" : "Enable"} parameter`}
+                aria-label={`${param.enabled ? "Disable" : "Enable"} parameter ${param.key || "unnamed"}`}
+              >
+                {param.enabled && (
+                  <span className="text-xs font-bold" aria-hidden="true">
+                    ✓
+                  </span>
+                )}
+              </button>
+            </Tooltip>
           </td>
 
           <td className="py-3 pr-4 w-5/12">
@@ -123,15 +129,17 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
 
           <td className="py-3 w-1/12">
             {index < params.length - 1 && (
-              <button
-                type="button"
-                onClick={() => removeParam(param.id)}
-                className="p-1 rounded text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-150 focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
-                title="Delete parameter"
-                aria-label={`Delete parameter ${param.key || "unnamed"}`}
-              >
-                <X className="h-3 w-3" />
-              </button>
+              <Tooltip content="Delete">
+                <button
+                  type="button"
+                  onClick={() => removeParam(param.id)}
+                  className="p-1 rounded text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-150 focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+                  title="Delete parameter"
+                  aria-label={`Delete parameter ${param.key || "unnamed"}`}
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </Tooltip>
             )}
           </td>
         </tr>
