@@ -5,7 +5,6 @@ import { cn } from "@/utils";
 
 interface VariableRowProps {
   variable: Variable;
-  index: number;
   isLast: boolean;
   onKeyChange: (id: string, key: string) => void;
   onValueChange: (id: string, value: string) => void;
@@ -15,7 +14,6 @@ interface VariableRowProps {
 
 const VariableRow = ({
   variable,
-  index,
   isLast,
   onKeyChange,
   onValueChange,
@@ -54,11 +52,8 @@ const VariableRow = ({
   );
 
   return (
-    <div
-      className="grid grid-cols-12 gap-4 items-center py-3 border-b border-border hover:bg-accent transition-colors duration-150"
-      role="row"
-    >
-      <div className="col-span-1" role="gridcell">
+    <tr className="border-b border-border hover:bg-accent transition-colors duration-150">
+      <td className="py-3 pr-4">
         <button
           type="button"
           onClick={handleToggle}
@@ -70,8 +65,6 @@ const VariableRow = ({
           )}
           title={`${variable.enabled ? "Disable" : "Enable"} variable`}
           aria-label={`${variable.enabled ? "Disable" : "Enable"} variable ${variable.key || "unnamed"}`}
-          aria-checked={variable.enabled}
-          role="checkbox"
         >
           {variable.enabled && (
             <span className="text-xs font-bold" aria-hidden="true">
@@ -79,9 +72,9 @@ const VariableRow = ({
             </span>
           )}
         </button>
-      </div>
+      </td>
 
-      <div className="col-span-5" role="gridcell">
+      <td className="py-3 pr-4 w-5/12">
         <input
           type="text"
           value={variable.key}
@@ -96,9 +89,9 @@ const VariableRow = ({
           autoComplete="off"
           spellCheck={false}
         />
-      </div>
+      </td>
 
-      <div className="col-span-5" role="gridcell">
+      <td className="py-3 pr-4 w-5/12">
         <input
           type="text"
           value={variable.value}
@@ -112,9 +105,9 @@ const VariableRow = ({
           aria-label="Variable value"
           autoComplete="off"
         />
-      </div>
+      </td>
 
-      <div className="col-span-1" role="gridcell">
+      <td className="py-3 w-1/12">
         {!isLast && (
           <button
             type="button"
@@ -126,8 +119,8 @@ const VariableRow = ({
             <Trash2 className="h-3 w-3" />
           </button>
         )}
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 };
 

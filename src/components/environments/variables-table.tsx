@@ -29,37 +29,41 @@ const VariablesTable = ({
 
   return (
     <div className="space-y-4">
-      <div
-        className="grid grid-cols-12 gap-4 text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border pb-2"
-        role="row"
-        aria-label="Table header"
-      >
-        <div className="col-span-1" role="columnheader" aria-label="Enabled">
-        </div>
-        <div className="col-span-5" role="columnheader">
-          Variable
-        </div>
-        <div className="col-span-5" role="columnheader">
-          Value
-        </div>
-        <div className="col-span-1" role="columnheader" aria-label="Actions">
-        </div>
-      </div>
-
-      <div role="grid" aria-label="Variables table">
-        {variables.map((variable, index) => (
-          <VariableRow
-            key={variable.id}
-            variable={variable}
-            index={index}
-            isLast={index === variables.length - 1}
-            onKeyChange={onKeyChange}
-            onValueChange={onValueChange}
-            onToggleEnabled={onToggleEnabled}
-            onDelete={onDelete}
-          />
-        ))}
-      </div>
+      <table className="w-full" aria-label="Variables table">
+        <thead>
+          <tr className="text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border">
+            <th
+              scope="col"
+              className="py-2 w-1/12 text-left"
+              aria-label="Enabled"
+            ></th>
+            <th scope="col" className="py-2 w-5/12 text-left">
+              Variable
+            </th>
+            <th scope="col" className="py-2 w-5/12 text-left">
+              Value
+            </th>
+            <th
+              scope="col"
+              className="py-2 w-1/12 text-left"
+              aria-label="Actions"
+            ></th>
+          </tr>
+        </thead>
+        <tbody>
+          {variables.map((variable, index) => (
+            <VariableRow
+              key={variable.id}
+              variable={variable}
+              isLast={index === variables.length - 1}
+              onKeyChange={onKeyChange}
+              onValueChange={onValueChange}
+              onToggleEnabled={onToggleEnabled}
+              onDelete={onDelete}
+            />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

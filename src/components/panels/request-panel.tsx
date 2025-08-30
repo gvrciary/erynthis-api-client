@@ -116,7 +116,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
 
   return (
     <div className={cn("flex flex-col", className)}>
-      <div className="p-4 border-b border-border relative z-80">
+      <div className="p-4 border-b border-border relative z-50">
         <div className="flex items-center space-x-3">
           <div className="w-32">
             <Dropdown

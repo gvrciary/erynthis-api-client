@@ -1,5 +1,5 @@
-import { Check, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { useCallback, useEffect } from "react";
 import { useHttpHeaders } from "@/hooks/http/useHttpHeaders";
 import type { HttpHeader } from "@/types/http";
 import { cn } from "@/utils";
@@ -17,7 +17,6 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
     toggleHeader,
     removeHeader,
   } = useHttpHeaders();
-  const [focusedHeader, setFocusedHeader] = useState<string | null>(null);
   const request = getSelectedRequest();
 
   useEffect(() => {
@@ -56,39 +55,15 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
     [request, updateHeaderValue, toggleHeader],
   );
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, headerId: string) => {
-      const headers = request?.request.headers || [];
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const currentIndex = headers.findIndex((h) => h.id === headerId);
-        const nextHeader = headers[currentIndex + 1];
-        if (nextHeader) {
-          setFocusedHeader(nextHeader.id);
-        }
-      } else if (e.key === "Escape") {
-        setFocusedHeader(null);
-      }
-    },
-    [request],
-  );
-
   const headers = request?.request.headers || [];
-  const enabledCount = headers.filter(
-    (h) => h.enabled && (h.key.trim() || h.value.trim()),
-  ).length;
-  const totalCount = headers.filter(
-    (h) => h.key.trim() || h.value.trim(),
-  ).length;
 
   const renderHeaderRow = useCallback(
     (header: HttpHeader, index: number) => (
-      <div
+      <tr
         key={header.id}
-        className="grid grid-cols-12 gap-4 items-center py-3 border-b border-border hover:bg-accent transition-colors duration-150"
-        role="row"
+        className="border-b border-border hover:bg-accent transition-colors duration-150"
       >
-        <div className="col-span-1" role="gridcell">
+        <td className="py-3 pr-4 w-1/12">
           <button
             type="button"
             onClick={() => toggleHeader(header.id)}
@@ -100,8 +75,6 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
             )}
             title={`${header.enabled ? "Disable" : "Enable"} header`}
             aria-label={`${header.enabled ? "Disable" : "Enable"} header ${header.key || "unnamed"}`}
-            aria-checked={header.enabled}
-            role="checkbox"
           >
             {header.enabled && (
               <span className="text-xs font-bold" aria-hidden="true">
@@ -109,16 +82,13 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
               </span>
             )}
           </button>
-        </div>
+        </td>
 
-        <div className="col-span-5" role="gridcell">
+        <td className="py-3 pr-4 w-5/12">
           <input
             type="text"
             value={header.key}
             onChange={(e) => handleHeaderKeyChange(header.id, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, header.id)}
-            onFocus={() => setFocusedHeader(header.id)}
-            onBlur={() => setFocusedHeader(null)}
             placeholder="Header name"
             className={cn(
               "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
@@ -128,20 +98,17 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
             autoComplete="off"
             spellCheck={false}
           />
-        </div>
+        </td>
 
-        <div className="col-span-1 flex justify-center" role="gridcell">
+        <td className="py-3 pr-4 w-1/12 text-center">
           <span className="text-muted-foreground font-medium">:</span>
-        </div>
+        </td>
 
-        <div className="col-span-4" role="gridcell">
+        <td className="py-3 pr-4 w-4/12">
           <input
             type="text"
             value={header.value}
             onChange={(e) => handleHeaderValueChange(header.id, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, header.id)}
-            onFocus={() => setFocusedHeader(header.id)}
-            onBlur={() => setFocusedHeader(null)}
             placeholder="Header value"
             className={cn(
               "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
@@ -150,9 +117,9 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
             aria-label="Header value"
             autoComplete="off"
           />
-        </div>
+        </td>
 
-        <div className="col-span-1" role="gridcell">
+        <td className="py-3 w-1/12">
           {index < headers.length - 1 && (
             <button
               type="button"
@@ -164,13 +131,12 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
               <X className="h-3 w-3" />
             </button>
           )}
-        </div>
-      </div>
+        </td>
+      </tr>
     ),
     [
       handleHeaderKeyChange,
       handleHeaderValueChange,
-      handleKeyDown,
       toggleHeader,
       removeHeader,
       headers.length,
@@ -183,40 +149,34 @@ const HeadersTab = ({ className }: HeadersTabProps) => {
     <div className={cn("flex flex-col h-full", className)}>
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="p-4">
-          <div
-            className="grid grid-cols-12 gap-4 text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border pb-2 mb-4"
-            role="row"
-            aria-label="Table header"
-          >
-            <div
-              className="col-span-1"
-              role="columnheader"
-              aria-label="Enabled"
-            >
-            </div>
-            <div className="col-span-5" role="columnheader">
-              Header Name
-            </div>
-            <div
-              className="col-span-1"
-              role="columnheader"
-              aria-label="Separator"
-            >
-            </div>
-            <div className="col-span-4" role="columnheader">
-              Header Value
-            </div>
-            <div
-              className="col-span-1"
-              role="columnheader"
-              aria-label="Actions"
-            >
-            </div>
-          </div>
-
-          <div role="grid" aria-label="Headers table">
-            {request.request.headers.map(renderHeaderRow)}
-          </div>
+          <table className="w-full" aria-label="Headers table">
+            <thead>
+              <tr className="text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border">
+                <th
+                  scope="col"
+                  className="py-2 w-1/12 text-left"
+                  aria-label="Enabled"
+                ></th>
+                <th scope="col" className="py-2 w-5/12 text-left pl-3">
+                  Header Name
+                </th>
+                <th
+                  scope="col"
+                  className="py-2 w-1/12 text-left"
+                  aria-label="Separator"
+                ></th>
+                <th scope="col" className="py-2 w-4/12 text-left pl-3">
+                  Header Value
+                </th>
+                <th
+                  scope="col"
+                  className="py-2 w-1/12 text-left"
+                  aria-label="Actions"
+                ></th>
+              </tr>
+            </thead>
+            <tbody>{request.request.headers.map(renderHeaderRow)}</tbody>
+          </table>
         </div>
       </div>
     </div>

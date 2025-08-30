@@ -60,75 +60,65 @@ const EnvironmentSidebar = ({
       </div>
 
       <div className="flex-1 overflow-y-auto min-h-0">
-        <div
+        <button
+          type="button"
           className={cn(
-            "p-3 border-b border-border cursor-pointer transition-colors duration-150",
+            "w-full p-3 border-b border-border cursor-pointer transition-colors duration-150 text-left",
             activeTab === "globals"
               ? "bg-accent text-accent-foreground"
               : "text-muted-foreground hover:bg-accent hover:text-foreground",
           )}
           onClick={handleGlobalsClick}
-          role="button"
-          tabIndex={0}
           aria-label="Global variables"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              handleGlobalsClick();
-            }
-          }}
         >
           <div className="flex items-center space-x-2">
             <Globe className="h-4 w-4 flex-shrink-0" />
             <span className="text-sm font-medium">Global Variables</span>
           </div>
-        </div>
+        </button>
 
         {environments.map((env) => (
           <div
             key={env.id}
             className={cn(
-              "group p-3 border-b border-border cursor-pointer transition-colors duration-150",
+              "group relative border-b border-border transition-colors duration-150",
               activeTab === "environments" && selectedEnvId === env.id
                 ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground",
             )}
-            onClick={() => handleEnvironmentClick(env.id)}
-            role="button"
-            tabIndex={0}
-            aria-label={`Environment: ${env.name}`}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                handleEnvironmentClick(env.id);
-              }
-            }}
           >
-            <div className="flex items-center justify-between">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-2">
-                  <span
-                    className="text-sm font-medium truncate"
-                    title={env.name}
-                  >
-                    {env.name}
-                  </span>
-                </div>
-                <div className="text-xs text-muted-foreground mt-1">
-                  {env.variables?.length || 0} variables
+            <button
+              type="button"
+              className="w-full p-3 cursor-pointer transition-colors duration-150 text-left"
+              onClick={() => handleEnvironmentClick(env.id)}
+              aria-label={`Environment: ${env.name}`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-1 min-w-0 pr-8">
+                  <div className="flex items-center space-x-2">
+                    <span
+                      className="text-sm font-medium truncate"
+                      title={env.name}
+                    >
+                      {env.name}
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {env.variables?.length || 0} variables
+                  </div>
                 </div>
               </div>
+            </button>
 
-              <button
-                type="button"
-                onClick={(e) => handleDeleteClick(e, env.id)}
-                className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-all duration-150"
-                title={`Delete environment: ${env.name}`}
-                aria-label={`Delete environment: ${env.name}`}
-              >
-                <Trash2 className="h-3 w-3" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={(e) => handleDeleteClick(e, env.id)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 transition-all duration-150"
+              title={`Delete environment: ${env.name}`}
+              aria-label={`Delete environment: ${env.name}`}
+            >
+              <Trash2 className="h-3 w-3" />
+            </button>
           </div>
         ))}
       </div>

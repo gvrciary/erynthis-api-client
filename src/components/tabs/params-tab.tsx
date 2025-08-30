@@ -1,5 +1,5 @@
-import { Check, Link, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { Link, X } from "lucide-react";
+import { useCallback, useEffect } from "react";
 import { useHttpParams } from "@/hooks/http/useHttpParams";
 import type { HttpParam } from "@/types/http";
 import { cn } from "@/utils";
@@ -17,7 +17,7 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
     updateParamKey,
     updateParamValue,
   } = useHttpParams();
-  const [focusedParam, setFocusedParam] = useState<string | null>(null);
+
   const request = getSelectedRequest();
 
   useEffect(() => {
@@ -55,42 +55,21 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
     [request, updateParamValue, toggleParam],
   );
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, paramId: string) => {
-      const params = request?.request.params || [];
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const currentIndex = params.findIndex((p) => p.id === paramId);
-        const nextParam = params[currentIndex + 1];
-        if (nextParam) {
-          setFocusedParam(nextParam.id);
-        }
-      } else if (e.key === "Escape") {
-        setFocusedParam(null);
-      }
-    },
-    [request],
-  );
-
   const isValidParamName = useCallback((name: string): boolean => {
     const paramNameRegex = /^[a-zA-Z0-9_-]+$/;
     return paramNameRegex.test(name);
   }, []);
 
   const params = request?.request.params || [];
-  const enabledCount = params.filter((p) => p.enabled).length;
-  const totalCount = params.filter(
-    (p) => p.key.trim() || p.value.trim(),
-  ).length;
 
   const renderParamRow = useCallback(
     (param: HttpParam, index: number) => (
-      <div key={param.id}>
-        <div
-          className="grid grid-cols-12 gap-4 items-center py-3 border-b border-border hover:bg-accent transition-colors duration-150"
-          role="row"
+      <>
+        <tr
+          key={param.id}
+          className="border-b border-border hover:bg-accent transition-colors duration-150"
         >
-          <div className="col-span-1" role="gridcell">
+          <td className="py-3 pr-4 w-1/12">
             <button
               type="button"
               onClick={() => toggleParam(param.id)}
@@ -102,8 +81,6 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
               )}
               title={`${param.enabled ? "Disable" : "Enable"} parameter`}
               aria-label={`${param.enabled ? "Disable" : "Enable"} parameter ${param.key || "unnamed"}`}
-              aria-checked={param.enabled}
-              role="checkbox"
             >
               {param.enabled && (
                 <span className="text-xs font-bold" aria-hidden="true">
@@ -111,16 +88,13 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
                 </span>
               )}
             </button>
-          </div>
+          </td>
 
-          <div className="col-span-5" role="gridcell">
+          <td className="py-3 pr-4 w-5/12">
             <input
               type="text"
               value={param.key}
               onChange={(e) => handleParamKeyChange(param.id, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, param.id)}
-              onFocus={() => setFocusedParam(param.id)}
-              onBlur={() => setFocusedParam(null)}
               placeholder="Parameter name"
               className={cn(
                 "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
@@ -131,20 +105,17 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
               autoComplete="off"
               spellCheck={false}
             />
-          </div>
+          </td>
 
-          <div className="col-span-1 flex justify-center" role="gridcell">
+          <td className="py-3 pr-4 w-1/12 text-center">
             <span className="text-muted-foreground font-medium">=</span>
-          </div>
+          </td>
 
-          <div className="col-span-4" role="gridcell">
+          <td className="py-3 pr-4 w-4/12">
             <input
               type="text"
               value={param.value}
               onChange={(e) => handleParamValueChange(param.id, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, param.id)}
-              onFocus={() => setFocusedParam(param.id)}
-              onBlur={() => setFocusedParam(null)}
               placeholder="Parameter value"
               className={cn(
                 "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
@@ -153,9 +124,9 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
               aria-label="Parameter value"
               autoComplete="off"
             />
-          </div>
+          </td>
 
-          <div className="col-span-1" role="gridcell">
+          <td className="py-3 w-1/12">
             {index < params.length - 1 && (
               <button
                 type="button"
@@ -167,24 +138,27 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
                 <X className="h-3 w-3" />
               </button>
             )}
-          </div>
-        </div>
+          </td>
+        </tr>
 
         {param.key && !isValidParamName(param.key) && (
-          <div className="ml-16 mt-1 text-xs text-red-600 flex items-center space-x-2">
-            <div className="w-1 h-1 bg-red-600 rounded-full"></div>
-            <span>
-              Invalid parameter name. Use only alphanumeric characters, hyphens,
-              and underscores.
-            </span>
-          </div>
+          <tr>
+            <td colSpan={5} className="py-1 pl-16">
+              <div className="text-xs text-red-600 flex items-center space-x-2">
+                <div className="w-1 h-1 bg-red-600 rounded-full"></div>
+                <span>
+                  Invalid parameter name. Use only alphanumeric characters,
+                  hyphens, and underscores.
+                </span>
+              </div>
+            </td>
+          </tr>
         )}
-      </div>
+      </>
     ),
     [
       handleParamKeyChange,
       handleParamValueChange,
-      handleKeyDown,
       isValidParamName,
       toggleParam,
       removeParam,
@@ -199,40 +173,34 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
       <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto">
           <div className="p-4">
-            <div
-              className="grid grid-cols-12 gap-4 text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border pb-2 mb-4"
-              role="row"
-              aria-label="Table header"
-            >
-              <div
-                className="col-span-1"
-                role="columnheader"
-                aria-label="Enabled"
-              >
-              </div>
-              <div className="col-span-5" role="columnheader">
-                Parameter Name
-              </div>
-              <div
-                className="col-span-1"
-                role="columnheader"
-                aria-label="Separator"
-              >
-              </div>
-              <div className="col-span-4" role="columnheader">
-                Parameter Value
-              </div>
-              <div
-                className="col-span-1"
-                role="columnheader"
-                aria-label="Actions"
-              >
-              </div>
-            </div>
-
-            <div role="grid" aria-label="Parameters table">
-              {params.map(renderParamRow)}
-            </div>
+            <table className="w-full" aria-label="Parameters table">
+              <thead>
+                <tr className="text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border">
+                  <th
+                    scope="col"
+                    className="py-2 w-1/12 text-left"
+                    aria-label="Enabled"
+                  ></th>
+                  <th scope="col" className="py-2 w-5/12 text-left pl-3">
+                    Parameter Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-2 w-1/12 text-left"
+                    aria-label="Separator"
+                  ></th>
+                  <th scope="col" className="py-2 w-4/12 text-left pl-3">
+                    Parameter Value
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-2 w-1/12 text-left"
+                    aria-label="Actions"
+                  ></th>
+                </tr>
+              </thead>
+              <tbody>{params.map(renderParamRow)}</tbody>
+            </table>
           </div>
         </div>
 
