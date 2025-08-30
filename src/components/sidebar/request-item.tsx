@@ -9,8 +9,7 @@ interface RequestItemProps {
   isDragged: boolean;
   onSelect: (requestId: string) => void;
   onDelete: (requestId: string) => void;
-  onDragStart: (e: React.DragEvent, type: ItemsType, id: string) => void;
-  onDragEnd: (e: React.DragEvent) => void;
+  onDragStart: (e: React.MouseEvent, type: ItemsType, id: string) => void;
 }
 
 const RequestItem = ({
@@ -20,7 +19,6 @@ const RequestItem = ({
   onSelect,
   onDelete,
   onDragStart,
-  onDragEnd,
 }: RequestItemProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -37,7 +35,7 @@ const RequestItem = ({
   );
 
   const handleDragStart = useCallback(
-    (e: React.DragEvent) => {
+    (e: React.MouseEvent) => {
       onDragStart(e, "request", request.id);
     },
     [onDragStart, request.id],
@@ -58,9 +56,6 @@ const RequestItem = ({
   return (
     <button
       type="button"
-      draggable
-      onDragStart={handleDragStart}
-      onDragEnd={onDragEnd}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -70,11 +65,26 @@ const RequestItem = ({
           ? "bg-accent text-accent-foreground border border-border shadow-sm"
           : "hover:bg-muted text-muted-foreground hover:text-foreground",
         isDragged && "opacity-50 transform rotate-1",
+        "select-none",
       )}
       aria-label={`Select request: ${displayText}`}
     >
       <div className="flex items-center space-x-2">
-        <GripVertical className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing transition-opacity duration-150" />
+        <button
+          type="button"
+          className="h-3 w-3 opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing transition-opacity duration-150 p-1 rounded hover:bg-accent"
+          onMouseDown={handleDragStart}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleDragStart(e as any);
+            }
+          }}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={`Drag to reorder request: ${displayText}`}
+        >
+          <GripVertical className="h-3 w-3 text-muted-foreground" />
+        </button>
 
         <span
           className={cn(

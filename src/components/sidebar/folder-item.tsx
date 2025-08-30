@@ -27,11 +27,9 @@ interface FolderItemProps {
   onDelete: (folderId: string) => void;
   onSelectRequest: (requestId: string) => void;
   onDeleteRequest: (requestId: string) => void;
-  onDragStart: (e: React.DragEvent, type: ItemsType, id: string) => void;
-  onDragEnd: (e: React.DragEvent) => void;
-  onDragOver: (e: React.DragEvent, targetId: string) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent, targetFolderId: string) => void;
+  onDragStart: (e: React.MouseEvent, type: ItemsType, id: string) => void;
+  onDragOver: (targetId: string) => void;
+  onDragLeave: () => void;
 }
 
 const FolderItem = ({
@@ -46,10 +44,8 @@ const FolderItem = ({
   onSelectRequest,
   onDeleteRequest,
   onDragStart,
-  onDragEnd,
   onDragOver,
   onDragLeave,
-  onDrop,
 }: FolderItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingName, setEditingName] = useState("");
@@ -114,19 +110,9 @@ const FolderItem = ({
     [onDelete, folder.id],
   );
 
-  const handleDragOver = useCallback(
-    (e: React.DragEvent) => {
-      onDragOver(e, folder.id);
-    },
-    [onDragOver, folder.id],
-  );
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      onDrop(e, folder.id);
-    },
-    [onDrop, folder.id],
-  );
+  const handleDragOver = useCallback(() => {
+    onDragOver(folder.id);
+  }, [onDragOver, folder.id]);
 
   const handleEditInputClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -137,7 +123,7 @@ const FolderItem = ({
   }, [handleSaveEdit]);
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 relative">
       {draggedItem?.type === "request" && (
         <div
           className={cn(
@@ -145,9 +131,10 @@ const FolderItem = ({
             dragOverItem === folder.id &&
               "bg-accent/50 border-2 border-primary border-dashed",
           )}
-          onDragOver={handleDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={handleDrop}
+          data-drop-zone="true"
+          data-folder-id={folder.id}
+          onMouseEnter={handleDragOver}
+          onMouseLeave={onDragLeave}
           aria-hidden="true"
         />
       )}
@@ -259,7 +246,6 @@ const FolderItem = ({
               onSelect={onSelectRequest}
               onDelete={onDeleteRequest}
               onDragStart={onDragStart}
-              onDragEnd={onDragEnd}
             />
           ))}
         </div>

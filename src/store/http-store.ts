@@ -1,14 +1,17 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { sendHttpRequest } from "@/services/http";
+import type {
+    BodyType,
+  FolderItem,
+  FormSubtype,
+  RequestItem,
+  ResponseHistoryItem,
+  TextSubtype,
+} from "@/types/data";
 import type { HttpError, HttpRequest } from "@/types/http";
 import { generateId } from "@/utils";
 import { createHttpRequest } from "@/utils/http";
-import type {
-  FolderItem,
-  RequestItem,
-  ResponseHistoryItem,
-} from "@/types/data";
 
 export interface HttpStore {
   requests: RequestItem[];
@@ -27,6 +30,18 @@ export interface HttpStore {
   updateNameToFolder: (folderId: string, name: string) => void;
   addRequestToFolder: (requestId: string, folderId: string) => void;
   removeRequestFromFolder: (requestId: string, folderId: string) => void;
+  moveRequestInFolder: (
+    requestId: string,
+    folderId: string,
+    newIndex: number,
+  ) => void;
+  moveRequestBetween: (
+    requestId: string,
+    fromFolderId: string | null,
+    toFolderId: string | null,
+    newIndex: number,
+  ) => void;
+  reorderUnorganizedRequests: (requestId: string, newIndex: number) => void;
   setMethod: (method: string) => void;
   setUrl: (url: string) => void;
   updateUrlWithParams: () => void;
@@ -34,10 +49,10 @@ export interface HttpStore {
   setBody: (body: string) => void;
   setAuthType: (auth: string) => void;
   setBodyType: (
-    bodyType: "none" | "text" | "form" | "binary" | "graphql",
+    bodyType: BodyType,
   ) => void;
-  setTextSubtype: (textSubtype: "raw" | "json" | "xml" | "yaml") => void;
-  setFormSubtype: (formSubtype: "urlencoded" | "multipart") => void;
+  setTextSubtype: (textSubtype: TextSubtype) => void;
+  setFormSubtype: (formSubtype: FormSubtype) => void;
   setBinaryFile: (file: File | null) => void;
   addHeader: () => void;
   updateHeader: (id: string, key: string, value: string) => void;
@@ -227,6 +242,95 @@ export const useHttpStore = create<HttpStore>()(
               : folder,
           ),
         }));
+      },
+
+      moveRequestInFolder: (requestId, folderId, newIndex) => {
+        set((state) => ({
+          folders: state.folders.map((folder) => {
+            if (folder.id !== folderId) return folder;
+
+            const requestIndex = folder.requests.indexOf(requestId);
+            if (requestIndex === -1) return folder;
+
+            const newRequests = [...folder.requests];
+            newRequests.splice(requestIndex, 1);
+            newRequests.splice(newIndex, 0, requestId);
+
+            return { ...folder, requests: newRequests };
+          }),
+        }));
+      },
+
+      moveRequestBetween: (requestId, fromFolderId, toFolderId, newIndex) => {
+        set((state) => {
+          const newState = { ...state };
+
+          if (fromFolderId) {
+            newState.folders = state.folders.map((folder) =>
+              folder.id === fromFolderId
+                ? {
+                    ...folder,
+                    requests: folder.requests.filter((id) => id !== requestId),
+                  }
+                : folder,
+            );
+          }
+
+          if (toFolderId) {
+            newState.folders = newState.folders.map((folder) => {
+              if (folder.id !== toFolderId) return folder;
+
+              const newRequests = [...folder.requests];
+              newRequests.splice(newIndex, 0, requestId);
+              return { ...folder, requests: newRequests };
+            });
+          }
+
+          return newState;
+        });
+      },
+
+      reorderUnorganizedRequests: (requestId, newIndex) => {
+        set((state) => {
+          const unorganizedRequests = state.requests.filter(
+            (req) =>
+              !state.folders.some((folder) => folder.requests.includes(req.id)),
+          );
+
+          const requestIndex = unorganizedRequests.findIndex(
+            (req) => req.id === requestId,
+          );
+          if (requestIndex === -1) return state;
+
+          const newRequests = [...state.requests];
+          const organizedRequestIds = new Set(
+            state.folders.flatMap((folder) => folder.requests),
+          );
+
+          const unorganizedPositions: number[] = [];
+          newRequests.forEach((req, index) => {
+            if (!organizedRequestIds.has(req.id)) {
+              unorganizedPositions.push(index);
+            }
+          });
+
+          const movingRequest = unorganizedRequests[requestIndex];
+
+          const filteredUnorganized = unorganizedRequests.filter(
+            (req) => req.id !== requestId,
+          );
+
+          filteredUnorganized.splice(newIndex, 0, movingRequest);
+
+          filteredUnorganized.forEach((req, index) => {
+            const actualPosition = unorganizedPositions[index];
+            if (actualPosition !== undefined) {
+              newRequests[actualPosition] = req;
+            }
+          });
+
+          return { ...state, requests: newRequests };
+        });
       },
 
       setMethod: (method) => {

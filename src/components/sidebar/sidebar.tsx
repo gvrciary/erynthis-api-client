@@ -29,15 +29,22 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
     deleteFolder,
     toggleFolder,
     updateNameToFolder,
-    addRequestToFolder,
-    removeRequestFromFolder,
+    moveRequestBetween,
   } = useHttpStore();
 
   const [draggedItem, setDraggedItem] = useState<{
     type: ItemsType;
     id: string;
+    sourceFolder?: string | null;
   } | null>(null);
   const [dragOverItem, setDragOverItem] = useState<string | null>(null);
+  const [dragPreview, setDragPreview] = useState<{
+    x: number;
+    y: number;
+    visible: boolean;
+  }>({ x: 0, y: 0, visible: false });
+  const [isDragging, setIsDragging] = useState(false);
+
   const [showFolderModal, setShowFolderModal] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [folderNameError, setFolderNameError] = useState("");
@@ -128,110 +135,82 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
   );
 
   const handleDragStart = useCallback(
-    (e: React.DragEvent, type: ItemsType, id: string) => {
-      e.stopPropagation();
-
-      setDraggedItem({ type, id });
-
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("text/plain", id);
-      e.dataTransfer.setData("application/x-item-type", type);
-
-      const element = e.currentTarget as HTMLElement;
-      element.style.opacity = "0.5";
-      element.style.transform = "rotate(2deg)";
-    },
-    [],
-  );
-
-  const handleDragEnd = useCallback((e: React.DragEvent) => {
-    e.stopPropagation();
-
-    const element = e.currentTarget as HTMLElement;
-    element.style.opacity = "1";
-    element.style.transform = "none";
-
-    setDraggedItem(null);
-    setDragOverItem(null);
-  }, []);
-
-  const handleDragOver = useCallback(
-    (e: React.DragEvent, targetId: string) => {
+    (e: React.MouseEvent, type: ItemsType, id: string) => {
       e.preventDefault();
       e.stopPropagation();
 
+      const sourceFolder =
+        folders.find((folder) => folder.requests.includes(id))?.id || null;
+
+      setDraggedItem({ type, id, sourceFolder });
+      setIsDragging(true);
+      setDragPreview({
+        x: e.clientX,
+        y: e.clientY,
+        visible: true,
+      });
+
+      const handleMouseMove = (e: MouseEvent) => {
+        setDragPreview({
+          x: e.clientX,
+          y: e.clientY,
+          visible: true,
+        });
+      };
+
+      const handleMouseUp = (e: MouseEvent) => {
+        setIsDragging(false);
+        setDraggedItem(null);
+        setDragOverItem(null);
+        setDragPreview({ x: 0, y: 0, visible: false });
+
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+
+        const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
+        if (elementBelow) {
+          const dropZone = elementBelow.closest("[data-drop-zone]");
+          if (dropZone) {
+            const folderId = dropZone.getAttribute("data-folder-id");
+            if (folderId && folderId !== sourceFolder) {
+              moveRequestBetween(id, sourceFolder, folderId, 0);
+            }
+          } else {
+            if (sourceFolder) {
+              moveRequestBetween(
+                id,
+                sourceFolder,
+                null,
+                unorganizedRequests.length,
+              );
+            }
+          }
+        }
+      };
+
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    },
+    [folders, moveRequestBetween, unorganizedRequests.length],
+  );
+
+  const handleDragOver = useCallback(
+    (targetId: string) => {
       if (
         draggedItem &&
         draggedItem.type === "request" &&
-        draggedItem.id !== targetId
+        draggedItem.id !== targetId &&
+        isDragging
       ) {
-        e.dataTransfer.dropEffect = "move";
         setDragOverItem(targetId);
       }
     },
-    [draggedItem],
+    [draggedItem, isDragging],
   );
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX;
-    const y = e.clientY;
-
-    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
-      setDragOverItem(null);
-    }
+  const handleDragLeave = useCallback(() => {
+    setDragOverItem(null);
   }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent, targetFolderId: string) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const draggedId = e.dataTransfer.getData("text/plain");
-      const draggedType = e.dataTransfer.getData("application/x-item-type");
-
-      setDragOverItem(null);
-
-      if (
-        !draggedId ||
-        draggedType !== "request" ||
-        draggedId === targetFolderId
-      ) {
-        return;
-      }
-
-      addRequestToFolder(draggedId, targetFolderId);
-      setDraggedItem(null);
-    },
-    [addRequestToFolder],
-  );
-
-  const handleDropOutsideFolder = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const draggedId = e.dataTransfer.getData("text/plain");
-      const draggedType = e.dataTransfer.getData("application/x-item-type");
-
-      if (!draggedId || draggedType !== "request") {
-        return;
-      }
-
-      folders.forEach((folder) => {
-        if (folder.requests.includes(draggedId)) {
-          removeRequestFromFolder(draggedId, folder.id);
-        }
-      });
-
-      setDraggedItem(null);
-      setDragOverItem(null);
-    },
-    [folders, removeRequestFromFolder],
-  );
 
   const hasOpenModals =
     showEnvironmentModal || showFolderModal || contextMenu.isOpen;
@@ -281,14 +260,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
         />
 
         <section
-          className="flex-1 overflow-y-auto p-2 min-h-0"
-          onDragOver={(e) => {
-            e.preventDefault();
-            if (draggedItem && draggedItem.type === "request") {
-              e.dataTransfer.dropEffect = "move";
-            }
-          }}
-          onDrop={handleDropOutsideFolder}
+          className="flex-1 overflow-y-auto p-2 min-h-0 relative"
           aria-label="Requests and folders list"
         >
           {requests.length > 0 || folders.length > 0 ? (
@@ -307,10 +279,8 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
                   onSelectRequest={setActiveRequest}
                   onDeleteRequest={handleDeleteRequest}
                   onDragStart={handleDragStart}
-                  onDragEnd={handleDragEnd}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
                 />
               ))}
 
@@ -325,7 +295,6 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
                       onSelect={setActiveRequest}
                       onDelete={handleDeleteRequest}
                       onDragStart={handleDragStart}
-                      onDragEnd={handleDragEnd}
                     />
                   ))}
                 </div>
@@ -349,6 +318,22 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
             </div>
           )}
         </section>
+
+        {dragPreview.visible && draggedItem && (
+          <div
+            className="fixed pointer-events-none z-50 bg-accent text-accent-foreground px-3 py-2 rounded-lg shadow-lg border opacity-80"
+            style={{
+              left: dragPreview.x + 10,
+              top: dragPreview.y + 10,
+            }}
+          >
+            {draggedItem.type === "request" && (
+              <div className="flex items-center space-x-2">
+                <span className="text-sm">Moving request...</span>
+              </div>
+            )}
+          </div>
+        )}
       </nav>
 
       <ContextMenu
