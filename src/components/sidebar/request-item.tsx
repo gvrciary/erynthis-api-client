@@ -72,12 +72,12 @@ const RequestItem = ({
       <div className="flex items-center space-x-2">
         <button
           type="button"
-          className="h-3 w-3 opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing transition-opacity duration-150 p-1 rounded hover:bg-accent"
+          className="flex items-center justify-center h-6 w-6 opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing rounded hover:bg-accent transition-colors duration-150"
           onMouseDown={handleDragStart}
           onClick={(e) => e.stopPropagation()}
           aria-label={`Drag to reorder request: ${displayText}`}
         >
-          <GripVertical className="h-3 w-3 text-muted-foreground" />
+          <GripVertical className="h-4 w-4 text-muted-foreground" />
         </button>
 
         <span

@@ -51,7 +51,8 @@ const App = () => {
         )}
 
         {!isMobile && (
-          <div
+          <button
+            type="button"
             className="absolute left-0 top-0 w-1 h-full z-50 bg-transparent hover:bg-primary hover:opacity-20"
             onMouseEnter={() => activeSidebar()}
           />
@@ -103,7 +104,8 @@ const App = () => {
                     <RequestPanel />
                   </div>
 
-                  <div
+                  <button
+                    type="button"
                     className={cn(
                       "w-1 bg-border hover:bg-primary/50 cursor-col-resize",
                       isDragging && "bg-primary/50",
