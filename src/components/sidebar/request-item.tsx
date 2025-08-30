@@ -1,6 +1,6 @@
 import { GripVertical, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
-import type { RequestItem as RequestItemType } from "@/types/data";
+import type { ItemsType, RequestItem as RequestItemType } from "@/types/data";
 import { cn, getMethodColor } from "@/utils";
 
 interface RequestItemProps {
@@ -9,7 +9,11 @@ interface RequestItemProps {
   isDragged: boolean;
   onSelect: (requestId: string) => void;
   onDelete: (requestId: string) => void;
-  onDragStart: (e: React.DragEvent, type: "request" | "folder", id: string) => void;
+  onDragStart: (
+    e: React.DragEvent,
+    type: ItemsType,
+    id: string,
+  ) => void;
   onDragEnd: (e: React.DragEvent) => void;
 }
 
@@ -56,7 +60,8 @@ const RequestItem = ({
     : request.name || "Untitled Request";
 
   return (
-    <div
+    <button
+      type="button"
       draggable
       onDragStart={handleDragStart}
       onDragEnd={onDragEnd}
@@ -64,14 +69,12 @@ const RequestItem = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "group relative p-3 rounded-lg cursor-pointer",
+        "group relative w-full p-3 rounded-lg cursor-pointer text-left",
         isActive
           ? "bg-accent text-accent-foreground border border-border shadow-sm"
           : "hover:bg-muted text-muted-foreground hover:text-foreground",
         isDragged && "opacity-50 transform rotate-1",
       )}
-      role="button"
-      tabIndex={0}
       aria-label={`Select request: ${displayText}`}
     >
       <div className="flex items-center space-x-2">
@@ -86,10 +89,7 @@ const RequestItem = ({
           {request.request.method}
         </span>
 
-        <span
-          className="text-sm truncate flex-1 min-w-0"
-          title={displayText}
-        >
+        <span className="text-sm truncate flex-1 min-w-0" title={displayText}>
           {displayText}
         </span>
 
@@ -105,7 +105,7 @@ const RequestItem = ({
           </button>
         )}
       </div>
-    </div>
+    </button>
   );
 };
 

@@ -83,7 +83,8 @@ const ContextMenu = ({
         top: position.y,
         minWidth,
       }}
-      onClick={(e) => e.stopPropagation()}
+      role="menu"
+      aria-label="Context menu"
     >
       {items.map((item, index) => (
         <div key={item.id}>

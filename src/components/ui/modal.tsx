@@ -41,26 +41,29 @@ const Modal = memo(
       [closeOnEscape, onClose],
     );
 
-    const handleBackdropClick = useCallback(
-      (e: React.MouseEvent) => {
-        if (e.target === backdropRef.current && closeOnBackdrop) {
-          onClose();
-        }
-      },
-      [closeOnBackdrop, onClose],
-    );
-
     useEffect(() => {
       if (isOpen) {
-        document.addEventListener("keydown", handleKeyDown);
-        document.body.style.overflow = "hidden";
-      }
+        const handleDocumentClick = (e: MouseEvent) => {
+          if (
+            backdropRef.current &&
+            e.target === backdropRef.current &&
+            closeOnBackdrop
+          ) {
+            onClose();
+          }
+        };
 
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        document.body.style.overflow = "";
-      };
-    }, [isOpen, handleKeyDown]);
+        document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("mousedown", handleDocumentClick);
+        document.body.style.overflow = "hidden";
+
+        return () => {
+          document.removeEventListener("keydown", handleKeyDown);
+          document.removeEventListener("mousedown", handleDocumentClick);
+          document.body.style.overflow = "";
+        };
+      }
+    }, [isOpen, handleKeyDown, closeOnBackdrop, onClose]);
 
     const getSizeClasses = () => {
       switch (size) {
@@ -83,7 +86,6 @@ const Modal = memo(
       <div
         ref={backdropRef}
         className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        onClick={handleBackdropClick}
       >
         <section
           ref={modalRef}
@@ -92,7 +94,6 @@ const Modal = memo(
             getSizeClasses(),
             className,
           )}
-          onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between p-6 border-b border-border">
             <h3 className="text-lg font-semibold text-foreground">{title}</h3>

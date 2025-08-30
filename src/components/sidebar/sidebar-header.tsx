@@ -1,4 +1,4 @@
-import { Plus, Settings } from "lucide-react";
+import { Folder, Plus, Settings } from "lucide-react";
 import { useCallback } from "react";
 import type { ContextMenuItem } from "@/components/ui/context-menu";
 import ContextMenu from "@/components/ui/context-menu";
@@ -62,7 +62,7 @@ const SidebarHeader = ({
     {
       id: "folder",
       label: "Folder",
-      icon: Plus,
+      icon: Folder,
       onClick: onOpenFolderModal,
       separator: true,
     },

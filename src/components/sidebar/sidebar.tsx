@@ -5,6 +5,7 @@ import type { ContextMenuItem } from "@/components/ui/context-menu";
 import ContextMenu from "@/components/ui/context-menu";
 import { useContextMenu } from "@/hooks/ui/use-context-menu";
 import { useHttpStore } from "@/store/http-store";
+import type { ItemsType } from "@/types/data";
 import { cn } from "@/utils";
 import FolderItem from "./folder-item";
 import RequestItem from "./request-item";
@@ -33,7 +34,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
   } = useHttpStore();
 
   const [draggedItem, setDraggedItem] = useState<{
-    type: "request" | "folder";
+    type: ItemsType;
     id: string;
   } | null>(null);
   const [dragOverItem, setDragOverItem] = useState<string | null>(null);
@@ -127,7 +128,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
   );
 
   const handleDragStart = useCallback(
-    (e: React.DragEvent, type: "request" | "folder", id: string) => {
+    (e: React.DragEvent, type: ItemsType, id: string) => {
       e.stopPropagation();
 
       setDraggedItem({ type, id });
@@ -263,7 +264,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
 
   return (
     <>
-      <div
+      <nav
         className={cn(
           "w-80 h-full bg-card border-r border-border shadow-sm flex flex-col",
           className,
@@ -271,6 +272,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
         onMouseLeave={handleMouseLeave}
         onContextMenu={handleContextMenu}
         style={{ transition: "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)" }}
+        aria-label="Sidebar navigation"
       >
         <SidebarHeader
           onOpenEnvironmentModal={() => setShowEnvironmentModal(true)}
@@ -278,7 +280,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
           onOpenFolderModal={handleOpenFolderModal}
         />
 
-        <div
+        <section
           className="flex-1 overflow-y-auto p-2 min-h-0"
           onDragOver={(e) => {
             e.preventDefault();
@@ -287,6 +289,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
             }
           }}
           onDrop={handleDropOutsideFolder}
+          aria-label="Requests and folders list"
         >
           {requests.length > 0 || folders.length > 0 ? (
             <div className="space-y-2">
@@ -345,8 +348,8 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
               </div>
             </div>
           )}
-        </div>
-      </div>
+        </section>
+      </nav>
 
       <ContextMenu
         isOpen={contextMenu.isOpen}
