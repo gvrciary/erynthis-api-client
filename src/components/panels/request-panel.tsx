@@ -8,7 +8,7 @@ import Dropdown from "@/components/ui/drop-down";
 import Modal from "@/components/ui/modal";
 import { httpMethods, TABS } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
-import { useModal } from "@/hooks/ui/useModal";
+import { useModal } from "@/hooks/ui/use-modal";
 import { cn } from "@/utils";
 
 interface RequestPanelProps {

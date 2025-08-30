@@ -71,11 +71,11 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
     },
     [request],
   );
-  
+
   const isValidParamName = useCallback((name: string): boolean => {
     const paramNameRegex = /^[a-zA-Z0-9_-]+$/;
     return paramNameRegex.test(name);
-  }, []); 
+  }, []);
 
   const params = request?.request.params || [];
   const enabledCount = params.filter((p) => p.enabled).length;
@@ -85,35 +85,35 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
 
   const renderParamRow = useCallback(
     (param: HttpParam, index: number) => (
-      <div
-        key={param.id}
-        className={cn(
-          "group relative p-3 rounded-lg border",
-          param.enabled
-            ? "border-border hover:border-primary hover:bg-accent"
-            : "border-border opacity-60",
-        )}
-      >
-        <div className="flex items-center space-x-3">
-          <button
-            type="button"
-            onClick={() => toggleParam(param.id)}
-            className={cn(
-              "flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center",
-              param.enabled
-                ? "bg-primary border-primary"
-                : "bg-transparent border-border hover:border-primary",
-            )}
-          >
-            {param.enabled && (
-              <Check
-                className="h-2.5 w-2.5 text-primary-foreground"
-                strokeWidth={3}
-              />
-            )}
-          </button>
+      <div key={param.id}>
+        <div
+          className="grid grid-cols-12 gap-4 items-center py-3 border-b border-border hover:bg-accent transition-colors duration-150"
+          role="row"
+        >
+          <div className="col-span-1" role="gridcell">
+            <button
+              type="button"
+              onClick={() => toggleParam(param.id)}
+              className={cn(
+                "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                param.enabled
+                  ? "bg-primary border-primary text-primary-foreground"
+                  : "border-border hover:border-primary",
+              )}
+              title={`${param.enabled ? "Disable" : "Enable"} parameter`}
+              aria-label={`${param.enabled ? "Disable" : "Enable"} parameter ${param.key || "unnamed"}`}
+              aria-checked={param.enabled}
+              role="checkbox"
+            >
+              {param.enabled && (
+                <span className="text-xs font-bold" aria-hidden="true">
+                  ✓
+                </span>
+              )}
+            </button>
+          </div>
 
-          <div className="flex-1 min-w-0">
+          <div className="col-span-5" role="gridcell">
             <input
               type="text"
               value={param.key}
@@ -123,21 +123,21 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
               onBlur={() => setFocusedParam(null)}
               placeholder="Parameter name"
               className={cn(
-                "w-full px-3 py-2 bg-background border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
-                focusedParam === param.id
-                  ? "border-primary focus-ring"
-                  : isValidParamName(param.key) || !param.key
-                    ? "border-border hover:border-primary"
-                    : "border-red-500 ring-1 ring-red-500",
+                "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
+                "focus:ring-2 focus:ring-primary focus:ring-offset-1",
+                param.key && !isValidParamName(param.key) && "text-red-600",
               )}
+              aria-label="Parameter name"
+              autoComplete="off"
+              spellCheck={false}
             />
           </div>
 
-          <div className="flex-shrink-0 text-muted-foreground font-medium ">
-            =
+          <div className="col-span-1 flex justify-center" role="gridcell">
+            <span className="text-muted-foreground font-medium">=</span>
           </div>
 
-          <div className="flex-1 min-w-0">
+          <div className="col-span-4" role="gridcell">
             <input
               type="text"
               value={param.value}
@@ -147,28 +147,31 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
               onBlur={() => setFocusedParam(null)}
               placeholder="Parameter value"
               className={cn(
-                "w-full px-3 py-2 bg-background border border-border rounded-md text-foreground placeholder-muted-foreground outline-none text-sm",
-                focusedParam === param.id
-                  ? "border-primary focus-ring"
-                  : "hover:border-primary",
+                "w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded placeholder-muted-foreground transition-colors duration-150",
+                "focus:ring-2 focus:ring-primary focus:ring-offset-1",
               )}
+              aria-label="Parameter value"
+              autoComplete="off"
             />
           </div>
 
-          {index < params.length - 1 && (
-            <button
-              type="button"
-              onClick={() => removeParam(param.id)}
-              className="flex-shrink-0 p-1.5 rounded-md opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-600"
-              title="Remove parameter"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
+          <div className="col-span-1" role="gridcell">
+            {index < params.length - 1 && (
+              <button
+                type="button"
+                onClick={() => removeParam(param.id)}
+                className="p-1 rounded text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-150 focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+                title="Delete parameter"
+                aria-label={`Delete parameter ${param.key || "unnamed"}`}
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
         </div>
 
         {param.key && !isValidParamName(param.key) && (
-          <div className="mt-2 text-xs text-red-600 flex items-center space-x-2 ">
+          <div className="ml-16 mt-1 text-xs text-red-600 flex items-center space-x-2">
             <div className="w-1 h-1 bg-red-600 rounded-full"></div>
             <span>
               Invalid parameter name. Use only alphanumeric characters, hyphens,
@@ -179,7 +182,6 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
       </div>
     ),
     [
-      focusedParam,
       handleParamKeyChange,
       handleParamValueChange,
       handleKeyDown,
@@ -194,27 +196,44 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
 
   return (
     <div className={cn("flex flex-col h-full", className)}>
-      <div className="p-4 border-b border-border flex-shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <h3 className="text-sm font-medium text-foreground ">
-              Query Parameters
-            </h3>
-            <div className="flex items-center space-x-2 text-xs text-muted-foreground ">
-              <span className="px-2 py-1 bg-accent text-accent-foreground rounded font-medium">
-                {enabledCount} enabled
-              </span>
-              <span className="px-2 py-1 bg-muted text-muted-foreground rounded">
-                {totalCount} total
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto">
-          <div className="p-4 space-y-2">{params.map(renderParamRow)}</div>
+          <div className="p-4">
+            <div
+              className="grid grid-cols-12 gap-4 text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border pb-2 mb-4"
+              role="row"
+              aria-label="Table header"
+            >
+              <div
+                className="col-span-1"
+                role="columnheader"
+                aria-label="Enabled"
+              >
+              </div>
+              <div className="col-span-5" role="columnheader">
+                Parameter Name
+              </div>
+              <div
+                className="col-span-1"
+                role="columnheader"
+                aria-label="Separator"
+              >
+              </div>
+              <div className="col-span-4" role="columnheader">
+                Parameter Value
+              </div>
+              <div
+                className="col-span-1"
+                role="columnheader"
+                aria-label="Actions"
+              >
+              </div>
+            </div>
+
+            <div role="grid" aria-label="Parameters table">
+              {params.map(renderParamRow)}
+            </div>
+          </div>
         </div>
 
         <div className="p-4 border-t border-border flex-shrink-0">

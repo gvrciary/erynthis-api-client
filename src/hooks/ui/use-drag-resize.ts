@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 interface UseDragResizeProps {
-  dragScale: number;
   setDragScale: (scale: number) => void;
   minWidth?: number;
   maxWidth?: number;
@@ -15,7 +14,6 @@ interface UseDragResizeReturn {
 }
 
 export const useDragResize = ({
-  dragScale,
   setDragScale,
   minWidth = 47,
   maxWidth = 70,

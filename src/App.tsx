@@ -3,11 +3,11 @@ import { Menu } from "lucide-react";
 import { useCallback, useState } from "react";
 import RequestPanel from "@/components/panels/request-panel";
 import ResponsePanel from "@/components/panels/response-panel";
-import Sidebar from "@/components/ui/sidebar";
+import Sidebar from "@/components/sidebar/sidebar";
 import WelcomeScreen from "@/components/welcome";
-import { useDragResize } from "@/hooks/ui/useDragResize";
-import useMediaQuery from "@/hooks/ui/useMediaQuery";
-import { useSidebar } from "@/hooks/ui/useSidebar";
+import { useDragResize } from "@/hooks/ui/use-drag-resize";
+import useMediaQuery from "@/hooks/ui/use-media-query";
+import { useSidebar } from "@/hooks/ui/use-sidebar";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { useHttpStore } from "@/store/http-store";
 import { useUIStore } from "@/store/ui-store";
@@ -25,7 +25,6 @@ const App = () => {
   const { activeRequestId } = useHttpStore();
 
   const { containerRef, handleMouseDown } = useDragResize({
-    dragScale,
     setDragScale,
     isDragging,
     setIsDragging,

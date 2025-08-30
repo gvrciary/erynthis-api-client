@@ -328,10 +328,6 @@ const AuthTab = memo(({ className }: AuthTabProps) => {
   return (
     <div className={cn("flex flex-col h-full", className)}>
       <div className="p-4 border-b border-border flex-shrink-0 relative z-20">
-        <h3 className="text-sm font-medium text-foreground mb-4">
-          Authentication
-        </h3>
-
         <Dropdown
           options={AUTH_TYPES}
           value={requestItem.request.authType}

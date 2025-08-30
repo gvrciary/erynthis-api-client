@@ -255,10 +255,6 @@ const BodyTab = ({ className }: BodyTabProps) => {
   return (
     <div className={cn("flex flex-col h-full", className)}>
       <div className="p-4 border-b border-border flex-shrink-0 relative z-20">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-foreground ">Request Body</h3>
-        </div>
-
         <div className="flex items-center space-x-3">
           <div className="w-40">
             <Dropdown

@@ -1,9 +1,10 @@
-import { Globe, Plus, Settings, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/ui/modal";
-import { useEnvironments } from "@/hooks/data/useEnvironments.ts";
-import type { Variable } from "@/types/data.ts";
-import { cn } from "@/utils";
+import { useEnvironments } from "@/hooks/data/useEnvironments";
+import type { EnvironmentScope } from "@/types/data";
+import EnvironmentContent from "./environment-content";
+import EnvironmentSidebar from "./environment-sidebar";
+import NewEnvironmentModal from "./new-environment-modal";
 
 interface EnvironmentModalProps {
   isOpen: boolean;
@@ -22,22 +23,15 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     deleteGlobalVariable,
     addVariableEnvironment,
   } = useEnvironments();
+
   const [selectedEnvId, setSelectedEnvId] = useState<string | null>(null);
-  const [newEnvName, setNewEnvName] = useState("");
+  const [activeTab, setActiveTab] = useState<EnvironmentScope>("globals");
+
   const [showNewEnvModal, setShowNewEnvModal] = useState(false);
+  const [newEnvName, setNewEnvName] = useState("");
   const [envNameError, setEnvNameError] = useState("");
-  const [activeTab, setActiveTab] = useState<"environments" | "globals">(
-    "globals",
-  );
-  const newEnvInputRef = useRef<HTMLInputElement>(null);
 
   const selectedEnv = environments.find((env) => env.id === selectedEnvId);
-
-  useEffect(() => {
-    if (showNewEnvModal && newEnvInputRef.current) {
-      newEnvInputRef.current.focus();
-    }
-  }, [showNewEnvModal]);
 
   useEffect(() => {
     if (
@@ -60,6 +54,14 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     }
   }, [selectedEnv, addVariableEnvironment]);
 
+  const handleTabChange = useCallback((tab: EnvironmentScope) => {
+    setActiveTab(tab);
+  }, []);
+
+  const handleEnvironmentSelect = useCallback((envId: string) => {
+    setSelectedEnvId(envId);
+  }, []);
+
   const handleCreateEnvironment = useCallback(() => {
     const trimmedName = newEnvName.trim();
 
@@ -73,7 +75,7 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
         (env) => env.name.toLowerCase() === trimmedName.toLowerCase(),
       )
     ) {
-      setEnvNameError("An environment with this name already exists.");
+      setEnvNameError("An environment with this name already exists");
       return;
     }
 
@@ -97,8 +99,31 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     [deleteEnvironment, selectedEnvId, environments],
   );
 
+  const handleOpenNewEnvModal = useCallback(() => {
+    setShowNewEnvModal(true);
+    setNewEnvName("");
+    setEnvNameError("");
+  }, []);
+
+  const handleCloseNewEnvModal = useCallback(() => {
+    setShowNewEnvModal(false);
+    setNewEnvName("");
+    setEnvNameError("");
+  }, []);
+
+  const handleNewEnvNameChange = useCallback((name: string) => {
+    setNewEnvName(name);
+  }, []);
+
+  const handleNewEnvErrorClear = useCallback(() => {
+    setEnvNameError("");
+  }, []);
+
   const handleUpdateVariable = useCallback(
-    (variableId: string, updates: Partial<Variable>) => {
+    (
+      variableId: string,
+      updates: Partial<{ key: string; value: string; enabled: boolean }>,
+    ) => {
       if (!selectedEnv) return;
 
       const updatedVariables = selectedEnv.variables.map((variable) =>
@@ -150,6 +175,13 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     [selectedEnv, handleUpdateVariable],
   );
 
+  const handleVariableToggle = useCallback(
+    (variableId: string, enabled: boolean) => {
+      handleUpdateVariable(variableId, { enabled });
+    },
+    [handleUpdateVariable],
+  );
+
   const handleGlobalVariableKeyChange = useCallback(
     (variableId: string, key: string) => {
       const variable = globalVariables.find((v) => v.id === variableId);
@@ -174,112 +206,11 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     [globalVariables, updateGlobalVariable],
   );
 
-  const renderVariableRow = (
-    variable: Variable,
-    onKeyChange: (id: string, key: string) => void,
-    onValueChange: (id: string, value: string) => void,
-    onToggleEnabled: (id: string, enabled: boolean) => void,
-    onDelete: (id: string) => void,
-    index: number,
-  ) => (
-    <div
-      key={variable.id}
-      className="grid grid-cols-12 gap-4 items-center py-3 border-b border-border hover:bg-accent"
-    >
-      <div className="col-span-1">
-        <button
-          type="button"
-          onClick={() => onToggleEnabled(variable.id, !variable.enabled)}
-          className={cn(
-            "w-4 h-4 rounded border-2 flex items-center justify-center",
-            variable.enabled
-              ? "bg-primary border-primary text-primary-foreground"
-              : "border-border hover:border-primary",
-          )}
-        >
-          {variable.enabled && <span className="text-xs ">✓</span>}
-        </button>
-      </div>
-
-      <div className="col-span-5">
-        <input
-          type="text"
-          value={variable.key}
-          onChange={(e) => onKeyChange(variable.id, e.target.value)}
-          placeholder="VAR_NAME"
-          className="w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded  placeholder-muted-foreground"
-        />
-      </div>
-
-      <div className="col-span-5">
-        <input
-          type="text"
-          value={variable.value}
-          onChange={(e) => onValueChange(variable.id, e.target.value)}
-          placeholder="value"
-          className="w-full px-3 py-2 bg-transparent text-foreground text-sm border-none focus:outline-none focus:bg-accent rounded  placeholder-muted-foreground"
-        />
-      </div>
-
-      <div className="col-span-1">
-        {((activeTab === "globals" && index < globalVariables.length - 1) ||
-          (activeTab === "environments" &&
-            selectedEnv &&
-            index < selectedEnv.variables.length - 1)) && (
-          <button
-            type="button"
-            onClick={() => onDelete(variable.id)}
-            className="p-1 rounded text-muted-foreground hover:text-red-600"
-          >
-            <Trash2 className="h-3 w-3" />
-          </button>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderVariablesHeader = () => (
-    <div className="grid grid-cols-12 gap-4 text-xs font-medium text-muted-foreground uppercase tracking-wider border-b border-border pb-2 ">
-      <div className="col-span-1"></div>
-      <div className="col-span-5">Variable</div>
-      <div className="col-span-5">Value</div>
-      <div className="col-span-1"></div>
-    </div>
-  );
-
-  const renderEmptyState = () => (
-    <div className="text-center py-20 text-muted-foreground">
-      <Settings className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-      <p className="text-lg mb-2 ">Select an environment</p>
-      <p className="text-sm text-muted-foreground ">
-        Choose an environment from the sidebar to view and edit variables
-      </p>
-    </div>
-  );
-
-  const handleNewEnvModalClose = useCallback(() => {
-    setShowNewEnvModal(false);
-    setNewEnvName("");
-    setEnvNameError("");
-  }, []);
-
-  const newEnvModalFooter = (
-    <div className="flex space-x-3">
-      <button
-        type="button"
-        onClick={handleNewEnvModalClose}
-        className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-accent text-sm font-medium"
-      >
-        Cancel
-      </button>
-      <button
-        type="button"
-        onClick={handleCreateEnvironment}
-        className="flex-1 px-4 py-2 btn-primary rounded-lg text-sm font-medium"
-      >
-        Create Environment
-      </button>
-    </div>
+  const handleGlobalVariableToggle = useCallback(
+    (variableId: string, enabled: boolean) => {
+      updateGlobalVariable(variableId, { enabled });
+    },
+    [updateGlobalVariable],
   );
 
   return (
@@ -292,183 +223,42 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
         className="w-full max-w-4xl h-[85vh]"
       >
         <div className="flex h-full -m-6">
-          <div className="w-64 bg-muted rounded-l-lg flex flex-col border-r border-border flex-shrink-0">
-            <div className="p-4 border-b border-border flex-shrink-0">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-foreground font-medium">Environments</h2>
-                <button
-                  type="button"
-                  onClick={() => setShowNewEnvModal(true)}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
+          <EnvironmentSidebar
+            environments={environments}
+            activeTab={activeTab}
+            selectedEnvId={selectedEnvId}
+            onTabChange={handleTabChange}
+            onEnvironmentSelect={handleEnvironmentSelect}
+            onEnvironmentDelete={handleDeleteEnvironment}
+            onNewEnvironment={handleOpenNewEnvModal}
+          />
 
-            <div className="flex-1 overflow-y-auto min-h-0">
-              <div
-                className={cn(
-                  "p-3 border-b border-border cursor-pointer",
-                  activeTab === "globals"
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:bg-accent",
-                )}
-                onClick={() => setActiveTab("globals")}
-              >
-                <div className="flex items-center space-x-2">
-                  <Globe className="h-4 w-4" />
-                  <span className="text-sm font-medium">Global Variables</span>
-                </div>
-              </div>
-
-              {environments.map((env) => (
-                <div
-                  key={env.id}
-                  className={cn(
-                    "group p-3 border-b border-border cursor-pointer",
-                    activeTab === "environments" && selectedEnvId === env.id
-                      ? "bg-accent text-accent-foreground"
-                      : "text-muted-foreground hover:bg-accent",
-                  )}
-                  onClick={() => {
-                    setActiveTab("environments");
-                    setSelectedEnvId(env.id);
-                  }}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium truncate">
-                          {env.name}
-                        </span>
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {env.variables.length} variables
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteEnvironment(env.id);
-                      }}
-                      className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-100 text-muted-foreground hover:text-red-600"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex-1 bg-card rounded-r-lg flex flex-col min-w-0">
-            <div className="p-6 border-b border-border flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h1 className="text-2xl font-semibold text-foreground">
-                    {activeTab === "globals"
-                      ? "Global Variables"
-                      : selectedEnvId
-                        ? environments.find((env) => env.id === selectedEnvId)
-                            ?.name
-                        : "Select Environment"}
-                  </h1>
-                  {activeTab === "environments" && selectedEnvId && (
-                    <div className="flex items-center space-x-4 mt-2">
-                      <button
-                        type="button"
-                        className="text-primary hover:text-foreground text-sm"
-                      >
-                        Reveal Values
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6 min-h-0">
-              {activeTab === "globals" ? (
-                <div className="space-y-4">
-                  {renderVariablesHeader()}
-                  {globalVariables.map((variable, index) =>
-                    renderVariableRow(
-                      variable,
-                      handleGlobalVariableKeyChange,
-                      handleGlobalVariableValueChange,
-                      (id, enabled) => updateGlobalVariable(id, { enabled }),
-                      deleteGlobalVariable,
-                      index,
-                    ),
-                  )}
-                </div>
-              ) : selectedEnvId && selectedEnv ? (
-                <div className="space-y-4">
-                  {renderVariablesHeader()}
-                  {selectedEnv.variables.map((variable, index) =>
-                    renderVariableRow(
-                      variable,
-                      handleVariableKeyChange,
-                      handleVariableValueChange,
-                      (id, enabled) => handleUpdateVariable(id, { enabled }),
-                      handleDeleteVariable,
-                      index,
-                    ),
-                  )}
-                </div>
-              ) : (
-                renderEmptyState()
-              )}
-            </div>
-          </div>
+          <EnvironmentContent
+            activeTab={activeTab}
+            selectedEnv={selectedEnv}
+            globalVariables={globalVariables}
+            onGlobalKeyChange={handleGlobalVariableKeyChange}
+            onGlobalValueChange={handleGlobalVariableValueChange}
+            onGlobalToggle={handleGlobalVariableToggle}
+            onGlobalDelete={deleteGlobalVariable}
+            onVariableKeyChange={handleVariableKeyChange}
+            onVariableValueChange={handleVariableValueChange}
+            onVariableToggle={handleVariableToggle}
+            onVariableDelete={handleDeleteVariable}
+          />
         </div>
       </Modal>
 
-      <Modal
+      <NewEnvironmentModal
         isOpen={showNewEnvModal}
-        onClose={handleNewEnvModalClose}
-        title="New Environment"
-        size="md"
-        footer={newEnvModalFooter}
-      >
-        <div className="space-y-4">
-          <div>
-            <label
-              htmlFor="env-name"
-              className="block text-sm font-medium text-foreground mb-2"
-            >
-              Environment Name
-            </label>
-            <input
-              id="env-name"
-              ref={newEnvInputRef}
-              type="text"
-              value={newEnvName}
-              onChange={(e) => {
-                setNewEnvName(e.target.value);
-                if (envNameError) setEnvNameError("");
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleCreateEnvironment();
-                } else if (e.key === "Escape") {
-                  handleNewEnvModalClose();
-                }
-              }}
-              placeholder="Enter environment name"
-              className={cn(
-                "w-full px-3 py-2 text-sm border rounded-lg text-foreground placeholder-muted-foreground bg-background focus-ring",
-                envNameError ? "border-red-500 bg-red-50" : "border-border",
-              )}
-            />
-            {envNameError && (
-              <p className="mt-1 text-xs text-red-600">{envNameError}</p>
-            )}
-          </div>
-        </div>
-      </Modal>
+        onClose={handleCloseNewEnvModal}
+        onCreate={handleCreateEnvironment}
+        existingEnvironments={environments}
+        environmentName={newEnvName}
+        onNameChange={handleNewEnvNameChange}
+        error={envNameError}
+        onErrorClear={handleNewEnvErrorClear}
+      />
     </>
   );
 };
