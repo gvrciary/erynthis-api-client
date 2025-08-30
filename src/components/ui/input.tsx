@@ -35,7 +35,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         className={cn(
-          "w-full text-foreground placeholder-muted-foreground outline-none transition-colors duration-150",
+          "w-full text-foreground placeholder-muted-foreground outline-none",
           "disabled:cursor-not-allowed disabled:opacity-50",
           sizeClasses[size],
           variantClasses[variant],

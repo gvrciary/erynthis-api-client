@@ -21,10 +21,10 @@ interface ResponsePanelProps {
 }
 
 const LoadingState = () => (
-  <div className="p-4 border-b border-border bg-accent">
+  <div className="p-4 border-b border-border h-full flex items-center justify-center">
     <div className="flex items-center space-x-3">
       <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-      <span className="text-sm text-foreground">Sending request...</span>
+      <span className="text-sm text-foreground ml-2">Sending request...</span>
     </div>
   </div>
 );

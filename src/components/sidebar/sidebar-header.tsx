@@ -70,7 +70,7 @@ const SidebarHeader = ({
 
   return (
     <>
-      <div className="p-4 border-b border-border flex-shrink-0">
+      <div className="px-2 pt-3 pb-1 border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-1 flex-1 min-w-0">
             <button
