@@ -13,12 +13,12 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import EnvironmentModal from "@/components/environments/environment-modal";
 import { useEnvironments } from "@/hooks/data/useEnvironments";
 import { useTheme } from "@/providers/theme-provider";
 import { useHttpStore } from "@/store/http-store";
-import type { DropdownOption } from "@/types/data";
+import type { DropdownOption, RequestItem } from "@/types/data";
 import { cn, getMethodColor } from "@/utils";
 import Dropdown from "./drop-down";
 
@@ -95,17 +95,17 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
     }
   }, [showContextMenu.show]);
 
-  const handleCreateRequest = () => {
+  const handleCreateRequest = useCallback(() => {
     createRequest();
-  };
+  }, [createRequest]);
 
-  const handleOpenFolderModal = () => {
+  const handleOpenFolderModal = useCallback(() => {
     setShowFolderModal(true);
     setFolderName("");
     setFolderNameError("");
-  };
+  }, []);
 
-  const handleCreateFolder = () => {
+  const handleCreateFolder = useCallback(() => {
     const trimmedName = folderName.trim();
 
     if (!trimmedName) {
@@ -126,59 +126,74 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
     setShowFolderModal(false);
     setFolderName("");
     setFolderNameError("");
-  };
+  }, [folderName, folders, createFolder]);
 
-  const handleCloseFolderModal = () => {
+  const handleCloseFolderModal = useCallback(() => {
     setShowFolderModal(false);
     setFolderName("");
     setFolderNameError("");
-  };
+  }, []);
 
-  const handleDeleteRequest = (requestId: string) => {
-    deleteRequest(requestId);
-  };
+  const handleDeleteRequest = useCallback(
+    (requestId: string) => {
+      deleteRequest(requestId);
+    },
+    [deleteRequest],
+  );
 
-  const handleDeleteFolder = (folderId: string) => {
-    deleteFolder(folderId);
-  };
+  const handleDeleteFolder = useCallback(
+    (folderId: string) => {
+      deleteFolder(folderId);
+    },
+    [deleteFolder],
+  );
 
-  const handleEditFolder = (folderId: string, currentName: string) => {
-    setEditingFolder(folderId);
-    setEditingFolderName(currentName);
-    setTimeout(() => {
-      editInputRef.current?.focus();
-      editInputRef.current?.select();
-    }, 0);
-  };
+  const handleEditFolder = useCallback(
+    (folderId: string, currentName: string) => {
+      setEditingFolder(folderId);
+      setEditingFolderName(currentName);
+      setTimeout(() => {
+        editInputRef.current?.focus();
+        editInputRef.current?.select();
+      }, 0);
+    },
+    [],
+  );
 
-  const handleSaveEditFolder = () => {
+  const handleSaveEditFolder = useCallback(() => {
     if (editingFolder && editingFolderName.trim()) {
       updateNameToFolder(editingFolder, editingFolderName.trim());
     }
     setEditingFolder(null);
     setEditingFolderName("");
-  };
+  }, [editingFolder, editingFolderName, updateNameToFolder]);
 
-  const handleCancelEditFolder = () => {
+  const handleCancelEditFolder = useCallback(() => {
     setEditingFolder(null);
     setEditingFolderName("");
-  };
+  }, []);
 
-  const handleEditKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSaveEditFolder();
-    } else if (e.key === "Escape") {
-      handleCancelEditFolder();
-    }
-  };
+  const handleEditKeyPress = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        handleSaveEditFolder();
+      } else if (e.key === "Escape") {
+        handleCancelEditFolder();
+      }
+    },
+    [handleSaveEditFolder, handleCancelEditFolder],
+  );
 
-  const handleSetActiveEnvironment = (envId: string) => {
-    if (envId === "none") {
-      setActiveEnvironment(null);
-    } else {
-      setActiveEnvironment(envId);
-    }
-  };
+  const handleSetActiveEnvironment = useCallback(
+    (envId: string) => {
+      if (envId === "none") {
+        setActiveEnvironment(null);
+      } else {
+        setActiveEnvironment(envId);
+      }
+    },
+    [setActiveEnvironment],
+  );
 
   const environmentOptions: DropdownOption[] = [
     {
@@ -206,33 +221,35 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
     },
   ];
 
-  const handleAddItemSelect = (value: string) => {
-    if (value === "request") {
-      handleCreateRequest();
-    } else if (value === "folder") {
-      handleOpenFolderModal();
-    }
-  };
+  const handleAddItemSelect = useCallback(
+    (value: string) => {
+      if (value === "request") {
+        handleCreateRequest();
+      } else if (value === "folder") {
+        handleOpenFolderModal();
+      }
+    },
+    [handleCreateRequest, handleOpenFolderModal],
+  );
 
-  const handleDragStart = (
-    e: React.DragEvent,
-    type: "request" | "folder",
-    id: string,
-  ) => {
-    e.stopPropagation();
+  const handleDragStart = useCallback(
+    (e: React.DragEvent, type: "request" | "folder", id: string) => {
+      e.stopPropagation();
 
-    setDraggedItem({ type, id });
+      setDraggedItem({ type, id });
 
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", id);
-    e.dataTransfer.setData("application/x-item-type", type);
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", id);
+      e.dataTransfer.setData("application/x-item-type", type);
 
-    const element = e.currentTarget as HTMLElement;
-    element.style.opacity = "0.5";
-    element.style.transform = "rotate(2deg)";
-  };
+      const element = e.currentTarget as HTMLElement;
+      element.style.opacity = "0.5";
+      element.style.transform = "rotate(2deg)";
+    },
+    [],
+  );
 
-  const handleDragEnd = (e: React.DragEvent) => {
+  const handleDragEnd = useCallback((e: React.DragEvent) => {
     e.stopPropagation();
 
     const element = e.currentTarget as HTMLElement;
@@ -241,23 +258,26 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
 
     setDraggedItem(null);
     setDragOverItem(null);
-  };
+  }, []);
 
-  const handleDragOver = (e: React.DragEvent, targetId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDragOver = useCallback(
+    (e: React.DragEvent, targetId: string) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    if (
-      draggedItem &&
-      draggedItem.type === "request" &&
-      draggedItem.id !== targetId
-    ) {
-      e.dataTransfer.dropEffect = "move";
-      setDragOverItem(targetId);
-    }
-  };
+      if (
+        draggedItem &&
+        draggedItem.type === "request" &&
+        draggedItem.id !== targetId
+      ) {
+        e.dataTransfer.dropEffect = "move";
+        setDragOverItem(targetId);
+      }
+    },
+    [draggedItem],
+  );
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -268,51 +288,57 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
     if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
       setDragOverItem(null);
     }
-  };
+  }, []);
 
-  const handleDrop = (e: React.DragEvent, targetFolderId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDrop = useCallback(
+    (e: React.DragEvent, targetFolderId: string) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    const draggedId = e.dataTransfer.getData("text/plain");
-    const draggedType = e.dataTransfer.getData("application/x-item-type");
+      const draggedId = e.dataTransfer.getData("text/plain");
+      const draggedType = e.dataTransfer.getData("application/x-item-type");
 
-    setDragOverItem(null);
+      setDragOverItem(null);
 
-    if (
-      !draggedId ||
-      draggedType !== "request" ||
-      draggedId === targetFolderId
-    ) {
-      return;
-    }
-
-    addRequestToFolder(draggedId, targetFolderId);
-    setDraggedItem(null);
-  };
-
-  const handleDropOutsideFolder = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const draggedId = e.dataTransfer.getData("text/plain");
-    const draggedType = e.dataTransfer.getData("application/x-item-type");
-
-    if (!draggedId || draggedType !== "request") {
-      return;
-    }
-
-    folders.forEach((folder) => {
-      if (folder.requests.includes(draggedId)) {
-        removeRequestFromFolder(draggedId, folder.id);
+      if (
+        !draggedId ||
+        draggedType !== "request" ||
+        draggedId === targetFolderId
+      ) {
+        return;
       }
-    });
 
-    setDraggedItem(null);
-    setDragOverItem(null);
-  };
+      addRequestToFolder(draggedId, targetFolderId);
+      setDraggedItem(null);
+    },
+    [addRequestToFolder],
+  );
 
-  const handleContextMenu = (e: React.MouseEvent) => {
+  const handleDropOutsideFolder = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const draggedId = e.dataTransfer.getData("text/plain");
+      const draggedType = e.dataTransfer.getData("application/x-item-type");
+
+      if (!draggedId || draggedType !== "request") {
+        return;
+      }
+
+      folders.forEach((folder) => {
+        if (folder.requests.includes(draggedId)) {
+          removeRequestFromFolder(draggedId, folder.id);
+        }
+      });
+
+      setDraggedItem(null);
+      setDragOverItem(null);
+    },
+    [folders, removeRequestFromFolder],
+  );
+
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setShowContextMenu({
@@ -320,24 +346,30 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
       y: e.clientY,
       show: true,
     });
-  };
+  }, []);
 
-  const handleCreateFromContext = (type: "request" | "folder") => {
-    setShowContextMenu({ x: 0, y: 0, show: false });
-    if (type === "folder") {
-      handleOpenFolderModal();
-    } else {
-      handleCreateRequest();
-    }
-  };
+  const handleCreateFromContext = useCallback(
+    (type: "request" | "folder") => {
+      setShowContextMenu({ x: 0, y: 0, show: false });
+      if (type === "folder") {
+        handleOpenFolderModal();
+      } else {
+        handleCreateRequest();
+      }
+    },
+    [handleOpenFolderModal, handleCreateRequest],
+  );
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleCreateFolder();
-    } else if (e.key === "Escape") {
-      handleCloseFolderModal();
-    }
-  };
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        handleCreateFolder();
+      } else if (e.key === "Escape") {
+        handleCloseFolderModal();
+      }
+    },
+    [handleCreateFolder, handleCloseFolderModal],
+  );
 
   const hasOpenModals =
     showEnvironmentModal ||
@@ -345,57 +377,71 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
     showContextMenu.show ||
     editingFolder;
 
-  const handleMouseLeave = (_e: React.MouseEvent) => {
-    if (hasOpenModals) {
-      return;
-    }
-    onMouseLeave();
-  };
+  const handleMouseLeave = useCallback(
+    (_e: React.MouseEvent) => {
+      if (hasOpenModals) {
+        return;
+      }
+      onMouseLeave();
+    },
+    [hasOpenModals, onMouseLeave],
+  );
 
-  const renderRequestItem = (request: any) => (
-    <div
-      key={request.id}
-      draggable
-      onDragStart={(e) => handleDragStart(e, "request", request.id)}
-      onDragEnd={handleDragEnd}
-      onClick={() => setActiveRequest(request.id)}
-      onMouseEnter={() => setHoveredRequest(request.id)}
-      onMouseLeave={() => setHoveredRequest(null)}
-      className={cn(
-        "group relative p-3 rounded-lg cursor-pointer",
-        activeRequestId === request.id
-          ? "bg-accent text-accent-foreground border border-border"
-          : "hover:bg-muted text-muted-foreground",
-        draggedItem?.id === request.id && "opacity-50",
-      )}
-    >
-      <div className="flex items-center space-x-2">
-        <GripVertical className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing" />
-        <span
-          className={cn(
-            "text-xs px-2 py-1 rounded font-medium border",
-            getMethodColor(request.request.method),
-          )}
-        >
-          {request.request.method}
-        </span>
-        <span className="text-sm truncate flex-1">
-          {request.request.url.trim() ? request.request.url : request.name}
-        </span>
-        {hoveredRequest === request.id && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeleteRequest(request.id);
-            }}
-            className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
-          >
-            <Trash2 className="h-3 w-3" />
-          </button>
+  const renderRequestItem = useCallback(
+    (request: RequestItem) => (
+      <div
+        key={request.id}
+        draggable
+        onDragStart={(e) => handleDragStart(e, "request", request.id)}
+        onDragEnd={handleDragEnd}
+        onClick={() => setActiveRequest(request.id)}
+        onMouseEnter={() => setHoveredRequest(request.id)}
+        onMouseLeave={() => setHoveredRequest(null)}
+        className={cn(
+          "group relative p-3 rounded-lg cursor-pointer",
+          activeRequestId === request.id
+            ? "bg-accent text-accent-foreground border border-border"
+            : "hover:bg-muted text-muted-foreground",
+          draggedItem?.id === request.id && "opacity-50",
         )}
+      >
+        <div className="flex items-center space-x-2">
+          <GripVertical className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing" />
+          <span
+            className={cn(
+              "text-xs px-2 py-1 rounded font-medium border",
+              getMethodColor(request.request.method),
+            )}
+          >
+            {request.request.method}
+          </span>
+          <span className="text-sm truncate flex-1">
+            {request.request.url.trim() ? request.request.url : request.name}
+          </span>
+          {hoveredRequest === request.id && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteRequest(request.id);
+              }}
+              className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
+            >
+              <Trash2 className="h-3 w-3" />
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+    ),
+    [
+      activeRequestId,
+      draggedItem,
+      hoveredRequest,
+      handleDeleteRequest,
+      setActiveRequest,
+      handleDragStart,
+      handleDragEnd,
+    ],
   );
 
   if (!visible) return null;
@@ -613,8 +659,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
       </div>
 
       {showContextMenu.show && (
-        <button
-          type="button"
+        <div
           className="fixed z-50 bg-card border border-border rounded-md shadow-lg py-1 min-w-32 animate-in fade-in-0 zoom-in-95"
           style={{
             left: showContextMenu.x,
@@ -625,23 +670,25 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
           <button
             type="button"
             onClick={() => handleCreateFromContext("request")}
-            className="w-full px-3 py-2 text-left hover:bg-muted flex items-center space-x-2 text-sm "
+            className="w-full px-3 py-2 text-left flex items-center space-x-2 text-sm hover:bg-muted hover:text-foreground hover:shadow-sm hover:bg-zinc-300/50 dark:hover:bg-zinc-600/50"
           >
             <Globe className="h-4 w-4 text-muted-foreground" />
             <span className="capitalize">HTTP Request</span>
           </button>
-          <div className="border-t border-border mt-1 pt-1">
-            <button
-              type="button"
-              onClick={() => handleCreateFromContext("folder")}
-              className="w-full px-3 py-2 text-left hover:bg-muted flex items-center space-x-2 text-sm "
-            >
-              <Folder className="h-4 w-4 text-muted-foreground" />
-              <span>Folder</span>
-            </button>
-          </div>
-        </button>
+      
+          <div className="border-t border-border my-1" />
+      
+          <button
+            type="button"
+            onClick={() => handleCreateFromContext("folder")}
+            className="w-full px-3 py-2 text-left flex items-center space-x-2 text-sm hover:bg-muted hover:text-foreground hover:shadow-sm hover:bg-zinc-300/50 dark:hover:bg-zinc-600/50"
+          >
+            <Folder className="h-4 w-4 text-muted-foreground" />
+            <span>Folder</span>
+          </button>
+        </div>
       )}
+
 
       {showFolderModal && (
         <div className="fixed inset-0 bg-primary/20 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in-0">

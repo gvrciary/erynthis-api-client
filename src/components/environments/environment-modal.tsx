@@ -267,17 +267,17 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     <div className="flex space-x-3">
       <button
         type="button"
-        onClick={handleCreateEnvironment}
-        className="flex-1 px-4 py-2 btn-primary rounded-lg text-sm font-medium"
-      >
-        Create Environment
-      </button>
-      <button
-        type="button"
         onClick={handleNewEnvModalClose}
         className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-accent text-sm font-medium"
       >
         Cancel
+      </button>
+      <button
+        type="button"
+        onClick={handleCreateEnvironment}
+        className="flex-1 px-4 py-2 btn-primary rounded-lg text-sm font-medium"
+      >
+        Create Environment
       </button>
     </div>
   );

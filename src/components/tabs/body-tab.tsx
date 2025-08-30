@@ -3,7 +3,12 @@ import { useCallback, useRef } from "react";
 import Dropdown from "@/components/ui/drop-down";
 import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "@/constants";
 import { useHttpRequest } from "@/hooks/http/useHttpRequest";
-import type { BodyType, DropdownOption, FormSubtype, TextSubtype } from "@/types/data";
+import type {
+  BodyType,
+  DropdownOption,
+  FormSubtype,
+  TextSubtype,
+} from "@/types/data";
 import { cn } from "@/utils";
 
 interface BodyTabProps {
@@ -22,8 +27,14 @@ const BodyTab = ({ className }: BodyTabProps) => {
   const request = getSelectedRequest();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  const { bodyType, textSubtype, formSubtype, binaryFile } = request.request;
+
+  const { bodyType, textSubtype, formSubtype, binaryFile } =
+    request?.request ?? {
+      bodyType: "none" as BodyType,
+      textSubtype: "json" as TextSubtype,
+      formSubtype: "urlencoded" as FormSubtype,
+      binaryFile: null,
+    };
 
   const handleBodyChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -75,7 +86,7 @@ const BodyTab = ({ className }: BodyTabProps) => {
     },
     [setBinaryFile, setBody],
   );
-  
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === "Tab") {
@@ -104,6 +115,16 @@ const BodyTab = ({ className }: BodyTabProps) => {
         : [];
   const shouldShowSubtypeDropdown = () =>
     bodyType === "text" || bodyType === "form";
+
+  if (!request) {
+    return (
+      <div className={cn("flex flex-col h-full", className)}>
+        <div className="flex items-center justify-center h-full text-muted-foreground">
+          <p>No request selected</p>
+        </div>
+      </div>
+    );
+  }
 
   const renderTextArea = (placeholder: string) => (
     <textarea

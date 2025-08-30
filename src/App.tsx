@@ -1,20 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu } from "lucide-react";
-import { memo, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import RequestPanel from "@/components/panels/request-panel";
 import ResponsePanel from "@/components/panels/response-panel";
-import { ThemeProvider } from "@/providers/theme-provider";
 import Sidebar from "@/components/ui/sidebar";
 import WelcomeScreen from "@/components/welcome";
 import { useDragResize } from "@/hooks/ui/useDragResize";
 import useMediaQuery from "@/hooks/ui/useMediaQuery";
 import { useSidebar } from "@/hooks/ui/useSidebar";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { useHttpStore } from "@/store/http-store";
 import { useUIStore } from "@/store/ui-store";
-import { overlayAnimations, sidebarAnimations } from "@/utils/animations";
 import { cn } from "@/utils";
+import { overlayAnimations, sidebarAnimations } from "@/utils/animations";
 
-const App = memo(() => {
+const App = () => {
   const { dragScale, setDragScale } = useUIStore();
   const [activeTab, setActiveTab] = useState<"request" | "response">("request");
   const [isDragging, setIsDragging] = useState(false);
@@ -173,8 +173,6 @@ const App = memo(() => {
       </div>
     </ThemeProvider>
   );
-});
-
-App.displayName = "App";
+};
 
 export default App;
