@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useHttpStore } from "@/store/http-store";
 import type { AuthType } from "@/types/data";
-import { useHttpHeaders } from "./useHttpHeaders";
+import { useHttpHeaders } from "./use-http-headers";
 
 export const useHttpAuth = () => {
   const {
@@ -11,6 +11,7 @@ export const useHttpAuth = () => {
     updateHeaderValue,
     removeHeader,
   } = useHttpHeaders();
+  
   const { setAuthType, updateCredentials } = useHttpStore();
 
   const updateAuthHeaders = useCallback(() => {

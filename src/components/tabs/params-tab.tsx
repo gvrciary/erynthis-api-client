@@ -1,7 +1,7 @@
 import { Link, X } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import Input from "@/components/ui/input";
-import { useHttpParams } from "@/hooks/http/useHttpParams";
+import { useHttpParams } from "@/hooks/http/use-http-params";
 import type { HttpParam } from "@/types/http";
 import { cn } from "@/utils";
 import Tooltip from "../ui/tooltip";

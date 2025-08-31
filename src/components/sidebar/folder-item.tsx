@@ -9,13 +9,13 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Input from "@/components/ui/input";
+import Tooltip from "@/components/ui/tooltip";
 import type {
   FolderItem as FolderItemType,
   ItemsType,
   RequestItem as RequestItemType,
 } from "@/types/data";
 import { cn } from "@/utils";
-import Tooltip from "@/components/ui/tooltip";
 import RequestItem from "./request-item";
 
 interface FolderItemProps {

@@ -5,7 +5,7 @@ import ResponseHeadersTab from "@/components/tabs/response-headers-tab";
 import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
 import { RESPONSE_TABS } from "@/constants";
-import { useHttpRequest } from "@/hooks/http/useHttpRequest";
+import { useHttpRequest } from "@/hooks/http/use-http-requests";
 import { useHttpStore } from "@/store/http-store";
 import type { BodyViewType, RequestItem, ResponseHistoryItem } from "@/types/data";
 import type { HttpError, HttpResponse } from "@/types/http";

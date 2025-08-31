@@ -1,5 +1,4 @@
 import { FileWarning } from "lucide-react";
-
 import CopyButton from "@/components/ui/copy-button";
 import EmptyState from "@/components/ui/empty-state";
 import type { HttpResponse } from "@/types/http";

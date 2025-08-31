@@ -1,8 +1,9 @@
 import { FileText, Upload } from "lucide-react";
 import { useCallback, useRef } from "react";
 import Dropdown from "@/components/ui/drop-down";
+import Input from "@/components/ui/input";
 import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "@/constants";
-import { useHttpRequest } from "@/hooks/http/useHttpRequest";
+import { useHttpRequest } from "@/hooks/http/use-http-requests";
 import type {
   BodyType,
   DropdownOption,
@@ -10,7 +11,6 @@ import type {
   TextSubtype,
 } from "@/types/data";
 import { cn } from "@/utils";
-import Input from "@/components/ui/input";
 
 interface BodyTabProps {
   className?: string;

@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import Input from "@/components/ui/input";
-import { useHttpHeaders } from "@/hooks/http/useHttpHeaders";
+import { useHttpHeaders } from "@/hooks/http/use-http-headers";
 import type { HttpHeader } from "@/types/http";
 import { cn } from "@/utils";
 import Tooltip from "../ui/tooltip";

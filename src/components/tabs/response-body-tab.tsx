@@ -4,10 +4,10 @@ import SyntaxHighlighter from "@/components/syntax-highlighter";
 import CopyButton from "@/components/ui/copy-button";
 import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
+import Tooltip from "@/components/ui/tooltip";
 import { VIEW_MODE_OPTIONS } from "@/constants/index";
 import type { BodyViewType } from "@/types/data";
 import type { HttpResponse } from "@/types/http";
-import Tooltip from "@/components/ui/tooltip";
 
 interface ResponseBodyTabProps {
   responseData: HttpResponse | null;

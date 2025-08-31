@@ -4,7 +4,7 @@ import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
 import Input from "@/components/ui/input";
 import { AUTH_TYPES, LOCATION_OPTIONS, TOKEN_TYPE_OPTIONS } from "@/constants";
-import { useHttpAuth } from "@/hooks/http/useHttpAuth";
+import { useHttpAuth } from "@/hooks/http/use-http-auth";
 import type { AuthCredentials } from "@/types/http";
 import { cn } from "@/utils";
 

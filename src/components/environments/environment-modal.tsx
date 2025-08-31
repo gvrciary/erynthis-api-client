@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/ui/modal";
-import { useEnvironments } from "@/hooks/data/useEnvironments";
+import { useEnvironmentStore } from "@/store/environment-store";
 import type { EnvironmentScope } from "@/types/data";
 import EnvironmentContent from "./environment-content";
 import EnvironmentSidebar from "./environment-sidebar";
@@ -22,7 +22,7 @@ const EnvironmentModal = ({ isOpen, onClose }: EnvironmentModalProps) => {
     updateGlobalVariable,
     deleteGlobalVariable,
     addVariableEnvironment,
-  } = useEnvironments();
+  } = useEnvironmentStore();
 
   const [selectedEnvId, setSelectedEnvId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<EnvironmentScope>("globals");

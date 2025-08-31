@@ -1,8 +1,8 @@
 import { GripVertical, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
+import Tooltip from "@/components/ui/tooltip";
 import type { ItemsType, RequestItem as RequestItemType } from "@/types/data";
 import { cn, getMethodColor } from "@/utils";
-import Tooltip from "@/components/ui/tooltip";
 
 interface RequestItemProps {
   request: RequestItemType;

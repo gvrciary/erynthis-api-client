@@ -1,13 +1,13 @@
 import { Folder, Plus, Settings } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import type { ContextMenuItem } from "@/components/ui/context-menu";
 import ContextMenu from "@/components/ui/context-menu";
 import Dropdown from "@/components/ui/drop-down";
-import { useEnvironments } from "@/hooks/data/useEnvironments";
-import { useContextMenu } from "@/hooks/ui/use-context-menu";
-import type { DropdownOption } from "@/types/data";
 import ToggleMode from "@/components/ui/toggle-mode";
 import Tooltip from "@/components/ui/tooltip";
+import { useContextMenu } from "@/hooks/ui/use-context-menu";
+import { useEnvironmentStore } from "@/store/environment-store";
+import type { DropdownOption } from "@/types/data";
 
 interface SidebarHeaderProps {
   onOpenEnvironmentModal: () => void;
@@ -20,14 +20,14 @@ const SidebarHeader = ({
   onCreateRequest,
   onOpenFolderModal,
 }: SidebarHeaderProps) => {
-  const {
-    environments,
-    activeEnvironmentId,
-    activeEnvironment,
-    setActiveEnvironment,
-  } = useEnvironments();
+  const { environments, activeEnvironmentId, setActiveEnvironment } =
+    useEnvironmentStore();
 
   const { contextMenu, handleContextMenu, closeContextMenu } = useContextMenu();
+
+  const activeEnvironment = useMemo(() => {
+    return environments.find((env) => env.id === activeEnvironmentId) || null;
+  }, [environments, activeEnvironmentId]);
 
   const handleSetActiveEnvironment = useCallback(
     (envId: string) => {
@@ -74,7 +74,7 @@ const SidebarHeader = ({
       <div className="px-2 pt-3 pb-1 border-b border-border flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-1 flex-1 min-w-0">
-            <Tooltip content="Settings" side="bottom">
+            <Tooltip content="Settings" side="right">
               <button
                 type="button"
                 onClick={onOpenEnvironmentModal}

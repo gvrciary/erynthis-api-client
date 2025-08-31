@@ -8,7 +8,7 @@ import Dropdown from "@/components/ui/drop-down";
 import Input from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
 import { httpMethods, TABS } from "@/constants";
-import { useHttpRequest } from "@/hooks/http/useHttpRequest";
+import { useHttpRequest } from "@/hooks/http/use-http-requests";
 import { useModal } from "@/hooks/ui/use-modal";
 import { cn } from "@/utils";
 import Tooltip from "@/components/ui/tooltip";
