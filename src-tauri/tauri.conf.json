@@ -1,38 +1,67 @@
 {
-	"$schema": "https://schema.tauri.app/config/2",
-	"productName": "erynthis-api-client",
-	"version": "0.1.0",
-	"identifier": "com.erynthis-client.app",
-	"build": {
-		"beforeDevCommand": "npm run dev",
-		"devUrl": "http://localhost:1420",
-		"beforeBuildCommand": "npm run build",
-		"frontendDist": "../dist"
-	},
-	"app": {
-		"macOSPrivateApi": true,
-		"windows": [
-			{
-				"title": "erynthis",
-				"width": 1024,
-				"height": 768,
-				"dragDropEnabled": false,
-				"transparent": true
-			}
-		],
-		"security": {
-			"csp": null
-		}
-	},
-	"bundle": {
-		"active": true,
-		"targets": "all",
-		"icon": [
-			"icons/32x32.png",
-			"icons/128x128.png",
-			"icons/128x128@2x.png",
-			"icons/icon.icns",
-			"icons/icon.ico"
-		]
-	}
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "erynthis-api-client",
+  "version": "0.1.0",
+  "identifier": "com.api.erynthis",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "erynthis",
+        "width": 1200,
+        "height": 800,
+        "hiddenTitle": true,
+        "transparent": false,
+        "decorations": true,
+        "titleBarStyle": "Overlay",
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "shadow": true,
+        "trafficLightPosition": { "x": 15, "y": 15 }
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' asset:;",
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**"]
+      }
+    },
+    "macOSPrivateApi": true
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "createUpdaterArtifacts": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "10.15",
+      "signingIdentity": null,
+      "entitlements": null
+    }
+  },
+  "plugins": {
+    "fs": { "requireLiteralLeadingDot": false },
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://erynthis.vercel.app/updates/{{target}}/{{current_version}}"
+      ],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDkwMkM1MzlDMjVDRUUyQjgKUldTNDRzNGxuRk1za0FiWXRIRW9ieUozUWFpNk9XbXJzZ1JDcDlJT3RiSEt1NHZwTG5JeUxZUFYK"
+    }
+  }
 }

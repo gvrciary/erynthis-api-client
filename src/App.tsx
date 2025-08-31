@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import RequestPanel from "@/components/panels/request-panel";
 import ResponsePanel from "@/components/panels/response-panel";
 import Sidebar from "@/components/sidebar/sidebar";
+import TitleBar from "@/components/title-bar";
 import WelcomeScreen from "@/components/welcome";
 import { useDragResize } from "@/hooks/use-drag-resize";
 import useMediaQuery from "@/hooks/use-media-query";
@@ -37,6 +38,8 @@ const App = () => {
   return (
     <ThemeProvider>
       <div className="h-screen bg-background flex flex-col select-none overflow-hidden">
+        <TitleBar />
+
         {isMobile && (
           <div className="bg-background border-b border-border px-4 py-3 flex items-center justify-between flex-shrink-0">
             <button

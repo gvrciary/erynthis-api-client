@@ -246,7 +246,7 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
     <>
       <nav
         className={cn(
-          "w-80 h-full bg-card border-r border-border shadow-sm flex flex-col",
+          "w-80 h-full mt-8 bg-card border-r border-border shadow-sm flex flex-col",
           className,
         )}
         onMouseLeave={handleMouseLeave}
