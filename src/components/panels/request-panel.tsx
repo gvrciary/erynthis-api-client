@@ -9,7 +9,7 @@ import Input from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
 import Tooltip from "@/components/ui/tooltip";
 import { httpMethods, TABS } from "@/constants";
-import { useModal } from "@/hooks/use-modal";
+
 import { useHttpStore } from "@/store/http-store";
 import { cn } from "@/utils";
 
@@ -28,8 +28,10 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
 
   const [customMethod, setCustomMethod] = useState("");
   const [isCustomMethodActive, setIsCustomMethodActive] = useState(false);
+  const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
+  const [tempCustomMethod, setTempCustomMethod] = useState("");
   const request = getSelectedRequest();
-  
+
   const executeRequest = useCallback(async () => {
     if (!request) return;
 
@@ -46,34 +48,49 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
     return request.request.url.trim().length > 0;
   }, [request]);
 
-  const handleCustomMethodSaveCallback = useCallback(
-    (value: string) => {
-      setCustomMethod(value);
-      setMethod(value);
+  const isCustomMethodValid =
+    tempCustomMethod.trim().length > 0 && tempCustomMethod.trim().length <= 15;
+
+  const openCustomModal = useCallback(() => {
+    setTempCustomMethod(customMethod);
+    setIsCustomModalOpen(true);
+  }, [customMethod]);
+
+  const closeCustomModal = useCallback(() => {
+    setIsCustomModalOpen(false);
+    setTempCustomMethod("");
+  }, []);
+
+  const handleCustomMethodChange = useCallback((value: string) => {
+    setTempCustomMethod(value.toUpperCase());
+  }, []);
+
+  const handleCustomMethodSave = useCallback(() => {
+    if (isCustomMethodValid) {
+      const trimmedValue = tempCustomMethod.trim();
+      setCustomMethod(trimmedValue);
+      setMethod(trimmedValue);
       setIsCustomMethodActive(true);
+      closeCustomModal();
+    }
+  }, [isCustomMethodValid, tempCustomMethod, setMethod, closeCustomModal]);
+
+  const handleCustomMethodCancel = useCallback(() => {
+    closeCustomModal();
+  }, [closeCustomModal]);
+
+  const handleCustomMethodKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleCustomMethodSave();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        handleCustomMethodCancel();
+      }
     },
-    [setMethod],
+    [handleCustomMethodSave, handleCustomMethodCancel],
   );
-
-  const customMethodValidator = (value: string) => {
-    return value.trim().length > 0 && value.trim().length <= 15;
-  };
-
-  const {
-    isOpen: isCustomModalOpen,
-    tempValue: tempCustomMethod,
-    isValid: isCustomMethodValid,
-    openModal: openCustomModal,
-    closeModal: closeCustomModal,
-    handleValueChange: handleCustomMethodChange,
-    handleSave: handleCustomMethodSave,
-    handleCancel: handleCustomMethodCancel,
-    handleKeyDown: handleCustomMethodKeyDown,
-  } = useModal({
-    onSave: handleCustomMethodSaveCallback,
-    initialValue: customMethod,
-    validator: customMethodValidator,
-  });
 
   const handleMethodChange = useCallback(
     (method: string) => {
@@ -230,9 +247,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
             id="customMethod"
             type="text"
             value={tempCustomMethod}
-            onChange={(e) =>
-              handleCustomMethodChange(e.target.value.toUpperCase())
-            }
+            onChange={(e) => handleCustomMethodChange(e.target.value)}
             placeholder="Ej: TRACE, CONNECT, etc."
             variant="default"
             maxLength={15}

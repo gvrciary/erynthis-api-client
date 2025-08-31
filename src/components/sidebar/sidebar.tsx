@@ -1,9 +1,9 @@
-import { X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import EnvironmentModal from "@/components/environments/environment-modal";
 import type { ContextMenuItem } from "@/components/ui/context-menu";
 import ContextMenu from "@/components/ui/context-menu";
 import Input from "@/components/ui/input";
+import Modal from "@/components/ui/modal";
 import { useContextMenu } from "@/hooks/use-context-menu";
 import { useHttpStore } from "@/store/http-store";
 import type { ItemsType } from "@/types/data";
@@ -345,69 +345,57 @@ const Sidebar = ({ visible, onMouseLeave, className }: SidebarProps) => {
         minWidth={150}
       />
 
-      {showFolderModal && (
-        <div className="fixed inset-0 bg-primary/20 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in-0">
-          <div className="bg-card rounded-lg p-6 w-96 max-w-md mx-4 animate-in zoom-in-95 slide-in-from-bottom-4 border border-border shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-foreground">
-                New Folder
-              </h3>
-              <button
-                type="button"
-                onClick={handleCloseFolderModal}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="folder-name"
-                className="block text-sm font-medium text-foreground mb-2"
-              >
-                Folder name
-              </label>
-              <Input
-                id="folder-name"
-                ref={modalInputRef}
-                type="text"
-                value={folderName}
-                onChange={(e) => {
-                  setFolderName(e.target.value);
-                  if (folderNameError) setFolderNameError("");
-                }}
-                onKeyDown={handleKeyPress}
-                placeholder="Enter folder name"
-                size="md"
-                variant="default"
-                error={!!folderNameError}
-              />
-              {folderNameError && (
-                <p className="mt-1 text-sm text-red-600">{folderNameError}</p>
-              )}
-            </div>
-
-            <div className="flex justify-end space-x-3">
-              <button
-                type="button"
-                onClick={handleCloseFolderModal}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground btn-secondary rounded-md"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleCreateFolder}
-                disabled={!folderName.trim()}
-                className="px-4 py-2 text-sm font-medium btn-primary disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
-              >
-                Create Folder
-              </button>
-            </div>
-          </div>
+      <Modal
+        isOpen={showFolderModal}
+        onClose={handleCloseFolderModal}
+        title="New Folder"
+        footer={
+          <>
+            <button
+              type="button"
+              onClick={handleCloseFolderModal}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground btn-secondary rounded-md"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleCreateFolder}
+              disabled={!folderName.trim()}
+              className="px-4 py-2 text-sm font-medium btn-primary disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
+            >
+              Create Folder
+            </button>
+          </>
+        }
+      >
+        <div className="mb-4">
+          <label
+            htmlFor="folder-name"
+            className="block text-sm font-medium text-foreground mb-2"
+          >
+            Folder name
+          </label>
+          <Input
+            id="folder-name"
+            ref={modalInputRef}
+            type="text"
+            value={folderName}
+            onChange={(e) => {
+              setFolderName(e.target.value);
+              if (folderNameError) setFolderNameError("");
+            }}
+            onKeyDown={handleKeyPress}
+            placeholder="Enter folder name"
+            size="md"
+            variant="default"
+            error={!!folderNameError}
+          />
+          {folderNameError && (
+            <p className="mt-1 text-sm text-red-600">{folderNameError}</p>
+          )}
         </div>
-      )}
+      </Modal>
 
       <EnvironmentModal
         isOpen={showEnvironmentModal}
