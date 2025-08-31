@@ -84,7 +84,8 @@ jobs:
             **Released on:** ${{ github.event.pushed_at }}
           
             ### Overview
-            This release includes the latest features, performance improvements, and bug fixes. We highly recommend updating to enjoy the newest enhancements.
+            ${{ github.event.head_commit.message }}
+            
             ### Installation
             Download the appropriate installer for your platform:
             

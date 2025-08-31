@@ -58,7 +58,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://erynthis.vercel.app/updates/{{target}}/{{current_version}}"
+        "https://github.com/gvrciary/erynthis-api-client/releases/download/main/latest.json"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDkwMkM1MzlDMjVDRUUyQjgKUldTNDRzNGxuRk1za0FiWXRIRW9ieUozUWFpNk9XbXJzZ1JDcDlJT3RiSEt1NHZwTG5JeUxZUFYK"
