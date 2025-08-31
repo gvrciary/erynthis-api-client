@@ -1,10 +1,12 @@
 import { Link as LinkIcon, Settings, Shield } from "lucide-react";
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
 import Input from "@/components/ui/input";
 import { AUTH_TYPES, LOCATION_OPTIONS, TOKEN_TYPE_OPTIONS } from "@/constants";
-import { useHttpAuth } from "@/hooks/http/use-http-auth";
+import { useHttpHeaders } from "@/hooks/use-http-headers";
+import { useHttpStore } from "@/store/http-store";
+import type { AuthType } from "@/types/data";
 import type { AuthCredentials } from "@/types/http";
 import { cn } from "@/utils";
 
@@ -246,10 +248,110 @@ const CustomAuthForm = memo(
 );
 
 const AuthTab = memo(({ className }: AuthTabProps) => {
-  const { getSelectedRequest, handleAuthTypeChange, handleCredentialChange } =
-    useHttpAuth();
+  const {
+    getSelectedRequest,
+    setAuthType,
+    updateCredentials,
+    addHeader,
+    removeHeader,
+  } = useHttpStore();
+
+  const { updateHeaderKey, updateHeaderValue } = useHttpHeaders();
 
   const requestItem = getSelectedRequest();
+
+  const updateAuthHeaders = useCallback(() => {
+    if (!requestItem) return;
+
+    const credentials = requestItem.request.credentials;
+
+    const authHeaders = requestItem.request.headers.filter(
+      (h) =>
+        h.key.toLowerCase() === "authorization" ||
+        h.key.toLowerCase() === "x-api-key" ||
+        h.key.toLowerCase() === credentials.customKey.toLowerCase(),
+    );
+
+    authHeaders.forEach((header) => removeHeader(header.id));
+
+    let headerKey = "";
+    let headerValue = "";
+
+    switch (requestItem.request.authType) {
+      case "basic":
+        if (credentials.username && credentials.password) {
+          headerKey = "Authorization";
+          headerValue = `Basic ${btoa(`${credentials.username}:${credentials.password}`)}`;
+        }
+        break;
+
+      case "bearer":
+        if (credentials.token) {
+          headerKey = "Authorization";
+          headerValue = `${credentials.tokenType} ${credentials.token}`;
+        }
+        break;
+
+      case "apikey":
+        if (credentials.apiKey && credentials.apiKeyName) {
+          if (credentials.apiKeyLocation === "header") {
+            headerKey = credentials.apiKeyName;
+            headerValue = credentials.apiKey;
+          }
+        }
+        break;
+
+      case "oauth2":
+        if (credentials.accessToken) {
+          headerKey = "Authorization";
+          headerValue = `${credentials.tokenType} ${credentials.accessToken}`;
+        }
+        break;
+
+      case "custom":
+        if (credentials.customKey && credentials.customValue) {
+          headerKey = credentials.customKey;
+          headerValue = credentials.customValue;
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    if (headerKey && headerValue) {
+      addHeader();
+      setTimeout(() => {
+        if (!requestItem) return;
+
+        const newHeader =
+          requestItem.request.headers[requestItem.request.headers.length - 1];
+        if (newHeader) {
+          updateHeaderKey(newHeader.id, headerKey);
+          updateHeaderValue(newHeader.id, headerValue);
+        }
+      }, 10);
+    }
+  }, [
+    removeHeader,
+    addHeader,
+    updateHeaderKey,
+    updateHeaderValue,
+    requestItem,
+  ]);
+
+  const handleCredentialChange = useCallback(
+    (field: string, value: string) => {
+      updateCredentials(field, value);
+      updateAuthHeaders();
+    },
+    [updateAuthHeaders, updateCredentials],
+  );
+
+  const handleAuthTypeChange = (type: string) => {
+    setAuthType(type as AuthType);
+    updateAuthHeaders();
+  };
 
   const authForm = useMemo(() => {
     if (!requestItem) return null;

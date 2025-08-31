@@ -5,7 +5,7 @@ import ContextMenu from "@/components/ui/context-menu";
 import Dropdown from "@/components/ui/drop-down";
 import ToggleMode from "@/components/ui/toggle-mode";
 import Tooltip from "@/components/ui/tooltip";
-import { useContextMenu } from "@/hooks/ui/use-context-menu";
+import { useContextMenu } from "@/hooks/use-context-menu";
 import { useEnvironmentStore } from "@/store/environment-store";
 import type { DropdownOption } from "@/types/data";
 

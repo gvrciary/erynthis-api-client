@@ -1,7 +1,7 @@
 import { Link, X } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import Input from "@/components/ui/input";
-import { useHttpParams } from "@/hooks/http/use-http-params";
+import { useHttpStore } from "@/store/http-store";
 import type { HttpParam } from "@/types/http";
 import { cn } from "@/utils";
 import Tooltip from "../ui/tooltip";
@@ -16,9 +16,8 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
     addParam,
     removeParam,
     toggleParam,
-    updateParamKey,
-    updateParamValue,
-  } = useHttpParams();
+    updateParam,
+  } = useHttpStore();
 
   const request = getSelectedRequest();
 
@@ -32,6 +31,30 @@ const ParamsTab = ({ className }: ParamsTabProps) => {
       addParam();
     }
   }, [request, addParam]);
+
+  const updateParamKey = useCallback(
+    (id: string, key: string) => {
+      if (!request) return;
+
+      const param = request.request.params.find((h) => h.id === id);
+      if (param) {
+        updateParam(id, key, param.value);
+      }
+    },
+    [updateParam, request],
+  );
+
+  const updateParamValue = useCallback(
+    (id: string, value: string) => {
+      if (!request) return;
+
+      const param = request.request.params.find((h) => h.id === id);
+      if (param) {
+        updateParam(id, param.key, value);
+      }
+    },
+    [updateParam, request],
+  );
 
   const handleParamKeyChange = useCallback(
     (id: string, key: string) => {

@@ -3,7 +3,7 @@ import { useCallback, useRef } from "react";
 import Dropdown from "@/components/ui/drop-down";
 import Input from "@/components/ui/input";
 import { BODY_TYPES, FORM_SUBTYPES, TEXT_SUBTYPES } from "@/constants";
-import { useHttpRequest } from "@/hooks/http/use-http-requests";
+import { useHttpStore } from "@/store/http-store";
 import type {
   BodyType,
   DropdownOption,
@@ -24,7 +24,7 @@ const BodyTab = ({ className }: BodyTabProps) => {
     setTextSubtype,
     setFormSubtype,
     setBinaryFile,
-  } = useHttpRequest();
+  } = useHttpStore();
   const request = getSelectedRequest();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);

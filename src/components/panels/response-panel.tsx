@@ -4,10 +4,14 @@ import ResponseBodyTab from "@/components/tabs/response-body-tab";
 import ResponseHeadersTab from "@/components/tabs/response-headers-tab";
 import Dropdown from "@/components/ui/drop-down";
 import EmptyState from "@/components/ui/empty-state";
+import Tooltip from "@/components/ui/tooltip";
 import { RESPONSE_TABS } from "@/constants";
-import { useHttpRequest } from "@/hooks/http/use-http-requests";
 import { useHttpStore } from "@/store/http-store";
-import type { BodyViewType, RequestItem, ResponseHistoryItem } from "@/types/data";
+import type {
+  BodyViewType,
+  RequestItem,
+  ResponseHistoryItem,
+} from "@/types/data";
 import type { HttpError, HttpResponse } from "@/types/http";
 import {
   cn,
@@ -15,7 +19,6 @@ import {
   formatResponseTime,
   getStatusColor,
 } from "@/utils";
-import Tooltip from "@/components/ui/tooltip";
 
 interface ResponsePanelProps {
   className?: string;
@@ -182,7 +185,7 @@ const ResponsePanel = memo(({ className }: ResponsePanelProps) => {
     clearResponse,
     deleteResponse,
     setActiveResponseTab,
-  } = useHttpRequest();
+  } = useHttpStore();
   const { selectResponse } = useHttpStore();
   const [bodyViewMode, setBodyViewMode] = useState<BodyViewType>("pretty");
 

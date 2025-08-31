@@ -7,11 +7,11 @@ import ParamsTab from "@/components/tabs/params-tab";
 import Dropdown from "@/components/ui/drop-down";
 import Input from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
-import { httpMethods, TABS } from "@/constants";
-import { useHttpRequest } from "@/hooks/http/use-http-requests";
-import { useModal } from "@/hooks/ui/use-modal";
-import { cn } from "@/utils";
 import Tooltip from "@/components/ui/tooltip";
+import { httpMethods, TABS } from "@/constants";
+import { useModal } from "@/hooks/use-modal";
+import { useHttpStore } from "@/store/http-store";
+import { cn } from "@/utils";
 
 interface RequestPanelProps {
   className?: string;
@@ -20,15 +20,31 @@ interface RequestPanelProps {
 const RequestPanel = memo(({ className }: RequestPanelProps) => {
   const {
     getSelectedRequest,
-    isValidRequest,
     setMethod,
     setUrl,
-    executeRequest,
     setActiveRequestTab,
-  } = useHttpRequest();
+    sendRequest,
+  } = useHttpStore();
+
   const [customMethod, setCustomMethod] = useState("");
   const [isCustomMethodActive, setIsCustomMethodActive] = useState(false);
   const request = getSelectedRequest();
+  
+  const executeRequest = useCallback(async () => {
+    if (!request) return;
+
+    if (!request.request.url.trim()) return;
+
+    try {
+      await sendRequest();
+    } catch {}
+  }, [sendRequest, request]);
+
+  const isValidRequest = useCallback(() => {
+    if (!request) return false;
+
+    return request.request.url.trim().length > 0;
+  }, [request]);
 
   const handleCustomMethodSaveCallback = useCallback(
     (value: string) => {
@@ -140,7 +156,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
             />
           </div>
 
-          <Tooltip content="Send Request" side="bottom"> 
+          <Tooltip content="Send Request" side="bottom">
             <button
               type="button"
               onClick={handleExecuteRequest}

@@ -4,7 +4,7 @@ import EnvironmentModal from "@/components/environments/environment-modal";
 import type { ContextMenuItem } from "@/components/ui/context-menu";
 import ContextMenu from "@/components/ui/context-menu";
 import Input from "@/components/ui/input";
-import { useContextMenu } from "@/hooks/ui/use-context-menu";
+import { useContextMenu } from "@/hooks/use-context-menu";
 import { useHttpStore } from "@/store/http-store";
 import type { ItemsType } from "@/types/data";
 import { cn } from "@/utils";
