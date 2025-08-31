@@ -81,7 +81,7 @@ const TitleBar = () => {
           data-tauri-drag-region
           className="text-xs font-medium text-foreground select-none cursor-default"
         >
-          Erynthis API Client
+          Erynthis
         </h1>
       </div>
 
