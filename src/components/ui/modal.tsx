@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { memo, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/utils";
+import Tooltip from "./tooltip";
 
 interface ModalProps {
   isOpen: boolean;
@@ -98,14 +99,16 @@ const Modal = memo(
           <div className="flex items-center justify-between p-6 border-b border-border">
             <h3 className="text-lg font-semibold text-foreground">{title}</h3>
             {showCloseButton && (
-              <button
-                type="button"
-                onClick={onClose}
-                className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
-                aria-label="Close modal"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <Tooltip content="Close" side="bottom">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+                  aria-label="Close modal"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </Tooltip>
             )}
           </div>
 
