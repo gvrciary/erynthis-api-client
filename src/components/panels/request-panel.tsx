@@ -164,6 +164,7 @@ const RequestPanel = memo(({ className }: RequestPanelProps) => {
 
           <div className="flex-1 relative">
             <Input
+              size="md"
               type="text"
               value={request.request.url}
               onChange={handleUrlChange}

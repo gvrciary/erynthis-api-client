@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import Input from "@/components/ui/input";
 import type { Variable } from "@/types/data";
 import { cn } from "@/utils";
+import Tooltip from "@/components/ui/tooltip";
 
 interface VariableRowProps {
   variable: Variable;
@@ -55,24 +56,26 @@ const VariableRow = ({
   return (
     <tr className="border-b border-border hover:bg-accent transition-colors duration-150">
       <td className="py-3 pr-4">
-        <button
-          type="button"
-          onClick={handleToggle}
-          className={cn(
-            "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-2",
-            variable.enabled
-              ? "bg-primary border-primary text-primary-foreground"
-              : "border-border hover:border-primary",
-          )}
-          title={`${variable.enabled ? "Disable" : "Enable"} variable`}
-          aria-label={`${variable.enabled ? "Disable" : "Enable"} variable ${variable.key || "unnamed"}`}
-        >
-          {variable.enabled && (
-            <span className="text-xs font-bold" aria-hidden="true">
-              ✓
-            </span>
-          )}
-        </button>
+        <Tooltip content={`${variable.enabled ? "Disable" : "Enable"} variable`}>
+          <button
+            type="button"
+            onClick={handleToggle}
+            className={cn(
+              "w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-2",
+              variable.enabled
+                ? "bg-primary border-primary text-primary-foreground"
+                : "border-border hover:border-primary",
+            )}
+            title={`${variable.enabled ? "Disable" : "Enable"} variable`}
+            aria-label={`${variable.enabled ? "Disable" : "Enable"} variable ${variable.key || "unnamed"}`}
+          >
+            {variable.enabled && (
+              <span className="text-xs font-bold" aria-hidden="true">
+                ✓
+              </span>
+            )}
+          </button>
+        </Tooltip>
       </td>
 
       <td className="py-3 pr-4 w-5/12">
