@@ -1,7 +1,7 @@
 ## `Erynthis` - API Client Request
 
 <div align="center">
-<img src="public/screenshot.png" width="650px">
+<img src="public/og-image.png" width="650px">
 
 ![React](https://img.shields.io/badge/React-111111?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Tauri](https://img.shields.io/badge/Tauri-111111?style=for-the-badge&logo=tauri&logoColor=FFC131)
